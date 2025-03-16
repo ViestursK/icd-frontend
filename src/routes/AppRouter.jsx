@@ -1,45 +1,22 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import LandingPage from "../pages/LandingPage";
-import Dashboard from "../pages/Dashboard";
-import LoginPage from "../pages/LoginPage";
-import Navbar from "../components/Navbar";
+import { Routes, Route, Navigate } from "react-router-dom";
+import DashboardLayout from "../layouts/DashboardLayout";
+import DashboardHome from "../pages/DashboardHome";
+import Settings from "../pages/Settings";
+import Profile from "../pages/Profile";
 
 function AppRouter() {
-  const { isAuthenticated } = useAuth();
-
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        {/* Landing Page is shown if not logged in */}
-        <Route
-          path="/"
-          element={
-            !isAuthenticated ? <LandingPage /> : <Navigate to="/dashboard" />
-          }
-        />
+    <Routes>
+      {/* Parent Route: Dashboard Layout */}
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<DashboardHome />} /> {/* Default child route */}
+        <Route path="settings" element={<Settings />} />
+        <Route path="profile" element={<Profile />} />
+      </Route>
 
-        {/* Login Page: Only accessible if not logged in */}
-        <Route
-          path="/login"
-          element={
-            !isAuthenticated ? <LoginPage /> : <Navigate to="/dashboard" />
-          }
-        />
-
-        {/* Dashboard: Only accessible if logged in */}
-        <Route
-          path="/dashboard"
-          element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
-        />
-      </Routes>
-    </Router>
+      {/* Redirect unknown routes to dashboard */}
+      <Route path="*" element={<Navigate to="/dashboard" />} />
+    </Routes>
   );
 }
 
