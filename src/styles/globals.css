@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "ClashGrotesk";
+  src: url("/fonts/ClashGrotesk-Regular.woff2") format("woff2"),
+       url("/fonts/ClashGrotesk-Regular.woff") format("woff"),
+       url("/fonts/ClashGrotesk-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --text-color: #E1DFEC;
+  --background-color: #0B091A;
+}
+
+body {
+  font-family: "ClashGrotesk", sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
