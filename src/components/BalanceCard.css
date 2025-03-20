@@ -1,0 +1,44 @@
+.balance-card {
+  background: rgb(147, 129, 255);
+  background: linear-gradient(
+    141deg,
+    rgba(147, 129, 255, 1) 31%,
+    rgba(125, 103, 255, 1) 72%
+  );
+  border-radius: 0.5rem;
+  display: flex;
+}
+
+.balance {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+p {
+  margin: 0;
+  font-size: 20px;
+  color: #f2f2fa;
+}
+
+#balance {
+  font-size: 49px;
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+}
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.change {
+  font-weight: 600;
+}
+
+.percentage {
+  font-weight: 600;
+}

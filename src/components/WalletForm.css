@@ -1,0 +1,159 @@
+@font-face {
+  font-family: "ClashGrotesk";
+  src: url("/fonts/ClashGrotesk-Regular.woff2") format("woff2"),
+    url("/fonts/ClashGrotesk-Regular.woff") format("woff"),
+    url("/fonts/ClashGrotesk-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+select {
+  font-family: "ClashGrotesk", sans-serif;
+}
+
+input {
+  font-family: "ClashGrotesk", sans-serif;
+  color: #7d67ff;
+}
+
+.wallet-form-container {
+  position: relative;
+  display: inline-block;
+  background-color: #7d67ff;
+  padding: 1px;
+  border-radius: 6px;
+  font-family: "ClashGrotesk", sans-serif;
+}
+
+.sliding-form {
+  display: flex;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+}
+
+.inputs-container {
+  display: flex;
+  flex-direction: row;
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  gap: 1px;
+}
+
+.expanded .inputs-container {
+  width: 20rem;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.chain-select,
+.wallet-input {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  background-color: #1c1833;
+}
+
+.chain-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%237d67ff'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px top 50%;
+  background-size: 15px auto;
+  padding-right: 25px;
+  color: #7d67ff;
+  width: max-content;
+}
+
+.chain-select option {
+  color: #7d67ff;
+  font-weight: 500;
+}
+
+.chain-select option:hover {
+  background-color: #7d67ff !important; /* Change hover background */
+  color: #ffffff; /* Change hover text color */
+}
+
+.chain-select:disabled {
+  background-color: #9c9c9c;
+  cursor: not-allowed;
+}
+
+.loading-indicator {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.loader {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.chain-select:focus,
+.wallet-input:focus {
+  border-color: #7d67ff;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #7d67ff, #7d67ff);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 7rem;
+  font-family: "ClashGrotesk", sans-serif;
+  text-transform: uppercase;
+}
+
+.submit-button:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:active {
+  transform: translateY(0);
+}
+
+.submit-button:disabled {
+  background: linear-gradient(135deg, #7d67ff, #7d67ff);
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 8px;
+  padding: 0.7rem;
+  background-color: #1c1833;
+  border-radius: 6px;
+}
