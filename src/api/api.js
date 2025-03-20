@@ -36,7 +36,7 @@ api.interceptors.response.use(
         return axios(error.config);
       } catch (refreshError) {
         console.error("Failed to refresh token:", refreshError);
-        // Clear token and redirect to login on failure
+        // Clear token and redirect to login on failur
         localStorage.removeItem("access_token");
         window.location.href = "/login";
       }
