@@ -1,26 +1,55 @@
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaHome, FaCogs, FaUser, FaSignOutAlt } from "react-icons/fa";
 import "./Sidebar.css";
 
 function Sidebar() {
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    navigate("/login");
+  };
 
   return (
     <aside className="sidebar-container">
-      <h2>*LOGO & APP NAME HERE*</h2>
-      <nav>
+      <div className="sidebar-logo">
+        <img className="logo" src="../assets/logo.svg" alt="logo" />
+        <h3 className="no-select">Portfolio Tracker</h3>
+      </div>
+
+      <nav className="sidebar-nav">
         <ul>
-          <li>
-            <Link to="/dashboard">Home</Link>
+          <li className={location.pathname === "/dashboard" ? "active" : ""}>
+            <Link to="/dashboard">
+              <FaHome className="sidebar-icon" /> Dashboard
+            </Link>
           </li>
-          <li>
-            <Link to="/dashboard/settings">Settings</Link>
+          <li
+            className={
+              location.pathname === "/dashboard/settings" ? "active" : ""
+            }
+          >
+            <Link to="/dashboard/settings">
+              <FaCogs className="sidebar-icon" /> Settings
+            </Link>
           </li>
-          <li>
-            <Link to="/dashboard/profile">Profile</Link>
+          <li
+            className={
+              location.pathname === "/dashboard/profile" ? "active" : ""
+            }
+          >
+            <Link to="/dashboard/profile">
+              <FaUser className="sidebar-icon" /> Profile
+            </Link>
+          </li>
+          <li id="logout">
+            <button onClick={handleLogout} className="logout-button">
+              <FaSignOutAlt className="sidebar-icon" /> Logout
+            </button>
           </li>
         </ul>
       </nav>
-      <button onClick={() => logout(navigate)}>Logout</button>
     </aside>
   );
 }

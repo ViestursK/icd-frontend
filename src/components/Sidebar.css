@@ -1,17 +1,31 @@
-/* .sidebar-container{
-  background-color: aliceblue;
-} */
-
 .sidebar-container {
   width: 250px;
   height: 100vh;
-  background-color: #2c3e50; /* Dark background */
-  color: white;
-  padding: 20px;
-  left: 0;
-  top: 0;
+  background-color: #0d0b1c;
   display: flex;
   flex-direction: column;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo h3 {
+  color: #e1dfec;
+  font-size: 16px;
+  font-weight: 500;
+  text-shadow: 0 0 5px #7d67ff, 0 0 10px #7d67ff, 0 0 15px #7d67ff,
+    0 0 20px #7d67ff, 0 0 30px #7d67ff, 0 0 40px #7d67ff, 0 0 55px #7d67ff,
+    0 0 75px #7d67ff;
+}
+
+.sidebar-logo {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.logo {
+  width: 2rem;
+  margin-right: 8px;
+  filter: drop-shadow(0 0 5px #7d67ff);
 }
 
 .sidebar-container nav ul {
@@ -19,19 +33,69 @@
   padding: 0;
 }
 
-.sidebar-container nav ul li {
-  margin: 20px 0;
-}
-
 .sidebar-container nav ul li a {
-  color: white;
+  color: #9e9ea0;
   text-decoration: none;
   font-size: 18px;
-  display: block;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
   padding: 10px;
 }
 
 .sidebar-container nav ul li a:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.062);
   border-radius: 5px;
+}
+
+/* Active Link Styles */
+.sidebar-container nav ul li.active a {
+  border-radius: 5px;
+  color: #fff;
+  font-weight: lighter;
+}
+
+.sidebar-container nav ul li a .sidebar-icon {
+  margin: 0 2.5rem;
+  font-size: 20px; /* Adjust icon size */
+}
+
+.sidebar-container nav ul li.active .sidebar-icon {
+  color: #7d67ff; /* Active icon color */
+  filter: drop-shadow(0 0 5px #7d67ff);
+}
+
+.logout-button {
+  background: linear-gradient(135deg, #7d67ff, #7d67ff);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  font-family: "ClashGrotesk", sans-serif;
+  margin-top: 20px;
+  font-size: 14px;
+  align-content: center;
+  justify-content: center;
+  display: flex;
+  gap: 5px;
+}
+
+.logout-button:hover {
+  box-shadow: 0 0 15px rgba(53, 14, 104, 0.8);
+  color: tomato;
+  transform: scale(1.01);
+  filter: drop-shadow(0 0 1px #533fc5);
+}
+
+/* send this to bottom */
+#logout {
+  position: absolute;
+  bottom: 1rem;
+  left: 5rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }

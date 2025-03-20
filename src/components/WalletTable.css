@@ -1,0 +1,28 @@
+.wallet-table {
+  width: max-content;
+  margin-top: 20px;
+  padding: 1rem;
+  background-color: #110e22;
+  border-radius: 0.5rem;
+}
+
+.wallet-table th {
+  border-bottom: 1px solid #7d67ff;
+}
+
+.wallet-table th,
+.wallet-table td {
+  padding: 1rem;
+  text-align: left;
+}
+
+.wallet-table th {
+  font-weight: bold;
+}
+.wallet-loading {
+  margin-top: 20px;
+  color: #7d67ff;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+}

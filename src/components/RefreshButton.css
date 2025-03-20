@@ -1,0 +1,25 @@
+@font-face {
+  font-family: "ClashGrotesk";
+  src: url("/fonts/ClashGrotesk-Regular.woff2") format("woff2"),
+    url("/fonts/ClashGrotesk-Regular.woff") format("woff"),
+    url("/fonts/ClashGrotesk-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.refresh-button {
+  background: linear-gradient(135deg, #7d67ff, #7d67ff);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-family: "ClashGrotesk", sans-serif;
+  text-transform: uppercase;
+}
+
+.refresh-button:hover {
+  box-shadow: 0 0 15px rgba(53, 14, 104, 0.8);
+  transform: scale(1.02);
+}

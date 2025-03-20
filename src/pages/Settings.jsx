@@ -1,5 +1,11 @@
+import Header from "../components/Header";
+
 function Settings() {
-  return <h1>Settings</h1>;
+  return (
+    <div className="settings-container">
+      <Header prop="SETTINGS" />
+    </div>
+  );
 }
 
 export default Settings;
