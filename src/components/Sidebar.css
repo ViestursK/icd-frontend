@@ -19,7 +19,8 @@
 .sidebar-logo {
   display: flex;
   justify-content: center;
-  padding-top: 1rem;
+  align-items: center;
+  padding: 2rem;
 }
 
 .logo {
