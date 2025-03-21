@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import "./RefreshButton.css";
 
-function RefreshButton({ onRefresh, isLoading }) {
+const RefreshButton = ({ onRefresh, isLoading }) => {
   return (
-    <button onClick={onRefresh} className="refresh-button" disabled={isLoading}>
-      {isLoading ? <span className="spinner"></span> : "Refresh Wallets"}
+    <button className="refresh-button" onClick={onRefresh} disabled={isLoading}>
+      {isLoading ? (
+        <div className="spinner"></div>
+      ) : (
+        "Refresh"
+      )}
     </button>
   );
-}
+};
 
 export default RefreshButton;

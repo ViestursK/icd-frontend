@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FaWallet } from "react-icons/fa";
 import api from "../api/api";
+import { getUserIdFromToken } from "../utils/auth"; // Ensure this path is correct
 import "./WalletForm.css";
 
 export default function WalletForm({ setWallets }) {
@@ -12,6 +13,11 @@ export default function WalletForm({ setWallets }) {
   const [fetchingChains, setFetchingChains] = useState(false);
   const [error, setError] = useState("");
   const formRef = useRef(null);
+
+  const accessToken = localStorage.getItem("access_token");
+  const userId = getUserIdFromToken(accessToken);
+  const walletsCacheKey = `wallets_${userId}`;
+
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -72,22 +78,21 @@ export default function WalletForm({ setWallets }) {
     setError("");
 
     try {
-      // Post the wallet data to the backend API
       const response = await api.post("/api/wallets/add/", {
         address: walletAddress,
         chain: selectedChain,
       });
 
-      // Assuming the response contains the new wallet data
       const newWallet = response.data;
-
       console.log("Wallet added successfully:", newWallet);
 
-      // Add the new wallet to the existing wallets list in state
       setWallets((prevWallets) => {
         const updatedWallets = [...prevWallets, newWallet];
-        // Cache the updated wallets in localStorage
-        localStorage.setItem("wallets", JSON.stringify(updatedWallets));
+        // Update cache with new data and refresh the timestamp
+        localStorage.setItem(walletsCacheKey, JSON.stringify({
+          timestamp: Date.now(),
+          data: updatedWallets,
+        }));
         return updatedWallets;
       });
 

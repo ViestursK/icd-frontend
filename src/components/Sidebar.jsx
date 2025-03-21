@@ -1,15 +1,21 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaHome, FaCogs, FaUser, FaSignOutAlt } from "react-icons/fa";
 import "./Sidebar.css";
+import { getUserIdFromToken } from "../utils/auth";
 
 function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    const accessToken = localStorage.getItem("access_token");
+    const userId = getUserIdFromToken(accessToken);
+    const walletsCacheKey = `wallets_${userId}`;
     localStorage.removeItem("access_token");
+    localStorage.removeItem(walletsCacheKey); 
     navigate("/login");
   };
+
 
   return (
     <aside className="sidebar-container">
