@@ -1,11 +1,29 @@
 import React from "react";
 import "./WalletTable.css";
+import "./skeleton.css"; // Import the skeleton styles
 
 const WalletTable = ({ wallets, isLoading }) => {
   return (
-    <div>
+    <div className="wallet-table-container">
       {isLoading ? (
-        <div className="wallet-loading">Loading wallets...</div>
+        <table className="wallet-table">
+          <thead>
+            <tr>
+              <th><div className="skeleton skeleton-text small"></div></th>
+              <th><div className="skeleton skeleton-text small"></div></th>
+              <th><div className="skeleton skeleton-text small"></div></th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...Array(3)].map((_, index) => (
+              <tr key={index}>
+                <td><div className="skeleton skeleton-text medium"></div></td>
+                <td><div className="skeleton skeleton-text medium"></div></td>
+                <td><div className="skeleton skeleton-text medium"></div></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : (
         <table className="wallet-table">
           <thead>

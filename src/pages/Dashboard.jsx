@@ -6,22 +6,32 @@ import WalletTable from "../components/WalletTable";
 import api from "../api/api";
 import RefreshButton from "../components/RefreshButton";
 import "./Dashboard.css";
+import { getUserIdFromToken } from "../utils/auth";
+
+const CACHE_EXPIRATION = 15 * 60 * 1000; // 15 minutes
 
 function Dashboard() {
   const [wallets, setWallets] = useState([]);
   const [walletBalance, setWalletBalance] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Load wallets from cache if available
+  const accessToken = localStorage.getItem("access_token");
+  const userId = getUserIdFromToken(accessToken);
+  const walletsCacheKey = `wallets_${userId}`;
+
   const loadCachedWallets = () => {
-    const cachedWallets = localStorage.getItem("wallets");
-    if (cachedWallets) {
-      const walletsData = JSON.parse(cachedWallets);
-      setWallets(walletsData);
-      setLoading(false);
-      return true; // Cache was loaded
+    const cachedData = localStorage.getItem(walletsCacheKey);
+    if (cachedData) {
+      const { timestamp, data } = JSON.parse(cachedData);
+      if (Date.now() - timestamp < CACHE_EXPIRATION) {
+        setWallets(data);
+        setLoading(false);
+        return true; // Valid cache loaded
+      } else {
+        localStorage.removeItem(walletsCacheKey); // Remove expired cache
+      }
     }
-    return false; // No cached wallets
+    return false; // No valid cache
   };
 
   // Fetch wallets from the backend and update cache
@@ -31,7 +41,14 @@ function Dashboard() {
       const response = await api.get("/api/wallets/sync/");
       const fetchedWallets = response.data.wallets;
       setWallets(fetchedWallets);
-      localStorage.setItem("wallets", JSON.stringify(fetchedWallets));
+      // Save cache with timestamp
+      localStorage.setItem(
+        walletsCacheKey,
+        JSON.stringify({
+          timestamp: Date.now(),
+          data: fetchedWallets,
+        })
+      );
     } catch (error) {
       console.error("Error fetching wallets:", error);
     } finally {
@@ -39,13 +56,12 @@ function Dashboard() {
     }
   };
 
-  // On mount, load cache; if not present, fetch from backend
   useEffect(() => {
     const cacheExists = loadCachedWallets();
     if (!cacheExists) {
       fetchWallets();
     }
-  }, []);
+  }, [walletsCacheKey]);
 
   // Calculate total wallet balance whenever wallets change
   useEffect(() => {
@@ -72,12 +88,16 @@ function Dashboard() {
       <div className="container">
         <div className="stat-container">
           {/* Show the summed balance from cached data */}
-          <BalanceCard balance={walletBalance} changePercent={0.3} />
+          <BalanceCard
+            balance={walletBalance}
+            changePercent={0.3}
+            isLoading={loading}
+          />
         </div>
         <div className="holdings-container">
           <h3>Crypto Wallets</h3>
           <WalletTable wallets={wallets} isLoading={loading} />
-          <RefreshButton onRefresh={handleRefresh} />
+          <RefreshButton onRefresh={handleRefresh} isLoading={loading} />
         </div>
       </div>
     </div>
