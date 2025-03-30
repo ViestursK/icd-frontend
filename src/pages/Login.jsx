@@ -27,7 +27,7 @@ const Login = () => {
     <div className="auth-container">
       <div className="brand">
         <img className="logo" src="../assets/logo.svg" alt="logo" />
-        <h3 className="no-select">Portfolio Tracker</h3>
+        <h3 className="no-select">DEVELOPMENT</h3>
       </div>
       <div className="auth-card">
         <h2>Login</h2>
