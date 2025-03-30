@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://icd-backend-develop-api.onrender.com/";  // Backend API base URL
+const API_URL = "https://icd-backend-production-api.onrender.com/";  // Backend API base URL
 
 // Create an axios instance
 const api = axios.create({
