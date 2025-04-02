@@ -179,24 +179,16 @@
 /* Responsive adjustments */
 @media (max-width: 640px) {
   .wallet-form-container {
-    width: 100%;
+    position: relative;
     display: block;
-    transition: 0.2s ease;
   }
 
-  .sliding-form {
-    width: 100%;
-  }
+ 
 
   .submit-button {
     width: auto;
     min-width: 7rem;
     flex-grow: 0;
-  }
-
-  .expanded .inputs-container {
-    width: 100%;
-    max-width: calc(100% - 7rem);
   }
 
   .wallet-input {
