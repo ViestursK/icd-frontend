@@ -1,103 +1,64 @@
-import React, { useState, useEffect } from "react";
-import Header from "../components/Header";
+import React from "react";
+import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
 import WalletForm from "../components/WalletForm";
 import WalletTable from "../components/WalletTable";
-import api from "../api/api";
-import RefreshButton from "../components/RefreshButton";
+import RefreshButton from "../components/ui/RefreshButton";
+import { useWallet } from "../context/WalletContext";
 import "./Dashboard.css";
-import { getUserIdFromToken } from "../utils/auth";
 
-const CACHE_EXPIRATION = 15 * 60 * 1000; // 15 minutes
 
 function Dashboard() {
-  const [wallets, setWallets] = useState([]);
-  const [walletBalance, setWalletBalance] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const { wallets, totalBalance, isLoading, error, fetchWallets, clearError } =
+    useWallet();
 
-  const accessToken = localStorage.getItem("access_token");
-  const userId = getUserIdFromToken(accessToken);
-  const walletsCacheKey = `wallets_${userId}`;
-
-  const loadCachedWallets = () => {
-    const cachedData = localStorage.getItem(walletsCacheKey);
-    if (cachedData) {
-      const { timestamp, data } = JSON.parse(cachedData);
-      if (Date.now() - timestamp < CACHE_EXPIRATION) {
-        setWallets(data);
-        setLoading(false);
-        return true; // Valid cache loaded
-      } else {
-        localStorage.removeItem(walletsCacheKey); // Remove expired cache
-      }
-    }
-    return false; // No valid cache
-  };
-
-  // Fetch wallets from the backend and update cache
-  const fetchWallets = async () => {
-    setLoading(true);
-    try {
-      const response = await api.get("/api/wallets/sync/");
-      const fetchedWallets = response.data.wallets;
-      setWallets(fetchedWallets);
-      // Save cache with timestamp
-      localStorage.setItem(
-        walletsCacheKey,
-        JSON.stringify({
-          timestamp: Date.now(),
-          data: fetchedWallets,
-        })
-      );
-    } catch (error) {
-      console.error("Error fetching wallets:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const cacheExists = loadCachedWallets();
-    if (!cacheExists) {
-      fetchWallets();
-    }
-  }, [walletsCacheKey]);
-
-  // Calculate total wallet balance whenever wallets change
-  useEffect(() => {
-    const totalBalance = wallets.reduce((acc, wallet) => {
-      // Convert balance_usd to a number and sum it up
-      return acc + parseFloat(wallet.balance_usd || 0);
-    }, 0);
-    setWalletBalance(totalBalance.toFixed(2));
-  }, [wallets]);
-
-  // This function is used for manual refresh or after adding a wallet.
+  // Handle refresh button click
   const handleRefresh = () => {
-    fetchWallets();
+    fetchWallets(true); // Force refresh from API
   };
 
   return (
     <div className="dashboard-container">
       <div className="top-container">
-        <Header prop="DASHBOARD" />
-        {/* Pass a callback to WalletForm so it can trigger a refresh after a wallet is added */}
-        <WalletForm setWallets={setWallets} onWalletAdded={handleRefresh} />
+        <Header title="DASHBOARD" />
+        <WalletForm />
       </div>
-      <h2>Portfolio</h2>
+
+      {error && (
+        <div className="error-alert" role="alert">
+          <p>{error}</p>
+          <button
+            onClick={clearError}
+            aria-label="Dismiss error"
+            className="dismiss-error"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      <h2 className="section-title">Portfolio</h2>
+
       <div className="container">
         <div className="stat-container">
-          {/* Show the summed balance from cached data */}
           <BalanceCard
-            balance={walletBalance}
-            changePercent={0.3}
-            isLoading={loading}
+            balance={totalBalance}
+            changePercent={0.3} // This should come from the API
+            isLoading={isLoading}
           />
         </div>
+
         <div className="holdings-container">
-          <h3>Crypto Wallets</h3>
-          <WalletTable wallets={wallets} isLoading={loading} />
-          <RefreshButton onRefresh={handleRefresh} isLoading={loading} />
+          <div className="holdings-header">
+            <h3>Crypto Wallets</h3>
+            <RefreshButton
+              onRefresh={handleRefresh}
+              isLoading={isLoading}
+              aria-label="Refresh wallet data"
+            />
+          </div>
+
+          <WalletTable wallets={wallets} isLoading={isLoading} />
         </div>
       </div>
     </div>

@@ -1,33 +1,9 @@
-h1 {
-  font-weight: 1000;
-}
-
-h2 {
-  margin: 0;
-  color: rgb(147, 129, 255);
-}
-
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  border-radius: 0.5rem;
   width: 100%;
-  overflow: hidden;
-}
-
-.container {
-  /* background: rgba(255, 255, 255, 0.062); */
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  border-radius: 0.5rem;
-  /* padding: 1rem; */
-}
-
-.stat-container {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .top-container {
@@ -36,4 +12,92 @@ h2 {
   align-items: center;
   justify-content: space-between;
   padding-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-title {
+  margin: 0.5rem 0 1rem;
+  color: rgb(147, 129, 255);
+  font-size: 1.5rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.stat-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.holdings-container {
+  background-color: #110e22;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.holdings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.holdings-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #f2f2fa;
+}
+
+.error-alert {
+  background-color: rgba(255, 76, 76, 0.1);
+  border: 1px solid rgba(255, 76, 76, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.error-alert p {
+  margin: 0;
+  color: #ff4c4c;
+}
+
+.dismiss-error {
+  background: none;
+  border: none;
+  color: #ff4c4c;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .top-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .holdings-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
 }
