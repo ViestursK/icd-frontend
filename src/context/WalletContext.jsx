@@ -15,8 +15,10 @@ const WalletContext = createContext(null);
 export const WalletProvider = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
-  // State for wallets and loading status
+  // State for different data types
   const [wallets, setWallets] = useState([]);
+  const [assets, setAssets] = useState([]);
+  const [exchanges, setExchanges] = useState([]);
   const [totalBalance, setTotalBalance] = useState("0.00");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -31,15 +33,23 @@ export const WalletProvider = ({ children }) => {
     } else {
       // Reset state when not authenticated
       setWallets([]);
+      setAssets([]);
+      setExchanges([]);
       setTotalBalance("0.00");
       setSupportedChains([]);
     }
   }, [isAuthenticated]);
 
-  // Update total balance when wallets change
+  // Update total balance when wallets or exchanges change
   useEffect(() => {
-    setTotalBalance(walletService.calculateTotalBalance(wallets));
-  }, [wallets]);
+    const walletsBalance = walletService.calculateTotalBalance(wallets);
+    const exchangesBalance = exchanges.reduce((total, exchange) => {
+      return total + parseFloat(exchange.balance_usd || 0);
+    }, 0);
+    
+    const total = parseFloat(walletsBalance) + exchangesBalance;
+    setTotalBalance(total.toFixed(2));
+  }, [wallets, exchanges]);
 
   // Fetch wallets from API or cache
   const fetchWallets = useCallback(
@@ -52,10 +62,14 @@ export const WalletProvider = ({ children }) => {
       try {
         const walletsData = await walletService.fetchWallets(forceRefresh);
         setWallets(walletsData || []);
+        
+        // In a real implementation, you'd also fetch assets and exchanges here
+        // For now, we'll use mock data in the Dashboard component
+        
         console.log("Fetched wallets:", walletsData);
       } catch (err) {
-        setError("Failed to load wallets. Please try again.");
-        console.error("Error fetching wallets:", err);
+        setError("Failed to load portfolio data. Please try again.");
+        console.error("Error fetching data:", err);
       } finally {
         setIsLoading(false);
       }
@@ -111,9 +125,38 @@ export const WalletProvider = ({ children }) => {
     [isAuthenticated, fetchWallets]
   );
 
+  // Add exchange account (placeholder for future implementation)
+  const addExchange = useCallback(
+    async (exchangeData) => {
+      if (!isAuthenticated) return;
+
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        // This would be implemented with an actual API endpoint
+        console.log("Adding exchange:", exchangeData);
+        
+        // Simulate success response
+        return { success: true };
+      } catch (err) {
+        const errorMessage = "Failed to add exchange.";
+        setError(errorMessage);
+        console.error("Error adding exchange:", err);
+
+        return { success: false, error: errorMessage };
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isAuthenticated]
+  );
+
   // Provide context value
   const contextValue = {
     wallets,
+    assets,
+    exchanges,
     totalBalance,
     isLoading,
     error,
@@ -121,6 +164,7 @@ export const WalletProvider = ({ children }) => {
     loadingChains,
     fetchWallets,
     addWallet,
+    addExchange,
     fetchSupportedChains,
     clearError: () => setError(null),
   };

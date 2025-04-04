@@ -209,3 +209,122 @@
     text-overflow: ellipsis;
   }
 }
+
+/* Asset table styles */
+.asset-cell {
+  white-space: nowrap;
+}
+
+.asset-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.asset-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: rgba(125, 103, 255, 0.1);
+  color: #7d67ff;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Asset-specific colors */
+.asset-icon.btc {
+  background-color: rgba(247, 147, 26, 0.1);
+  color: #f7931a;
+}
+
+.asset-icon.eth {
+  background-color: rgba(98, 126, 234, 0.1);
+  color: #627eea;
+}
+
+.asset-icon.sol {
+  background-color: rgba(0, 128, 255, 0.1);
+  color: #00f;
+}
+
+.asset-icon.bnb {
+  background-color: rgba(243, 186, 47, 0.1);
+  color: #f3ba2f;
+}
+
+.asset-name-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-name {
+  font-weight: 500;
+}
+
+.asset-symbol {
+  font-size: 0.75rem;
+  color: #9e9ea0;
+}
+
+/* Exchange table styles */
+.exchange-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.exchange-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background-color: rgba(125, 103, 255, 0.1);
+  color: #7d67ff;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Exchange-specific colors */
+.exchange-icon.binance {
+  background-color: rgba(243, 186, 47, 0.1);
+  color: #f3ba2f;
+}
+
+.exchange-icon.coinbase {
+  background-color: rgba(0, 82, 255, 0.1);
+  color: #0052ff;
+}
+
+.exchange-icon.kraken {
+  background-color: rgba(91, 37, 216, 0.1);
+  color: #5b25d8;
+}
+
+.exchange-name {
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .asset-name-container {
+    max-width: 120px;
+  }
+  
+  .asset-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .exchange-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

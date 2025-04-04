@@ -4,9 +4,7 @@ import authService from "../services/authService";
 
 // API URL from environment variables
 const API_URL =
-  import.meta.env.VITE_API_URL ||
-  "https://icd-backend-production-api.onrender.com/";
-
+  import.meta.env.VITE_API_URL
 // Create a centralized event emitter for auth state changes
 export const authEvents = {
   listeners: {},
