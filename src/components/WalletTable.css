@@ -1,28 +1,330 @@
-.wallet-table {
-  width: max-content;
-  margin-top: 20px;
-  padding: 1rem;
-  background-color: #110e22;
+.wallet-table-container {
+  width: 100%;
+  overflow-x: auto;
   border-radius: 0.5rem;
+  background-color: #110e22;
+}
+
+.wallet-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
 }
 
 .wallet-table th {
-  border-bottom: 1px solid #7d67ff;
+  padding: 1rem;
+  font-weight: 600;
+  text-align: left;
+  color: #9e9ea0;
+  border-bottom: 1px solid rgba(125, 103, 255, 0.3);
+  position: sticky;
+  top: 0;
+  background-color: #110e22;
+  z-index: 1;
 }
 
-.wallet-table th,
 .wallet-table td {
   padding: 1rem;
-  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #f2f2fa;
 }
 
-.wallet-table th {
-  font-weight: bold;
+.wallet-row {
+  transition: background-color 0.2s ease;
 }
-.wallet-loading {
-  margin-top: 20px;
+
+.wallet-row:hover {
+  background-color: rgba(125, 103, 255, 0.05);
+}
+
+.wallet-row:last-child td {
+  border-bottom: none;
+}
+
+/* Address display and copy functionality */
+.address-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.address-text {
+  font-family: monospace;
+  letter-spacing: 0.5px;
+}
+
+.copy-button {
+  background: none;
+  border: none;
+  color: #9e9ea0;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+}
+
+.address-container:hover .copy-button {
+  opacity: 1;
+}
+
+.copy-button:hover {
   color: #7d67ff;
-  font-weight: bold;
-  font-size: 1.2rem;
+  background-color: rgba(125, 103, 255, 0.1);
+}
+
+/* Show "Copied!" tooltip */
+.copy-button[data-copied="true"]::after {
+  content: "Copied!";
+  position: absolute;
+  top: -1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #7d67ff;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: fadeInOut 2s;
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+}
+
+/* Chain badges */
+.chain-cell {
+  white-space: nowrap;
+}
+
+.chain-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Chain-specific colors - add more as needed */
+.chain-badge.ethereum,
+.chain-badge.eth {
+  background-color: rgba(98, 126, 234, 0.2);
+  color: #627eea;
+}
+
+.chain-badge.bitcoin,
+.chain-badge.btc {
+  background-color: rgba(247, 147, 26, 0.2);
+  color: #f7931a;
+}
+
+.chain-badge.binance,
+.chain-badge.bnb,
+.chain-badge.bsc {
+  background-color: rgba(243, 186, 47, 0.2);
+  color: #f3ba2f;
+}
+
+.chain-badge.solana,
+.chain-badge.sol {
+  background-color: rgba(0, 128, 255, 0.2);
+  color: #00f;
+}
+
+.chain-badge.polygon,
+.chain-badge.matic {
+  background-color: rgba(130, 71, 229, 0.2);
+  color: #8247e5;
+}
+
+/* If no specific class matches, use a default */
+.chain-badge:not(.ethereum):not(.bitcoin):not(.binance):not(.solana):not(
+    .polygon
+  ):not(.eth):not(.btc):not(.bnb):not(.bsc):not(.sol):not(.matic) {
+  background-color: rgba(125, 103, 255, 0.2);
+  color: #7d67ff;
+}
+
+/* Balance formatting */
+.balance-cell {
+  text-align: left;
+  font-family: monospace;
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+/* Empty state */
+.empty-state td {
+  padding: 3rem 1rem;
+}
+
+.empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #9e9ea0;
   text-align: center;
+}
+
+.empty-message svg {
+  width: 3rem;
+  height: 3rem;
+  opacity: 0.5;
+}
+
+.empty-message p {
+  max-width: 20rem;
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .wallet-table th,
+  .wallet-table td {
+  }
+
+  .wallet-table {
+    font-size: 0.75rem;
+  }
+
+  .address-text {
+    max-width: 5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Asset table styles */
+.asset-cell {
+  white-space: nowrap;
+}
+
+.asset-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.asset-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: rgba(125, 103, 255, 0.1);
+  color: #7d67ff;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Asset-specific colors */
+.asset-icon.btc {
+  background-color: rgba(247, 147, 26, 0.1);
+  color: #f7931a;
+}
+
+.asset-icon.eth {
+  background-color: rgba(98, 126, 234, 0.1);
+  color: #627eea;
+}
+
+.asset-icon.sol {
+  background-color: rgba(0, 128, 255, 0.1);
+  color: #00f;
+}
+
+.asset-icon.bnb {
+  background-color: rgba(243, 186, 47, 0.1);
+  color: #f3ba2f;
+}
+
+.asset-name-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-name {
+  font-weight: 500;
+}
+
+.asset-symbol {
+  font-size: 0.75rem;
+  color: #9e9ea0;
+}
+
+/* Exchange table styles */
+.exchange-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.exchange-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background-color: rgba(125, 103, 255, 0.1);
+  color: #7d67ff;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Exchange-specific colors */
+.exchange-icon.binance {
+  background-color: rgba(243, 186, 47, 0.1);
+  color: #f3ba2f;
+}
+
+.exchange-icon.coinbase {
+  background-color: rgba(0, 82, 255, 0.1);
+  color: #0052ff;
+}
+
+.exchange-icon.kraken {
+  background-color: rgba(91, 37, 216, 0.1);
+  color: #5b25d8;
+}
+
+.exchange-name {
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .asset-name-container {
+    max-width: 120px;
+  }
+  
+  .asset-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .exchange-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
