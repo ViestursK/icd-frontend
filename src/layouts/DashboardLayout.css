@@ -1,10 +1,29 @@
-.dashboard-layout-container {
+.dashboard-layout {
   display: flex;
-  flex-direction: row;
+  min-height: 100vh;
+  background-color: var(--color-background);
 }
 
-.content {
-  flex-grow: 1;
-  margin: 2rem;
+.dashboard-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  max-width: 100%;
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .dashboard-content {
+    padding: 4rem 1rem 1rem 1rem; /* Extra top padding for mobile menu button */
+  }
+}
+
+@media (min-width: 1200px) {
+  .dashboard-content {
+    padding: 2rem;
+  }
+}

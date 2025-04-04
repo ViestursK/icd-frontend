@@ -1,44 +1,137 @@
 .balance-card {
-  background: rgb(147, 129, 255);
+  width: auto;
   background: linear-gradient(
     141deg,
     rgba(147, 129, 255, 1) 31%,
     rgba(125, 103, 255, 1) 72%
   );
-  border-radius: 0.5rem;
-  display: flex;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(125, 103, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.balance {
-  margin: 1rem;
+.balance-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(125, 103, 255, 0.3);
+}
+
+.balance-card-content {
+  padding: 1.5rem;
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+
+.balance-info {
   display: flex;
   flex-direction: column;
+  /* gap: 0.75rem; */
+  /* flex: 1; */
 }
 
-p {
-  margin: 0;
-  font-size: 20px;
+.balance-header {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+
+.balance-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(242, 242, 250, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.balance-amount {
+  display: flex;
+  align-items: baseline;
+}
+
+.currency-symbol {
+  font-size: 1.5rem;
+  font-weight: 400;
   color: #f2f2fa;
+  margin-right: 0.25rem;
 }
 
-#balance {
-  font-size: 49px;
-  font-weight: bold;
-  letter-spacing: 0.2rem;
+.balance-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #f2f2fa;
+  letter-spacing: 0.02em;
 }
 
-.chart {
+.balance-change {
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
+}
+
+.change-label {
+  font-size: 0.75rem;
+  color: rgba(242, 242, 250, 0.8);
+}
+
+.change-value {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.balance-chart {
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 1rem;
+  height: 70px;
+  margin-left: 1rem;
 }
 
-.change {
-  font-weight: 600;
+.chart-svg {
+  height: 100%;
+  width: auto;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
 }
 
-.percentage {
-  font-weight: 600;
+/* Skeleton loader adjustments */
+.skeleton-wrapper {
+  margin: 0.25rem 0;
+}
+
+.balance-card .skeleton {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.balance-card .skeleton::after {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .balance-card-content {
+    padding: 1.25rem;
+  }
+
+  .balance-value {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .balance-card-content {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .balance-chart {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
 }

@@ -1,0 +1,92 @@
+.refresh-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-family, "ClashGrotesk", sans-serif);
+}
+
+/* Size variants */
+.refresh-button.small {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.refresh-button.medium {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.refresh-button.large {
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+}
+
+/* Color variants */
+.refresh-button.primary {
+  background: linear-gradient(135deg, #7d67ff, #9381ff);
+  color: white;
+  box-shadow: 0 2px 4px rgba(125, 103, 255, 0.2);
+}
+
+.refresh-button.secondary {
+  background-color: #1c1833;
+  color: #f2f2fa;
+  border: 1px solid rgba(125, 103, 255, 0.3);
+}
+
+.refresh-button.ghost {
+  background: transparent;
+  color: #7d67ff;
+}
+
+/* Hover states */
+.refresh-button.primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #8d77ff, #a391ff);
+  box-shadow: 0 4px 8px rgba(125, 103, 255, 0.3);
+}
+
+.refresh-button.secondary:hover:not(:disabled) {
+  background-color: #23203c;
+  border-color: rgba(125, 103, 255, 0.5);
+}
+
+.refresh-button.ghost:hover:not(:disabled) {
+  background-color: rgba(125, 103, 255, 0.1);
+}
+
+/* Loading state */
+.refresh-button.loading .refresh-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Disabled state */
+.refresh-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Focus state for accessibility */
+.refresh-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(125, 103, 255, 0.3);
+}
+
+/* For buttons with icon only */
+.refresh-button:not(:has(.refresh-label)) {
+  padding: 0.5rem;
+}

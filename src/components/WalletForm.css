@@ -1,35 +1,26 @@
-@font-face {
-  font-family: "ClashGrotesk";
-  src: url("/fonts/ClashGrotesk-Regular.woff2") format("woff2"),
-    url("/fonts/ClashGrotesk-Regular.woff") format("woff"),
-    url("/fonts/ClashGrotesk-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-select {
-  font-family: "ClashGrotesk", sans-serif;
-}
-
-input {
-  font-family: "ClashGrotesk", sans-serif;
-  color: #7d67ff;
-}
-
 .wallet-form-container {
   position: relative;
   display: inline-block;
   background-color: #7d67ff;
   padding: 1px;
-  border-radius: 6px;
-  font-family: "ClashGrotesk", sans-serif;
+  border-radius: 0.375rem;
+  font-family: var(--font-family);
+  transition: box-shadow 0.3s ease;
+  max-width: 100%;
+}
+
+/* Add a subtle glow to make the form more noticeable */
+.wallet-form-container:hover {
+  box-shadow: 0 0 10px rgba(125, 103, 255, 0.5);
 }
 
 .sliding-form {
   display: flex;
   overflow: hidden;
   transition: all 0.3s ease;
-  border-radius: 6px;
+  border-radius: 0.375rem;
+  cursor: pointer; /* Show pointer cursor to indicate interactivity */
+  width: 100%;
 }
 
 .inputs-container {
@@ -39,10 +30,24 @@ input {
   overflow: hidden;
   transition: width 0.3s ease;
   gap: 1px;
+  flex: 1;
 }
 
 .expanded .inputs-container {
   width: 20rem;
+}
+
+/* Hide labels visually but keep them for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 .select-wrapper {
@@ -52,13 +57,14 @@ input {
 .chain-select,
 .wallet-input {
   width: 100%;
-  padding: 12px;
+  padding: 0.75rem;
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
   background-color: #1c1833;
+  color: #f2f2fa;
 }
 
 .chain-select {
@@ -67,40 +73,41 @@ input {
   -moz-appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%237d67ff'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px top 50%;
-  background-size: 15px auto;
-  padding-right: 25px;
-  color: #7d67ff;
+  background-position: right 0.75rem top 50%;
+  background-size: 0.9375rem auto;
+  padding-right: 1.5625rem;
   width: max-content;
 }
 
 .chain-select option {
-  color: #7d67ff;
+  color: #f2f2fa;
+  background-color: #1c1833;
   font-weight: 500;
 }
 
-.chain-select option:hover {
-  background-color: #7d67ff !important; /* Change hover background */
-  color: #ffffff; /* Change hover text color */
+.chain-select:focus,
+.wallet-input:focus {
+  box-shadow: 0 0 0 2px rgba(125, 103, 255, 0.4);
 }
 
-.chain-select:disabled {
-  background-color: #9c9c9c;
+.chain-select:disabled,
+.wallet-input:disabled {
+  opacity: 0.7;
   cursor: not-allowed;
 }
 
 .loading-indicator {
   position: absolute;
-  right: 30px;
+  right: 1.875rem;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .loader {
-  width: 12px;
-  height: 12px;
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #3498db;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 2px solid rgba(242, 242, 250, 0.3);
+  border-top: 2px solid #f2f2fa;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   display: inline-block;
@@ -115,45 +122,83 @@ input {
   }
 }
 
-.chain-select:focus,
-.wallet-input:focus {
-  border-color: #7d67ff;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-}
-
 .submit-button {
   background: linear-gradient(135deg, #7d67ff, #7d67ff);
-  color: rgb(255, 255, 255);
+  color: #ffffff;
   border: none;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   font-weight: 500;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
   white-space: nowrap;
   overflow: hidden;
-  width: 7rem;
-  font-family: "ClashGrotesk", sans-serif;
+  min-width: 7rem;
+  font-family: var(--font-family);
   text-transform: uppercase;
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.submit-button:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+/* Only make the button appear disabled when it's actually disabled */
+.submit-button:not(:disabled) {
+  cursor: pointer;
+  background: linear-gradient(135deg, #7d67ff, #9381ff);
 }
 
-.submit-button:active {
-  transform: translateY(0);
+.submit-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #8d77ff, #a391ff);
+  box-shadow: 0 0 10px rgba(125, 103, 255, 0.5);
+}
+
+.submit-button:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 .submit-button:disabled {
-  background: linear-gradient(135deg, #7d67ff, #7d67ff);
+  opacity: 0.7;
   cursor: not-allowed;
 }
 
-.error-message {
-  color: #e74c3c;
-  font-size: 14px;
-  margin-top: 8px;
-  padding: 0.7rem;
-  background-color: #1c1833;
-  border-radius: 6px;
+.button-spinner {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .wallet-form-container {
+    position: relative;
+    display: block;
+  }
+
+ 
+
+  .submit-button {
+    width: auto;
+    min-width: 7rem;
+    flex-grow: 0;
+  }
+
+  .wallet-input {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .chain-select {
+    min-width: 0;
+    flex-shrink: 1;
+    width: auto;
+  }
 }
