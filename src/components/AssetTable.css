@@ -85,24 +85,19 @@
   margin-top: 2px;
 }
 
-.positive-change {
-  color: #32c376;
+/* FIX: Improved 24h change column alignment */
+.price-change-container {
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.positive-change {
+  color: #32c376;
 }
 
 .negative-change {
   color: #ff4c4c;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.price-change {
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 .change-icon {
