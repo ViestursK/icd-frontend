@@ -1,46 +1,77 @@
-import React, { useState } from "react";
-import { FaWallet, FaCoins, FaExchangeAlt } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaWallet, FaCoins, FaTrashAlt, FaTimes } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
 import WalletForm from "../components/WalletForm";
 import WalletTable from "../components/WalletTable";
 import AssetTable from "../components/AssetTable";
-import ExchangeTable from "../components/ExchangeTable";
 import RefreshButton from "../components/ui/RefreshButton";
 import TabSelector from "../components/TabSelector";
 import { useWallet } from "../context/WalletContext";
+import { useToast } from "../context/ToastContext";
 import "./Dashboard.css";
 
 // Define tab options
 const TABS = [
   { id: "assets", label: "Assets", icon: <FaCoins /> },
   { id: "wallets", label: "Wallets", icon: <FaWallet /> },
-  { id: "exchanges", label: "Exchanges", icon: <FaExchangeAlt /> },
 ];
 
 function Dashboard() {
-  const { wallets, totalBalance, isLoading, error, fetchWallets, clearError } =
-    useWallet();
+  const { 
+    wallets, 
+    assets, 
+    totalBalance, 
+    changePercent, 
+    isLoading, 
+    error, 
+    refreshData, 
+    removeWallet,
+    clearError 
+  } = useWallet();
+  
+  // Use the toast hook here, in a component that's within the ToastProvider
+  const toast = useToast();
     
   // State for active tab
-  const [activeTab, setActiveTab] = useState("wallets");
-
-  // Mock data for assets table
-  const [assets] = useState([
-    { name: "Bitcoin", symbol: "BTC", price: 42000.50, amount: 0.5, value_usd: 21000.25 },
-    { name: "Ethereum", symbol: "ETH", price: 2800.75, amount: 3.2, value_usd: 8962.40 },
-    { name: "Solana", symbol: "SOL", price: 120.25, amount: 15, value_usd: 1803.75 }
-  ]);
-
-  // Mock data for exchanges table
-  const [exchanges] = useState([
-    { name: "Binance", account_name: "Main Account", balance_usd: 15750.45 },
-    { name: "Coinbase", account_name: "Trading Account", balance_usd: 8250.32 }
-  ]);
+  const [activeTab, setActiveTab] = useState("assets");
+  // State for wallet being deleted
+  const [selectedWallet, setSelectedWallet] = useState(null);
+  // State for delete confirmation modal
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // Handle refresh button click
-  const handleRefresh = () => {
-    fetchWallets(true); // Force refresh from API
+  const handleRefresh = async () => {
+    const result = await refreshData();
+    if (result.success) {
+      toast.success("Portfolio data refreshed");
+    } else if (result.error) {
+      toast.error(result.error);
+    }
+  };
+
+  // Handle wallet delete click
+  const handleDeleteClick = (wallet) => {
+    setSelectedWallet(wallet);
+    setShowDeleteModal(true);
+  };
+
+  // Handle confirm delete
+  const handleConfirmDelete = async () => {
+    if (!selectedWallet) return;
+    
+    const result = await removeWallet({
+      address: selectedWallet.address,
+      chain: selectedWallet.chain
+    });
+    
+    if (result.success) {
+      toast.success("Wallet removed successfully!");
+      setShowDeleteModal(false);
+      setSelectedWallet(null);
+    } else if (result.error) {
+      toast.error(result.error || "Failed to remove wallet. Please try again.");
+    }
   };
 
   // Function to render the active table based on tab
@@ -48,11 +79,15 @@ function Dashboard() {
     switch (activeTab) {
       case "assets":
         return <AssetTable assets={assets} isLoading={isLoading} />;
-      case "exchanges":
-        return <ExchangeTable exchanges={exchanges} isLoading={isLoading} />;
       case "wallets":
       default:
-        return <WalletTable wallets={wallets} isLoading={isLoading} />;
+        return (
+          <WalletTable 
+            wallets={wallets} 
+            isLoading={isLoading} 
+            onDeleteClick={handleDeleteClick}
+          />
+        );
     }
   };
 
@@ -61,8 +96,6 @@ function Dashboard() {
     switch (activeTab) {
       case "assets":
         return "Crypto Assets";
-      case "exchanges":
-        return "Exchange Accounts";
       case "wallets":
       default:
         return "Crypto Wallets";
@@ -95,7 +128,7 @@ function Dashboard() {
         <div className="stat-container">
           <BalanceCard
             balance={totalBalance}
-            changePercent={0.3} // This should come from the API
+            changePercent={changePercent} 
             isLoading={isLoading}
           />
         </div>
@@ -119,6 +152,51 @@ function Dashboard() {
           {renderActiveTable()}
         </div>
       </div>
+      
+      {/* Delete confirmation modal */}
+      {showDeleteModal && selectedWallet && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>Remove Wallet</h3>
+              <button 
+                className="modal-close-button"
+                onClick={() => setShowDeleteModal(false)}
+                aria-label="Close modal"
+              >
+                <FaTimes />
+              </button>
+            </div>
+            
+            <div className="modal-content">
+              <p>Are you sure you want to remove this wallet?</p>
+              <div className="wallet-preview">
+                <div className="wallet-chain">
+                  <span className={`chain-badge ${selectedWallet.chain.toLowerCase()}`}>
+                    {selectedWallet.chain}
+                  </span>
+                </div>
+                <div className="wallet-address">{selectedWallet.address}</div>
+              </div>
+            </div>
+            
+            <div className="modal-actions">
+              <button 
+                className="modal-cancel-button" 
+                onClick={() => setShowDeleteModal(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                className="modal-delete-button"
+                onClick={handleConfirmDelete}
+              >
+                <FaTrashAlt /> Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

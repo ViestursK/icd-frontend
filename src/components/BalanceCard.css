@@ -1,25 +1,23 @@
 .balance-card {
-  width: auto;
-  background: linear-gradient(
-    141deg,
-    rgba(147, 129, 255, 1) 31%,
-    rgba(125, 103, 255, 1) 72%
-  );
-  border-radius: 0.75rem;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(125, 103, 255, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+ /* From https://css.glass */
+background: rgba(255, 255, 255, 0.08);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(255, 255, 255, 0.3);
+transition: all 0.3s ease;
 }
 
 .balance-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   box-shadow: 0 6px 25px rgba(125, 103, 255, 0.3);
+  background-color: rgba(125, 103, 255, 0.05);
 }
 
 .balance-card-content {
   padding: 1.5rem;
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
 }
 

@@ -1,29 +1,95 @@
+/* Existing styles */
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
-  background-color: var(--color-background);
+  position: relative;
 }
 
 .dashboard-content {
   flex: 1;
-  padding: 1.5rem;
-  overflow-y: auto;
-  max-width: 100%;
+  padding: 20px;
+  position: relative;
+  z-index: 10; /* Ensure content appears above background */
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .dashboard-layout {
-    flex-direction: column;
-  }
-
-  .dashboard-content {
-    padding: 4rem 1rem 1rem 1rem; /* Extra top padding for mobile menu button */
-  }
+/* Premium Background Styles */
+.premium-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #1a1a2e; /* Dark base color */
+  z-index: 1;
 }
 
-@media (min-width: 1200px) {
-  .dashboard-content {
-    padding: 2rem;
-  }
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+
+.orb-purple {
+  width: 400px;
+  height: 400px;
+  background-color: rgba(139, 92, 246, 0.3); /* Purple */
+  animation: moveSlowly 20s infinite alternate ease-in-out;
+}
+
+.orb-blue {
+  width: 400px;
+  height: 400px;
+  background-color: rgba(59, 130, 246, 0.2); /* Blue */
+  animation: moveSlowly 15s infinite alternate-reverse ease-in-out;
+}
+
+.orb-indigo {
+  width: 350px;
+  height: 350px;
+  background-color: rgba(79, 70, 229, 0.2); /* Indigo */
+  animation: moveSlowly 25s infinite alternate ease-in-out;
+}
+
+.orb-rose {
+  width: 300px;
+  height: 300px;
+  background-color: rgba(244, 63, 94, 0.2); /* Rose */
+  animation: moveSlowly 18s infinite alternate-reverse ease-in-out;
+}
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.1), transparent, rgba(0, 0, 0, 0.1));
+  mix-blend-mode: overlay;
+}
+
+.grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.2;
+}
+
+.dark-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Animation for orbs */
+@keyframes moveSlowly {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(40px, 40px); }
+}
+
+/* Make sure Sidebar appears above the background */
+/* Add this class to your Sidebar component if needed */
+.sidebar {
+  position: relative;
+  z-index: 10;
 }
