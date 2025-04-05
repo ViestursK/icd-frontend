@@ -151,11 +151,11 @@ const AssetTable = ({ assets = [], isLoading }) => {
                     </div>
                   </td>
                   <td>${formatNumber(asset.price)}</td>
-                  <td className={parseFloat(asset.price_24h_change_percent) >= 0 ? "positive-change" : "negative-change"}>
-                    <span className="price-change">
+                  <td>
+                    <div className={`price-change-container ${parseFloat(asset.price_24h_change_percent) >= 0 ? "positive-change" : "negative-change"}`}>
                       {getChangeIcon(asset.price_24h_change_percent)}
-                      {formatPercentChange(asset.price_24h_change_percent)}
-                    </span>
+                      <span>{formatPercentChange(asset.price_24h_change_percent)}</span>
+                    </div>
                   </td>
                   <td>
                     {formatCryptoAmount(asset.total_amount, asset.symbol)} {asset.symbol}
