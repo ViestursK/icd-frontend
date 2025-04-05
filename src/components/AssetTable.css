@@ -1,0 +1,131 @@
+/* AssetTable specific styles */
+.asset-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.asset-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.asset-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+  background-color: rgba(125, 103, 255, 0.1);
+  color: #7d67ff;
+}
+
+/* Asset-specific icon colors */
+.asset-icon.eth {
+  background-color: rgba(98, 126, 234, 0.1);
+  color: #627eea;
+}
+
+.asset-icon.btc {
+  background-color: rgba(247, 147, 26, 0.1);
+  color: #f7931a;
+}
+
+.asset-icon.usdt {
+  background-color: rgba(38, 161, 123, 0.1);
+  color: #26a17b;
+}
+
+.asset-icon.usdc {
+  background-color: rgba(39, 117, 202, 0.1);
+  color: #2775ca;
+}
+
+.asset-icon.bnb {
+  background-color: rgba(243, 186, 47, 0.1);
+  color: #f3ba2f;
+}
+
+.asset-icon.sol {
+  background-color: rgba(0, 128, 255, 0.1);
+  color: #00f;
+}
+
+.asset-icon.pol {
+  background-color: rgba(130, 71, 229, 0.1);
+  color: #8247e5;
+}
+
+.asset-name-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #f2f2fa;
+}
+
+.asset-symbol {
+  font-size: 0.75rem;
+  color: #9e9ea0;
+  margin-top: 2px;
+}
+
+.positive-change {
+  color: #32c376;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.negative-change {
+  color: #ff4c4c;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.price-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.change-icon {
+  font-size: 14px;
+}
+
+.change-icon.up {
+  color: #32c376;
+}
+
+.change-icon.down {
+  color: #ff4c4c;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .asset-name-container {
+    max-width: 120px;
+  }
+  
+  .asset-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
