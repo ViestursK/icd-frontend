@@ -1,4 +1,5 @@
 .balance-card {
+<<<<<<< HEAD
  /* From https://css.glass */
 background: rgba(255, 255, 255, 0.08);
 border-radius: 16px;
@@ -13,11 +14,32 @@ transition: all 0.3s ease;
   transform: translateY(-1px);
   box-shadow: 0 6px 25px rgba(125, 103, 255, 0.3);
   background-color: rgba(231, 230, 236, 0.178);
+=======
+  width: auto;
+  background: linear-gradient(
+    141deg,
+    rgba(147, 129, 255, 1) 31%,
+    rgba(125, 103, 255, 1) 72%
+  );
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(125, 103, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.balance-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(125, 103, 255, 0.3);
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
 }
 
 .balance-card-content {
   padding: 1.5rem;
   display: flex;
+<<<<<<< HEAD
+=======
+  /* justify-content: space-between; */
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
   align-items: center;
 }
 

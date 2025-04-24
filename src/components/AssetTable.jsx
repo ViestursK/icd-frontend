@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import PropTypes from "prop-types";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 import "./WalletTable.css"; // Reuse WalletTable styles
@@ -75,6 +76,20 @@ const AssetTable = ({ assets = [], isLoading }) => {
     );
   };
 
+=======
+import "./WalletTable.css"; // Reuse WalletTable styles
+import "./skeleton.css";
+
+const AssetTable = ({ assets = [], isLoading }) => {
+  // Format balance to display with commas and 2 decimal places
+  const formatBalance = (balance) => {
+    return parseFloat(balance).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
   return (
     <div
       className="wallet-table-container"
@@ -98,9 +113,12 @@ const AssetTable = ({ assets = [], isLoading }) => {
               <th>
                 <div className="skeleton skeleton-text small"></div>
               </th>
+<<<<<<< HEAD
               <th>
                 <div className="skeleton skeleton-text small"></div>
               </th>
+=======
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
             </tr>
           </thead>
           <tbody>
@@ -118,9 +136,12 @@ const AssetTable = ({ assets = [], isLoading }) => {
                 <td>
                   <div className="skeleton skeleton-text medium"></div>
                 </td>
+<<<<<<< HEAD
                 <td>
                   <div className="skeleton skeleton-text medium"></div>
                 </td>
+=======
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
               </tr>
             ))}
           </tbody>
@@ -131,8 +152,12 @@ const AssetTable = ({ assets = [], isLoading }) => {
           <thead>
             <tr>
               <th>Asset</th>
+<<<<<<< HEAD
               <th>Price (USD)</th>
               <th>24h Change</th>
+=======
+              <th>Price</th>
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
               <th>Holdings</th>
               <th>Value (USD)</th>
             </tr>
@@ -143,13 +168,22 @@ const AssetTable = ({ assets = [], isLoading }) => {
                 <tr key={index} className="wallet-row">
                   <td className="asset-cell">
                     <div className="asset-info">
+<<<<<<< HEAD
                       {renderAssetIcon(asset)}
+=======
+                      <span
+                        className={`asset-icon ${asset.symbol.toLowerCase()}`}
+                      >
+                        {asset.symbol.substring(0, 1)}
+                      </span>
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
                       <div className="asset-name-container">
                         <span className="asset-name">{asset.name}</span>
                         <span className="asset-symbol">{asset.symbol}</span>
                       </div>
                     </div>
                   </td>
+<<<<<<< HEAD
                   <td>${formatNumber(asset.price)}</td>
                   <td>
                     <div className={`price-change-container ${parseFloat(asset.price_24h_change_percent) >= 0 ? "positive-change" : "negative-change"}`}>
@@ -162,12 +196,24 @@ const AssetTable = ({ assets = [], isLoading }) => {
                   </td>
                   <td className="balance-cell">
                     ${formatNumber(asset.total_value)}
+=======
+                  <td>${formatBalance(asset.price)}</td>
+                  <td>
+                    {asset.amount} {asset.symbol}
+                  </td>
+                  <td className="balance-cell">
+                    ${formatBalance(asset.value_usd)}
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
                   </td>
                 </tr>
               ))
             ) : (
               <tr className="empty-state">
+<<<<<<< HEAD
                 <td colSpan="5">
+=======
+                <td colSpan="4">
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
                   <div className="empty-message">
                     <svg
                       viewBox="0 0 24 24"
@@ -178,7 +224,12 @@ const AssetTable = ({ assets = [], isLoading }) => {
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
                     </svg>
                     <p>
+<<<<<<< HEAD
                       No assets found. Add wallets to track your assets.
+=======
+                      No assets found. Add wallets or exchanges to track your
+                      assets.
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
                     </p>
                   </div>
                 </td>
@@ -191,9 +242,13 @@ const AssetTable = ({ assets = [], isLoading }) => {
   );
 };
 
+<<<<<<< HEAD
 AssetTable.propTypes = {
   assets: PropTypes.array,
   isLoading: PropTypes.bool
 };
 
 export default AssetTable;
+=======
+export default AssetTable;
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f

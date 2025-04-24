@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
+=======
+import React, { useEffect } from "react";
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
 import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { useAuth } from "../context/AuthContext";
 import "./DashboardLayout.css";
 
+<<<<<<< HEAD
 // Premium Background Component
 const PremiumBackground = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -70,6 +75,8 @@ const PremiumBackground = () => {
   );
 };
 
+=======
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
 function DashboardLayout() {
   const { isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
@@ -88,9 +95,12 @@ function DashboardLayout() {
 
   return (
     <div className="dashboard-layout">
+<<<<<<< HEAD
       {/* Add the premium background here */}
       <PremiumBackground />
       
+=======
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
       <Sidebar />
 
       <main className="dashboard-content">
@@ -100,4 +110,8 @@ function DashboardLayout() {
   );
 }
 
+<<<<<<< HEAD
 export default DashboardLayout;
+=======
+export default DashboardLayout;
+>>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
