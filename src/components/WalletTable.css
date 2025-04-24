@@ -19,11 +19,9 @@
   padding: 1rem;
   font-weight: 600;
   text-align: left;
-  color: #9e9ea0;
   border-bottom: 1px solid rgba(125, 103, 255, 0.3);
   position: sticky;
   top: 0;
-  background-color: #110e22;
   z-index: 1;
 }
 
@@ -313,13 +311,13 @@
   .asset-name-container {
     max-width: 120px;
   }
-  
+
   .asset-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+
   .exchange-name {
     max-width: 100px;
     white-space: nowrap;
