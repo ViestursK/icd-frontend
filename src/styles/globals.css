@@ -1,6 +1,6 @@
 :root {
-  --font-family: "ClashGrotesk", system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+  --font-family: 'ClashGrotesk', sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
     sans-serif;
   --color-primary: #7d67ff;
   --color-primary-light: #9381ff;

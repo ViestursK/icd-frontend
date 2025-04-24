@@ -1,18 +1,8 @@
 .wallet-table-container {
-<<<<<<< HEAD
-  /* From https://css.glass */
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-=======
   width: 100%;
   overflow-x: auto;
   border-radius: 0.5rem;
   background-color: #110e22;
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
 }
 
 .wallet-table {
@@ -26,17 +16,11 @@
   padding: 1rem;
   font-weight: 600;
   text-align: left;
-<<<<<<< HEAD
-  border-bottom: 1px solid rgba(125, 103, 255, 0.3);
-  position: sticky;
-  top: 0;
-=======
   color: #9e9ea0;
   border-bottom: 1px solid rgba(125, 103, 255, 0.3);
   position: sticky;
   top: 0;
   background-color: #110e22;
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
   z-index: 1;
 }
 
@@ -330,81 +314,17 @@
   .asset-name-container {
     max-width: 120px;
   }
-<<<<<<< HEAD
-
-=======
   
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
   .asset-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-<<<<<<< HEAD
-
-=======
   
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
   .exchange-name {
     max-width: 100px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-<<<<<<< HEAD
-}
-
-.actions-cell {
-  text-align: center;
-  width: 80px;
-}
-
-.action-button {
-  background: none;
-  border: none;
-  padding: 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.action-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.action-button.delete-button {
-  color: #ff4c4c;
-}
-
-.action-button.delete-button:hover {
-  background-color: rgba(255, 76, 76, 0.1);
-}
-
-/* Improve copy button styling */
-.copy-button {
-  background: none;
-  border: none;
-  color: #9e9ea0;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 0.25rem;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.5;
-}
-
-.address-container:hover .copy-button {
-  opacity: 1;
-}
-
-.copy-button:hover {
-  color: #7d67ff;
-  background-color: rgba(125, 103, 255, 0.1);
-=======
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
 }
