@@ -123,7 +123,6 @@ button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
-  -webkit-appearance: button;
   cursor: pointer;
   background-color: transparent;
   background-image: none;
