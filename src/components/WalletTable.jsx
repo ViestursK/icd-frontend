@@ -1,17 +1,10 @@
 import React from "react";
-<<<<<<< HEAD
 import PropTypes from "prop-types";
 import { FaTrashAlt, FaCopy } from "react-icons/fa";
 import "./WalletTable.css";
 import "./skeleton.css";
 
 const WalletTable = ({ wallets, isLoading, onDeleteClick }) => {
-=======
-import "./WalletTable.css";
-import "./skeleton.css";
-
-const WalletTable = ({ wallets, isLoading }) => {
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
   // Format balance to display with commas and 2 decimal places
   const formatBalance = (balance) => {
     return parseFloat(balance).toLocaleString("en-US", {
@@ -29,7 +22,6 @@ const WalletTable = ({ wallets, isLoading }) => {
     )}`;
   };
 
-<<<<<<< HEAD
   // Copy wallet address to clipboard
   const copyToClipboard = (address, e) => {
     e.stopPropagation();
@@ -43,8 +35,6 @@ const WalletTable = ({ wallets, isLoading }) => {
     }, 2000);
   };
 
-=======
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
   // Function to render wallet address with tooltip for full address
   const renderWalletAddress = (address) => {
     return (
@@ -52,30 +42,11 @@ const WalletTable = ({ wallets, isLoading }) => {
         <span className="address-text">{formatAddress(address)}</span>
         <button
           className="copy-button"
-<<<<<<< HEAD
           onClick={(e) => copyToClipboard(address, e)}
           aria-label="Copy wallet address"
           title="Copy address"
         >
           <FaCopy size={14} />
-=======
-          onClick={(e) => {
-            e.stopPropagation();
-            navigator.clipboard.writeText(address);
-            // Show a temporary "Copied!" tooltip
-            const button = e.target;
-            button.setAttribute("data-copied", "true");
-            setTimeout(() => {
-              button.setAttribute("data-copied", "false");
-            }, 2000);
-          }}
-          aria-label="Copy wallet address"
-          title="Copy address"
-        >
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
-          </svg>
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
         </button>
       </div>
     );
@@ -101,14 +72,11 @@ const WalletTable = ({ wallets, isLoading }) => {
               <th>
                 <div className="skeleton skeleton-text small"></div>
               </th>
-<<<<<<< HEAD
               {onDeleteClick && (
                 <th>
                   <div className="skeleton skeleton-text small"></div>
                 </th>
               )}
-=======
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
             </tr>
           </thead>
           <tbody>
@@ -123,14 +91,11 @@ const WalletTable = ({ wallets, isLoading }) => {
                 <td>
                   <div className="skeleton skeleton-text medium"></div>
                 </td>
-<<<<<<< HEAD
                 {onDeleteClick && (
                   <td>
                     <div className="skeleton skeleton-text medium"></div>
                   </td>
                 )}
-=======
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
               </tr>
             ))}
           </tbody>
@@ -143,10 +108,7 @@ const WalletTable = ({ wallets, isLoading }) => {
               <th>Address</th>
               <th>Chain</th>
               <th>Balance (USD)</th>
-<<<<<<< HEAD
               {onDeleteClick && <th>Actions</th>}
-=======
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
             </tr>
           </thead>
           <tbody>
@@ -164,7 +126,6 @@ const WalletTable = ({ wallets, isLoading }) => {
                   <td className="balance-cell">
                     ${formatBalance(wallet.balance_usd)}
                   </td>
-<<<<<<< HEAD
                   {onDeleteClick && (
                     <td className="actions-cell">
                       <button
@@ -177,17 +138,11 @@ const WalletTable = ({ wallets, isLoading }) => {
                       </button>
                     </td>
                   )}
-=======
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
                 </tr>
               ))
             ) : (
               <tr className="empty-state">
-<<<<<<< HEAD
                 <td colSpan={onDeleteClick ? 4 : 3}>
-=======
-                <td colSpan="3">
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
                   <div className="empty-message">
                     <svg
                       viewBox="0 0 24 24"
@@ -211,7 +166,6 @@ const WalletTable = ({ wallets, isLoading }) => {
   );
 };
 
-<<<<<<< HEAD
 WalletTable.propTypes = {
   wallets: PropTypes.array,
   isLoading: PropTypes.bool,
@@ -219,6 +173,3 @@ WalletTable.propTypes = {
 };
 
 export default WalletTable;
-=======
-export default WalletTable;
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f

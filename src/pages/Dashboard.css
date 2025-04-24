@@ -1,13 +1,7 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-<<<<<<< HEAD
   flex: 1;
-=======
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
 }
 
 .top-container {
@@ -40,17 +34,10 @@
 }
 
 .holdings-container {
-<<<<<<< HEAD
   /* background-color: #110e22;
   border-radius: 0.5rem;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
-=======
-  background-color: #110e22;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
 }
 
 .holdings-header {
@@ -114,7 +101,6 @@
     gap: 0.5rem;
   }
 }
-<<<<<<< HEAD
 
 /* Add these modal styles to your Dashboard.css file */
 
@@ -251,5 +237,3 @@
   background-color: rgba(255, 76, 76, 1);
   box-shadow: 0 0 10px rgba(255, 76, 76, 0.5);
 }
-=======
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f

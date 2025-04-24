@@ -17,10 +17,7 @@ export default function WalletForm() {
     isLoading 
   } = useWallet();
   
-<<<<<<< HEAD
   // Use the toast hook here, in a component that's within the ToastProvider
-=======
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
   const toast = useToast();
   const formRef = useRef(null);
 
@@ -64,7 +61,6 @@ export default function WalletForm() {
       return;
     }
 
-<<<<<<< HEAD
     // Validate input
     if (!selectedChain) {
       toast.error("Please select a blockchain");
@@ -90,38 +86,6 @@ export default function WalletForm() {
       toast.success("Wallet added successfully!");
     } else if (result.error) {
       toast.error(result.error);
-=======
-    try {
-      // Validate input
-      if (!selectedChain) {
-        toast.error("Please select a blockchain");
-        return;
-      }
-      
-      if (!walletAddress.trim()) {
-        toast.error("Please enter a wallet address");
-        return;
-      }
-
-      // Call the addWallet function from context
-      const result = await addWallet({
-        address: walletAddress.trim(),
-        chain: selectedChain,
-      });
-
-      if (result.success) {
-        // Reset form on success
-        setWalletAddress("");
-        setSelectedChain("");
-        setIsExpanded(false);
-        toast.success("Wallet added successfully!");
-      } else if (result.error) {
-        toast.error(result.error);
-      }
-    } catch (err) {
-      toast.error("Failed to add wallet. Please try again.");
-      console.error("Error in form submission:", err);
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
     }
   }
 

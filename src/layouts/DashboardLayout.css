@@ -1,20 +1,12 @@
-<<<<<<< HEAD
 /* Existing styles */
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
   position: relative;
-=======
-.dashboard-layout {
-  display: flex;
-  min-height: 100vh;
-  background-color: var(--color-background);
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
 }
 
 .dashboard-content {
   flex: 1;
-<<<<<<< HEAD
   padding: 20px;
   position: relative;
   z-index: 10; /* Ensure content appears above background */
@@ -101,26 +93,3 @@
   position: relative;
   z-index: 10;
 }
-=======
-  padding: 1.5rem;
-  overflow-y: auto;
-  max-width: 100%;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .dashboard-layout {
-    flex-direction: column;
-  }
-
-  .dashboard-content {
-    padding: 4rem 1rem 1rem 1rem; /* Extra top padding for mobile menu button */
-  }
-}
-
-@media (min-width: 1200px) {
-  .dashboard-content {
-    padding: 2rem;
-  }
-}
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
