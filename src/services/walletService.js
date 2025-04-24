@@ -12,6 +12,13 @@ export const getWalletsCacheKey = () => {
   return userId ? `wallets_${userId}` : null;
 };
 
+// Helper function to get assets cache key for current user
+export const getAssetsCacheKey = () => {
+  const accessToken = localStorage.getItem("access_token");
+  const userId = getUserIdFromToken(accessToken);
+  return userId ? `assets_${userId}` : null;
+};
+
 /**
  * Cache management functions
  */
@@ -38,7 +45,6 @@ export const cacheService = {
     try {
       const { timestamp, data } = JSON.parse(cachedData);
       if (Date.now() - timestamp < defaultExpiration) {
-        console.log('[DEBUG] Using cached wallet data:', data);
         return data;
       }
       // Cache expired, remove it
@@ -58,8 +64,14 @@ export const cacheService = {
   
   clearUserCache: () => {
     const walletsCacheKey = getWalletsCacheKey();
+    const assetsCacheKey = getAssetsCacheKey();
+    
     if (walletsCacheKey) {
       localStorage.removeItem(walletsCacheKey);
+    }
+    
+    if (assetsCacheKey) {
+      localStorage.removeItem(assetsCacheKey);
     }
   }
 };
@@ -68,7 +80,7 @@ export const cacheService = {
  * Wallet service functions
  */
 export const walletService = {
-  // Fetch wallets with cache support
+  // Fetch all wallets
   fetchWallets: async (forceRefresh = false) => {
     const walletsCacheKey = getWalletsCacheKey();
     
@@ -82,23 +94,18 @@ export const walletService = {
     
     try {
       console.log('[DEBUG] Fetching wallets from API...');
-      const response = await api.get("/api/wallets/sync/");
       
-      // Log the full response for debugging
-      console.log('[DEBUG] Full API response:', response);
-      console.log('[DEBUG] Wallets data:', response.data);
+      // First sync wallets to make sure they're up to date
+      const syncResponse = await api.get("/api/wallets/sync/");
+      console.log('[DEBUG] Wallets API response:', syncResponse.data);
       
-      const wallets = response.data.wallets;
+      // If sync was successful, now get the actual wallet data
+      // This is needed because sync endpoint doesn't return wallet balances
+      const response = await api.get("/api/wallets/");
+      console.log('[DEBUG] Wallets data response:', response.data);
       
-      // Log each wallet's balance for detailed debugging
-      wallets.forEach((wallet, index) => {
-        console.log(`[DEBUG] Wallet ${index + 1}:`, {
-          address: wallet.address,
-          chain: wallet.chain,
-          balance_usd: wallet.balance_usd,
-          balance_type: typeof wallet.balance_usd
-        });
-      });
+      // The API returns an array of wallets
+      const wallets = response.data || [];
       
       // Cache the wallet data
       if (walletsCacheKey) {
@@ -109,27 +116,99 @@ export const walletService = {
     } catch (error) {
       console.error("[DEBUG] Error fetching wallets:", error);
       console.error("[DEBUG] Error details:", error.response?.data || error.message);
-      throw error;
+      
+      // Return empty array instead of throwing for new users with no wallets
+      return [];
+    }
+  },
+  
+  // Fetch assets (aggregated tokens across all wallets)
+  fetchAssets: async (forceRefresh = false) => {
+    const assetsCacheKey = getAssetsCacheKey();
+    
+    // Return from cache if available and not forcing refresh
+    if (!forceRefresh && assetsCacheKey) {
+      const cachedAssets = cacheService.get(assetsCacheKey);
+      if (cachedAssets) {
+        return cachedAssets;
+      }
+    }
+    
+    try {
+      console.log('[DEBUG] Fetching assets from API...');
+      // Using the aggregated assets endpoint
+      const response = await api.get("/api/assets/");
+      
+      console.log('[DEBUG] Assets API response:', response.data);
+      
+      const assets = response.data || [];
+      
+      // Cache the assets data
+      if (assetsCacheKey) {
+        cacheService.set(assetsCacheKey, assets);
+      }
+      
+      return assets;
+    } catch (error) {
+      console.error("[DEBUG] Error fetching assets:", error);
+      console.error("[DEBUG] Error details:", error.response?.data || error.message);
+      
+      // Return empty array instead of throwing for new users with no assets
+      return [];
     }
   },
   
   // Add a new wallet
   addWallet: async (walletData) => {
     try {
-      console.log('[DEBUG] Adding new wallet:', walletData);
+      console.log('[DEBUG] Adding wallet:', walletData);
       const response = await api.post("/api/wallets/add/", walletData);
       
       console.log('[DEBUG] Add wallet response:', response.data);
       
-      // Invalidate wallet cache to force a refresh
+      // Invalidate wallet and asset caches to force a refresh
       const walletsCacheKey = getWalletsCacheKey();
+      const assetsCacheKey = getAssetsCacheKey();
+      
       if (walletsCacheKey) {
         cacheService.remove(walletsCacheKey);
+      }
+      
+      if (assetsCacheKey) {
+        cacheService.remove(assetsCacheKey);
       }
       
       return response.data;
     } catch (error) {
       console.error("[DEBUG] Error adding wallet:", error);
+      console.error("[DEBUG] Error details:", error.response?.data || error.message);
+      throw error;
+    }
+  },
+  
+  // Remove a wallet
+  removeWallet: async (walletData) => {
+    try {
+      console.log('[DEBUG] Removing wallet:', walletData);
+      const response = await api.post("/api/wallets/remove/", walletData);
+      
+      console.log('[DEBUG] Remove wallet response:', response.data);
+      
+      // Invalidate wallet and asset caches to force a refresh
+      const walletsCacheKey = getWalletsCacheKey();
+      const assetsCacheKey = getAssetsCacheKey();
+      
+      if (walletsCacheKey) {
+        cacheService.remove(walletsCacheKey);
+      }
+      
+      if (assetsCacheKey) {
+        cacheService.remove(assetsCacheKey);
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error("[DEBUG] Error removing wallet:", error);
       console.error("[DEBUG] Error details:", error.response?.data || error.message);
       throw error;
     }
@@ -149,10 +228,12 @@ export const walletService = {
     
     try {
       console.log('[DEBUG] Fetching supported chains...');
-      const response = await api.get("/api/wallets/supported_chains/");
+      // Correct API endpoint from the documentation
+      const response = await api.get("/api/wallets/supported-chains/");
+      
       console.log('[DEBUG] Supported chains response:', response.data);
       
-      const chains = response.data.supported_chains;
+      const chains = response.data.supported_chains || [];
       
       // Cache the chains data with longer expiration
       cacheService.set(cacheKey, chains, SUPPORTED_CHAINS_CACHE_EXPIRATION);
@@ -165,20 +246,42 @@ export const walletService = {
     }
   },
   
-  // Calculate total balance from wallets
-  calculateTotalBalance: (wallets) => {
-    if (!wallets || !wallets.length) return "0.00";
+  // Calculate total balance from assets (more reliable than from wallets)
+  calculateTotalBalance: (assets) => {
+    if (!assets || !assets.length) return "0.00";
     
-    console.log('[DEBUG] Calculating total balance from wallets:', wallets);
+    console.log('[DEBUG] Calculating total balance from assets:', assets);
     
-    const totalBalance = wallets.reduce((acc, wallet) => {
-      const walletBalance = parseFloat(wallet.balance_usd || 0);
-      console.log(`[DEBUG] Adding wallet balance: ${wallet.balance_usd} (${typeof wallet.balance_usd}) => ${walletBalance}`);
-      return acc + walletBalance;
+    const totalBalance = assets.reduce((acc, asset) => {
+      const assetValue = parseFloat(asset.total_value || 0);
+      return acc + assetValue;
     }, 0);
     
     console.log(`[DEBUG] Total balance calculated: ${totalBalance}`);
     return totalBalance.toFixed(2);
+  },
+  
+  // Calculate 24h change percentage from assets
+  calculate24hChangePercent: (assets) => {
+    if (!assets || !assets.length) return "0.00";
+    
+    let totalValue = 0;
+    let totalChangeValue = 0;
+    
+    assets.forEach(asset => {
+      const value = parseFloat(asset.total_value || 0);
+      const changeValue = parseFloat(asset.total_value_24h_change || 0);
+      
+      totalValue += value;
+      totalChangeValue += changeValue;
+    });
+    
+    if (totalValue === 0) return "0.00";
+    
+    // Calculate percentage change relative to current value
+    const percentChange = (totalChangeValue / (totalValue - totalChangeValue)) * 100;
+    
+    return percentChange.toFixed(2);
   }
 };
 

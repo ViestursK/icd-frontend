@@ -15,13 +15,13 @@ function App() {
     <ErrorBoundary>
       <Router>
         <AuthProvider>
-          <WalletProvider>
-            <ToastProvider>
+          <ToastProvider>
+            <WalletProvider>
               <Suspense fallback={<LoadingScreen />}>
                 <AppRouter />
               </Suspense>
-            </ToastProvider>
-          </WalletProvider>
+            </WalletProvider>
+          </ToastProvider>
         </AuthProvider>
       </Router>
     </ErrorBoundary>
