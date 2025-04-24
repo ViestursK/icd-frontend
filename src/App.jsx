@@ -15,7 +15,6 @@ function App() {
     <ErrorBoundary>
       <Router>
         <AuthProvider>
-<<<<<<< HEAD
           <ToastProvider>
             <WalletProvider>
               <Suspense fallback={<LoadingScreen />}>
@@ -23,23 +22,10 @@ function App() {
               </Suspense>
             </WalletProvider>
           </ToastProvider>
-=======
-          <WalletProvider>
-            <ToastProvider>
-              <Suspense fallback={<LoadingScreen />}>
-                <AppRouter />
-              </Suspense>
-            </ToastProvider>
-          </WalletProvider>
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
         </AuthProvider>
       </Router>
     </ErrorBoundary>
   );
 }
 
-<<<<<<< HEAD
 export default App;
-=======
-export default App;
->>>>>>> a87bd576852879aee5c02c8933cf5fb08adc9d1f
