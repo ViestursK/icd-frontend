@@ -112,31 +112,6 @@
   color: #ff4c4c;
 }
 
-/* iOS-specific fixes */
-@supports (-webkit-touch-callout: none) {
-  /* CSS specific to iOS devices */
-  .asset-table-container,
-  .wallet-table-container {
-    background-color: rgba(27, 22, 56, 0.8);
-    
-  }
-
-  .wallet-table {
-    background-color: rgba(27, 22, 56, 0.9);
-    color: #f2f2fa;
-  }
-
-  .wallet-table th,
-  .wallet-table td {
-    background-color: rgba(27, 22, 56, 0.9);
-    color: #f2f2fa;
-  }
-
-  .wallet-row:hover {
-    background-color: rgba(39, 33, 77, 0.9);
-  }
-}
-
 /* Responsive adjustments for all devices */
 @media (max-width: 768px) {
   .asset-name-container {
