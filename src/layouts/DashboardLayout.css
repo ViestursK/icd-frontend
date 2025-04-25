@@ -12,52 +12,6 @@
   z-index: 10; /* Ensure content appears above background */
 }
 
-/* Premium Background Styles */
-.premium-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: #1a1a2e; /* Dark base color */
-  z-index: 1;
-}
-
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-}
-
-.orb-purple {
-  width: 400px;
-  height: 400px;
-  background-color: rgba(139, 92, 246, 0.3); /* Purple */
-  animation: moveSlowly 20s infinite alternate ease-in-out;
-}
-
-.orb-blue {
-  width: 400px;
-  height: 400px;
-  background-color: rgba(59, 130, 246, 0.2); /* Blue */
-  animation: moveSlowly 15s infinite alternate-reverse ease-in-out;
-}
-
-.orb-indigo {
-  width: 350px;
-  height: 350px;
-  background-color: rgba(79, 70, 229, 0.2); /* Indigo */
-  animation: moveSlowly 25s infinite alternate ease-in-out;
-}
-
-.orb-rose {
-  width: 300px;
-  height: 300px;
-  background-color: rgba(244, 63, 94, 0.2); /* Rose */
-  animation: moveSlowly 18s infinite alternate-reverse ease-in-out;
-}
-
 .noise-overlay {
   position: absolute;
   inset: 0;

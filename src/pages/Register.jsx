@@ -132,136 +132,136 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-brand">
-        <img src={logo} alt="Portfolio Tracker" className="auth-logo" />
-        <h2 className="brand-name">Portfolio Tracker</h2>
-      </div>
-
-      <div className="auth-card">
-        <div className="auth-header">
-          <h1>Create Account</h1>
-          <p>Sign up to start tracking your crypto portfolio</p>
+      <div className="auth-container">
+        <div className="auth-brand">
+          <img src={logo} alt="Portfolio Tracker" className="auth-logo" />
+          <h2 className="brand-name">Portfolio Tracker</h2>
         </div>
 
-        {/* Show error message if any */}
-        {error && (
-          <div className="auth-message error" role="alert">
-            <FaExclamationCircle />
-            <span>{error}</span>
+        <div className="auth-card">
+          <div className="auth-header">
+            <h1>Create Account</h1>
+            <p>Sign up to start tracking your crypto portfolio</p>
           </div>
-        )}
 
-        <form className="auth-form" onSubmit={handleSubmit} noValidate>
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <div className="input-wrapper">
-              <span className="input-icon">
-                <FaEnvelope />
-              </span>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                className={`form-input ${
-                  touched.email && formErrors.email ? "error" : ""
-                }`}
-                placeholder="your@email.com"
-                value={form.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                disabled={loading}
-                required
-              />
+          {/* Show error message if any */}
+          {error && (
+            <div className="auth-message error" role="alert">
+              <FaExclamationCircle />
+              <span>{error}</span>
             </div>
-            {touched.email && formErrors.email && (
-              <p className="error-text">{formErrors.email}</p>
-            )}
-          </div>
+          )}
 
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <div className="input-wrapper">
-              <span className="input-icon">
-                <FaLock />
-              </span>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                className={`form-input ${
-                  touched.password && formErrors.password ? "error" : ""
-                }`}
-                placeholder="••••••••"
-                value={form.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                disabled={loading}
-                required
-              />
+          <form className="auth-form" onSubmit={handleSubmit} noValidate>
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <div className="input-wrapper">
+                <span className="input-icon">
+                  <FaEnvelope />
+                </span>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  className={`form-input ${
+                    touched.email && formErrors.email ? "error" : ""
+                  }`}
+                  placeholder="your@email.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled={loading}
+                  required
+                />
+              </div>
+              {touched.email && formErrors.email && (
+                <p className="error-text">{formErrors.email}</p>
+              )}
             </div>
-            {touched.password && formErrors.password && (
-              <p className="error-text">{formErrors.password}</p>
-            )}
-          </div>
 
-          <div className="form-group">
-            <label htmlFor="password2" className="form-label">
-              Confirm Password
-            </label>
-            <div className="input-wrapper">
-              <span className="input-icon">
-                <FaLock />
-              </span>
-              <input
-                id="password2"
-                name="password2"
-                type="password"
-                autoComplete="new-password"
-                className={`form-input ${
-                  touched.password2 && formErrors.password2 ? "error" : ""
-                }`}
-                placeholder="••••••••"
-                value={form.password2}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                disabled={loading}
-                required
-              />
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <div className="input-wrapper">
+                <span className="input-icon">
+                  <FaLock />
+                </span>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  className={`form-input ${
+                    touched.password && formErrors.password ? "error" : ""
+                  }`}
+                  placeholder="••••••••"
+                  value={form.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled={loading}
+                  required
+                />
+              </div>
+              {touched.password && formErrors.password && (
+                <p className="error-text">{formErrors.password}</p>
+              )}
             </div>
-            {touched.password2 && formErrors.password2 && (
-              <p className="error-text">{formErrors.password2}</p>
-            )}
-          </div>
 
-          <div className="form-action">
-            <button
-              type="submit"
-              className="auth-button"
-              disabled={loading}
-              aria-busy={loading}
-            >
-              {loading ? "Creating account..." : "Sign Up"}
-            </button>
-          </div>
-        </form>
+            <div className="form-group">
+              <label htmlFor="password2" className="form-label">
+                Confirm Password
+              </label>
+              <div className="input-wrapper">
+                <span className="input-icon">
+                  <FaLock />
+                </span>
+                <input
+                  id="password2"
+                  name="password2"
+                  type="password"
+                  autoComplete="new-password"
+                  className={`form-input ${
+                    touched.password2 && formErrors.password2 ? "error" : ""
+                  }`}
+                  placeholder="••••••••"
+                  value={form.password2}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled={loading}
+                  required
+                />
+              </div>
+              {touched.password2 && formErrors.password2 && (
+                <p className="error-text">{formErrors.password2}</p>
+              )}
+            </div>
 
-        <div className="auth-footer">
-          <p>
-            Already have an account?{" "}
-            <Link to="/login" className="auth-link">
-              Sign in
-            </Link>
-          </p>
+            <div className="form-action">
+              <button
+                type="submit"
+                className="auth-button"
+                disabled={loading}
+                aria-busy={loading}
+              >
+                {loading ? "Creating account..." : "Sign Up"}
+              </button>
+            </div>
+          </form>
+
+          <div className="auth-footer">
+            <p>
+              Already have an account?{" "}
+              <Link to="/login" className="auth-link">
+                Sign in
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

@@ -18,21 +18,21 @@ const TABS = [
 ];
 
 function Dashboard() {
-  const { 
-    wallets, 
-    assets, 
-    totalBalance, 
-    changePercent, 
-    isLoading, 
-    error, 
-    refreshData, 
+  const {
+    wallets,
+    assets,
+    totalBalance,
+    changePercent,
+    isLoading,
+    error,
+    refreshData,
     removeWallet,
-    clearError 
+    clearError,
   } = useWallet();
-  
+
   // Use the toast hook here, in a component that's within the ToastProvider
   const toast = useToast();
-    
+
   // State for active tab
   const [activeTab, setActiveTab] = useState("assets");
   // State for wallet being deleted
@@ -59,12 +59,12 @@ function Dashboard() {
   // Handle confirm delete
   const handleConfirmDelete = async () => {
     if (!selectedWallet) return;
-    
+
     const result = await removeWallet({
       address: selectedWallet.address,
-      chain: selectedWallet.chain
+      chain: selectedWallet.chain,
     });
-    
+
     if (result.success) {
       toast.success("Wallet removed successfully!");
       setShowDeleteModal(false);
@@ -82,9 +82,9 @@ function Dashboard() {
       case "wallets":
       default:
         return (
-          <WalletTable 
-            wallets={wallets} 
-            isLoading={isLoading} 
+          <WalletTable
+            wallets={wallets}
+            isLoading={isLoading}
             onDeleteClick={handleDeleteClick}
           />
         );
@@ -128,7 +128,7 @@ function Dashboard() {
         <div className="stat-container">
           <BalanceCard
             balance={totalBalance}
-            changePercent={changePercent} 
+            changePercent={changePercent}
             isLoading={isLoading}
           />
         </div>
@@ -143,23 +143,23 @@ function Dashboard() {
             />
           </div>
 
-          <TabSelector 
-            tabs={TABS} 
-            activeTab={activeTab} 
+          <TabSelector
+            tabs={TABS}
+            activeTab={activeTab}
             onTabChange={setActiveTab}
           />
 
           {renderActiveTable()}
         </div>
       </div>
-      
+
       {/* Delete confirmation modal */}
       {showDeleteModal && selectedWallet && (
         <div className="modal-overlay">
           <div className="modal-container">
             <div className="modal-header">
               <h3>Remove Wallet</h3>
-              <button 
+              <button
                 className="modal-close-button"
                 onClick={() => setShowDeleteModal(false)}
                 aria-label="Close modal"
@@ -167,27 +167,29 @@ function Dashboard() {
                 <FaTimes />
               </button>
             </div>
-            
+
             <div className="modal-content">
               <p>Are you sure you want to remove this wallet?</p>
               <div className="wallet-preview">
                 <div className="wallet-chain">
-                  <span className={`chain-badge ${selectedWallet.chain.toLowerCase()}`}>
+                  <span
+                    className={`chain-badge ${selectedWallet.chain.toLowerCase()}`}
+                  >
                     {selectedWallet.chain}
                   </span>
                 </div>
                 <div className="wallet-address">{selectedWallet.address}</div>
               </div>
             </div>
-            
+
             <div className="modal-actions">
-              <button 
-                className="modal-cancel-button" 
+              <button
+                className="modal-cancel-button"
                 onClick={() => setShowDeleteModal(false)}
               >
                 Cancel
               </button>
-              <button 
+              <button
                 className="modal-delete-button"
                 onClick={handleConfirmDelete}
               >

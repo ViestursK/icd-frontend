@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { useAuth } from "../context/AuthContext";
 import LoadingScreen from "../components/ui/LoadingScreen";
+import PremiumBackground from "../components/ui/PremiumBackground";
 
 // Lazy load components for better performance
 const DashboardLayout = lazy(() => import("../layouts/DashboardLayout"));
@@ -51,9 +52,9 @@ const PublicRoute = ({ children }) => {
 
 function AppRouter() {
   return (
+    
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
-        {/* Public Routes (accessible only when NOT authenticated) */}
         <Route 
           path="/login" 
           element={

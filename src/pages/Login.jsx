@@ -1,3 +1,4 @@
+// Login.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -100,115 +101,115 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-brand">
-        <img src={logo} alt="Portfolio Tracker" className="auth-logo" />
-        <h2 className="brand-name">Portfolio Tracker</h2>
-      </div>
-
-      <div className="auth-card">
-        <div className="auth-header">
-          <h1>Welcome Back</h1>
-          <p>Sign in to your account to continue</p>
+      <div className="auth-container">
+        <div className="auth-brand">
+          <img src={logo} alt="Portfolio Tracker" className="auth-logo" />
+          <h2 className="brand-name">Portfolio Tracker</h2>
         </div>
 
-        {/* Show redirect message if any */}
-        {message && (
-          <div className="auth-message info" role="alert">
-            <FaExclamationCircle />
-            <span>{message}</span>
+        <div className="auth-card">
+          <div className="auth-header">
+            <h1>Welcome Back</h1>
+            <p>Sign in to your account to continue</p>
           </div>
-        )}
 
-        {/* Show error message if any */}
-        {error && (
-          <div className="auth-message error" role="alert">
-            <FaExclamationCircle />
-            <span>{error}</span>
-          </div>
-        )}
-
-        <form className="auth-form" onSubmit={handleSubmit} noValidate>
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <div className="input-wrapper">
-              <span className="input-icon">
-                <FaEnvelope />
-              </span>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                className={`form-input ${
-                  touched.email && formErrors.email ? "error" : ""
-                }`}
-                placeholder="your@email.com"
-                value={form.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                disabled={loading}
-                required
-              />
+          {/* Show redirect message if any */}
+          {message && (
+            <div className="auth-message info" role="alert">
+              <FaExclamationCircle />
+              <span>{message}</span>
             </div>
-            {touched.email && formErrors.email && (
-              <p className="error-text">{formErrors.email}</p>
-            )}
-          </div>
+          )}
 
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <div className="input-wrapper">
-              <span className="input-icon">
-                <FaLock />
-              </span>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                className={`form-input ${
-                  touched.password && formErrors.password ? "error" : ""
-                }`}
-                placeholder="••••••••"
-                value={form.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                disabled={loading}
-                required
-              />
+          {/* Show error message if any */}
+          {error && (
+            <div className="auth-message error" role="alert">
+              <FaExclamationCircle />
+              <span>{error}</span>
             </div>
-            {touched.password && formErrors.password && (
-              <p className="error-text">{formErrors.password}</p>
-            )}
-          </div>
+          )}
 
-          <div className="form-action">
-            <button
-              type="submit"
-              className="auth-button"
-              disabled={loading}
-              aria-busy={loading}
-            >
-              {loading ? "Signing in..." : "Sign In"}
-            </button>
-          </div>
-        </form>
+          <form className="auth-form" onSubmit={handleSubmit} noValidate>
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <div className="input-wrapper">
+                <span className="input-icon">
+                  <FaEnvelope />
+                </span>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  className={`form-input ${
+                    touched.email && formErrors.email ? "error" : ""
+                  }`}
+                  placeholder="your@email.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled={loading}
+                  required
+                />
+              </div>
+              {touched.email && formErrors.email && (
+                <p className="error-text">{formErrors.email}</p>
+              )}
+            </div>
 
-        <div className="auth-footer">
-          <p>
-            Don't have an account?{" "}
-            <Link to="/register" className="auth-link">
-              Sign up
-            </Link>
-          </p>
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <div className="input-wrapper">
+                <span className="input-icon">
+                  <FaLock />
+                </span>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  className={`form-input ${
+                    touched.password && formErrors.password ? "error" : ""
+                  }`}
+                  placeholder="••••••••"
+                  value={form.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled={loading}
+                  required
+                />
+              </div>
+              {touched.password && formErrors.password && (
+                <p className="error-text">{formErrors.password}</p>
+              )}
+            </div>
+
+            <div className="form-action">
+              <button
+                type="submit"
+                className="auth-button"
+                disabled={loading}
+                aria-busy={loading}
+              >
+                {loading ? "Signing in..." : "Sign In"}
+              </button>
+            </div>
+          </form>
+
+          <div className="auth-footer">
+            <p>
+              Don't have an account?{" "}
+              <Link to="/register" className="auth-link">
+                Sign up
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 
