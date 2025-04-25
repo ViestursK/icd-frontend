@@ -124,3 +124,80 @@
     text-overflow: ellipsis;
   }
 }
+/* ───────────── Search & Controls ───────────── */
+.table-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.search-input {
+  padding: 1rem;
+  border-radius: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.03);
+  color: #f2f2fa;
+  font-size: 0.85rem;
+  outline: none;
+  width: 100%;
+  margin: 1rem 0;
+  transition: border-color 0.2s ease;
+}
+
+.search-input::placeholder {
+  color: #9e9ea0;
+}
+
+.search-input:focus {
+  border-color: #7d67ff;
+}
+
+/* ───────────── Show More Button ───────────── */
+.show-more-button {
+  padding: 1rem;
+  background-color: rgba(179, 172, 172, 0.13);
+  color: #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  width: 100%;
+}
+
+.show-more-button:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+
+/* Filter button group */
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* Individual button styling */
+.filter-button {
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover and active state */
+.filter-button:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+.filter-button.active {
+  background-color: #7d67ff;
+  color: #fff;
+  border-color: #7d67ff;
+}
