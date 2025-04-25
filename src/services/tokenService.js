@@ -39,7 +39,9 @@ export const getRefreshToken = () => localStorage.getItem(REFRESH_TOKEN_KEY);
 // Set tokens and schedule refresh
 export const setTokens = (accessToken, refreshToken = null) => {
   // Store the access token
-  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+  if (accessToken) {
+    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+  }
 
   // Store the refresh token if provided
   if (refreshToken) {
@@ -67,6 +69,8 @@ export const getTimeUntilRefresh = (token) => {
   if (!token) return 0;
 
   const expiryTime = getTokenExpirationTime(token);
+  if (!expiryTime) return 0;
+
   // Time left until we should refresh (5 min before expiry)
   return Math.max(0, expiryTime - Date.now() - REFRESH_BEFORE_EXPIRY_MS);
 };
@@ -76,6 +80,8 @@ export const getRemainingTokenTime = (token) => {
   if (!token) return 0;
 
   const expiryTime = getTokenExpirationTime(token);
+  if (!expiryTime) return 0;
+
   return Math.max(0, expiryTime - Date.now());
 };
 
@@ -84,7 +90,10 @@ export const scheduleTokenRefresh = (token) => {
   // Clear any existing timer
   if (refreshTimer) {
     clearTimeout(refreshTimer);
+    refreshTimer = null;
   }
+
+  if (!token) return;
 
   // Get time until we need to refresh
   const timeUntilRefresh = getTimeUntilRefresh(token);
@@ -99,11 +108,6 @@ export const scheduleTokenRefresh = (token) => {
   refreshTimer = setTimeout(() => {
     notifyListeners("onRefresh");
   }, timeUntilRefresh);
-
-  // Log when the token will be refreshed
-  console.log(
-    `Token refresh scheduled in ${Math.floor(timeUntilRefresh / 60000)} minutes`
-  );
 };
 
 // Initialize token management on app start
@@ -130,11 +134,17 @@ export const initializeTokenRefresh = () => {
   return false;
 };
 
-export default {
+// Create a default export object with all the functions
+const tokenService = {
   getAccessToken,
   getRefreshToken,
   setTokens,
   clearTokens,
   initializeTokenRefresh,
   addTokenListener,
+  getTimeUntilRefresh,
+  getRemainingTokenTime,
+  scheduleTokenRefresh,
 };
+
+export default tokenService;

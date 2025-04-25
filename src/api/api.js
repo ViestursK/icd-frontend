@@ -4,7 +4,9 @@ import authService from "../services/authService";
 
 // API URL from environment variables
 const API_URL =
-  import.meta.env.VITE_API_URL
+  import.meta.env.VITE_API_URL ||
+  "https://icd-backend-production-api.onrender.com/";
+
 // Create a centralized event emitter for auth state changes
 export const authEvents = {
   listeners: {},
@@ -126,7 +128,6 @@ api.interceptors.response.use(
         // Retry the original request
         return axios(originalRequest);
       } catch (refreshError) {
-        console.error("Failed to refresh token:", refreshError);
         isRefreshing = false;
 
         // Notify all queued requests about failure
@@ -151,9 +152,7 @@ tokenService.initializeTokenRefresh();
 tokenService.addTokenListener("onRefresh", async () => {
   try {
     await authService.refreshToken();
-    console.log("Token refreshed successfully");
   } catch (error) {
-    console.error("Auto token refresh failed:", error);
     authEvents.emit("logout", { reason: "token_refresh_failed" });
   }
 });
@@ -162,9 +161,7 @@ tokenService.addTokenListener("onRefresh", async () => {
 tokenService.addTokenListener("onExpired", async () => {
   try {
     await authService.refreshToken();
-    console.log("Expired token refreshed successfully");
   } catch (error) {
-    console.error("Expired token refresh failed:", error);
     authEvents.emit("logout", { reason: "token_expired" });
   }
 });

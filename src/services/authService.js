@@ -1,10 +1,10 @@
 import axios from "axios";
 import tokenService from "./tokenService";
+import { isTokenExpired } from "../utils/auth";
 
 // Get API base URL from environment variables
 const API_URL =
-  import.meta.env.VITE_API_URL ||
-  "https://icd-backend-production-api.onrender.com/";
+  import.meta.env.VITE_API_URL 
 
 // Create a base axios instance without interceptors
 const baseAxios = axios.create({
@@ -13,6 +13,10 @@ const baseAxios = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+// Flag to track when a refresh is in progress to prevent multiple simultaneous refreshes
+let refreshInProgress = false;
+let refreshPromise = null;
 
 // Login user
 export const login = async (credentials) => {
@@ -41,26 +45,41 @@ export const register = async (userData) => {
 
 // Refresh access token
 export const refreshToken = async () => {
+  // If a refresh is already in progress, return the existing promise
+  if (refreshInProgress && refreshPromise) {
+    return refreshPromise;
+  }
+
   const refreshToken = tokenService.getRefreshToken();
 
   if (!refreshToken) {
     throw new Error("No refresh token available");
   }
 
-  try {
-    const response = await baseAxios.post("/api/users/token/refresh/", {
-      refresh: refreshToken,
-    });
+  // Set the flag and create a promise
+  refreshInProgress = true;
+  refreshPromise = (async () => {
+    try {
+      const response = await baseAxios.post("/api/users/token/refresh/", {
+        refresh: refreshToken,
+      });
 
-    // Update access token
-    tokenService.setTokens(response.data.access);
+      // Update access token
+      tokenService.setTokens(response.data.access);
 
-    return response.data.access;
-  } catch (error) {
-    // If refresh fails, clear tokens and throw error
-    tokenService.clearTokens();
-    throw error;
-  }
+      return response.data.access;
+    } catch (error) {
+      // If refresh fails, clear tokens
+      tokenService.clearTokens();
+      throw error;
+    } finally {
+      // Reset the flags
+      refreshInProgress = false;
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
 };
 
 // Logout user
@@ -71,7 +90,7 @@ export const logout = () => {
 // Check if user is authenticated
 export const isAuthenticated = () => {
   const token = tokenService.getAccessToken();
-  return !!token;
+  return !!token && !isTokenExpired(token);
 };
 
 export default {
@@ -80,4 +99,5 @@ export default {
   refreshToken,
   logout,
   isAuthenticated,
+  isTokenExpired,
 };

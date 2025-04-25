@@ -2,48 +2,18 @@
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
-  position: relative;
 }
 
 .dashboard-content {
   flex: 1;
-  padding: 20px;
-  position: relative;
-  z-index: 10; /* Ensure content appears above background */
+  padding: 1rem;
+  /* position: relative; */
+  z-index: 1; 
 }
 
-.noise-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.1), transparent, rgba(0, 0, 0, 0.1));
-  mix-blend-mode: overlay;
-}
 
-.grid-pattern {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-  opacity: 0.2;
-}
 
-.dark-overlay {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-}
 
-/* Animation for orbs */
-@keyframes moveSlowly {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(40px, 40px); }
-}
 
-/* Make sure Sidebar appears above the background */
-/* Add this class to your Sidebar component if needed */
-.sidebar {
-  position: relative;
-  z-index: 10;
-}
+
+

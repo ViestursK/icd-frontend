@@ -1,9 +1,7 @@
-
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import LoadingScreen from "../components/ui/LoadingScreen";
-import PremiumBackground from "../components/ui/PremiumBackground";
 
 // Lazy load components for better performance
 const DashboardLayout = lazy(() => import("../layouts/DashboardLayout"));
@@ -16,12 +14,12 @@ const NotFound = lazy(() => import("../pages/NotFound"));
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, initialChecking } = useAuth();
   const location = useLocation();
 
-  // Show loading screen while checking authentication
-  if (loading) {
-    return <LoadingScreen />;
+  // Show loading screen while checking authentication or during any auth operations
+  if (initialChecking || loading) {
+    return <LoadingScreen message="Verifying session..." />;
   }
 
   // Redirect to login if not authenticated
@@ -34,12 +32,11 @@ const ProtectedRoute = ({ children }) => {
 
 // Public route component (accessible only when NOT authenticated)
 const PublicRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
-  const location = useLocation();
-  
-  // Show loading screen while checking authentication
-  if (loading) {
-    return <LoadingScreen />;
+  const { isAuthenticated, loading, initialChecking } = useAuth();
+
+  // Show loading screen while checking authentication or during any auth operations
+  if (initialChecking || loading) {
+    return <LoadingScreen message="Please wait..." />;
   }
 
   // Redirect to dashboard if already authenticated
@@ -52,25 +49,24 @@ const PublicRoute = ({ children }) => {
 
 function AppRouter() {
   return (
-    
-    <Suspense fallback={<LoadingScreen />}>
+    <Suspense fallback={<LoadingScreen message="Loading application..." />}>
       <Routes>
-        <Route 
-          path="/login" 
+        <Route
+          path="/login"
           element={
             <PublicRoute>
               <Login />
             </PublicRoute>
-          } 
+          }
         />
-        
-        <Route 
-          path="/register" 
+
+        <Route
+          path="/register"
           element={
             <PublicRoute>
               <Register />
             </PublicRoute>
-          } 
+          }
         />
 
         {/* Protected Routes (require authentication) */}
@@ -89,7 +85,7 @@ function AppRouter() {
 
         {/* Root path redirect */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        
+
         {/* 404 Not Found */}
         <Route path="*" element={<NotFound />} />
       </Routes>

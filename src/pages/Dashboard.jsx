@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaWallet, FaCoins, FaTrashAlt, FaTimes } from "react-icons/fa";
+import { FaWallet, FaCoins, FaTrashAlt, FaTimes, FaSync } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
 import WalletForm from "../components/WalletForm";
@@ -30,7 +30,6 @@ function Dashboard() {
     clearError,
   } = useWallet();
 
-  // Use the toast hook here, in a component that's within the ToastProvider
   const toast = useToast();
 
   // State for active tab
@@ -39,14 +38,23 @@ function Dashboard() {
   const [selectedWallet, setSelectedWallet] = useState(null);
   // State for delete confirmation modal
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // State for refresh operation
+  const [refreshing, setRefreshing] = useState(false);
 
   // Handle refresh button click
   const handleRefresh = async () => {
-    const result = await refreshData();
-    if (result.success) {
-      toast.success("Portfolio data refreshed");
-    } else if (result.error) {
-      toast.error(result.error);
+    setRefreshing(true);
+    try {
+      const result = await refreshData();
+      if (result.success) {
+        toast.success("Portfolio data refreshed");
+      } else if (result.error) {
+        toast.error(result.error);
+      }
+    } catch (error) {
+      toast.error("Failed to refresh data. Please try again.");
+    } finally {
+      setRefreshing(false);
     }
   };
 
@@ -60,31 +68,37 @@ function Dashboard() {
   const handleConfirmDelete = async () => {
     if (!selectedWallet) return;
 
-    const result = await removeWallet({
-      address: selectedWallet.address,
-      chain: selectedWallet.chain,
-    });
+    try {
+      setRefreshing(true);
+      const result = await removeWallet({
+        address: selectedWallet.address,
+        chain: selectedWallet.chain,
+      });
 
-    if (result.success) {
       toast.success("Wallet removed successfully!");
       setShowDeleteModal(false);
       setSelectedWallet(null);
-    } else if (result.error) {
-      toast.error(result.error || "Failed to remove wallet. Please try again.");
+    } catch (error) {
+      toast.error("Failed to remove wallet. Please try again.");
+    } finally {
+      setRefreshing(false);
     }
   };
 
   // Function to render the active table based on tab
   const renderActiveTable = () => {
+    // Combined loading state - either global loading or local refreshing
+    const tableLoading = isLoading || refreshing;
+
     switch (activeTab) {
       case "assets":
-        return <AssetTable assets={assets} isLoading={isLoading} />;
+        return <AssetTable assets={assets} isLoading={tableLoading} />;
       case "wallets":
       default:
         return (
           <WalletTable
             wallets={wallets}
-            isLoading={isLoading}
+            isLoading={tableLoading}
             onDeleteClick={handleDeleteClick}
           />
         );
@@ -129,7 +143,7 @@ function Dashboard() {
           <BalanceCard
             balance={totalBalance}
             changePercent={changePercent}
-            isLoading={isLoading}
+            isLoading={isLoading || refreshing}
           />
         </div>
 
@@ -138,7 +152,8 @@ function Dashboard() {
             <h3>{getTableTitle()}</h3>
             <RefreshButton
               onRefresh={handleRefresh}
-              isLoading={isLoading}
+              isLoading={isLoading || refreshing}
+              label={refreshing ? "Refreshing..." : "Refresh"}
               aria-label="Refresh portfolio data"
             />
           </div>
@@ -163,6 +178,7 @@ function Dashboard() {
                 className="modal-close-button"
                 onClick={() => setShowDeleteModal(false)}
                 aria-label="Close modal"
+                disabled={refreshing}
               >
                 <FaTimes />
               </button>
@@ -186,14 +202,21 @@ function Dashboard() {
               <button
                 className="modal-cancel-button"
                 onClick={() => setShowDeleteModal(false)}
+                disabled={refreshing}
               >
                 Cancel
               </button>
               <button
                 className="modal-delete-button"
                 onClick={handleConfirmDelete}
+                disabled={refreshing}
               >
-                <FaTrashAlt /> Remove
+                {refreshing ? (
+                  <FaSync className="button-spinner" />
+                ) : (
+                  <FaTrashAlt />
+                )}
+                {refreshing ? " Removing..." : " Remove"}
               </button>
             </div>
           </div>

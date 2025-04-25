@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./BalanceCard.css";
 import "./skeleton.css";
+import PremiumBackground from "./ui/PremiumBackground";
 
 export default function BalanceCard({ balance, changePercent, isLoading }) {
   // Define color scheme for percentage changes
@@ -37,6 +38,7 @@ export default function BalanceCard({ balance, changePercent, isLoading }) {
   return (
     <div className="balance-card" aria-busy={isLoading}>
       <div className="balance-card-content">
+      {/* <PremiumBackground /> */}
         <div className="balance-info">
           <div className="balance-header">
             <span className="balance-label">Total Balance</span>

@@ -5,9 +5,9 @@ import {
   FaCogs,
   FaUser,
   FaSignOutAlt,
-  FaChartLine,
   FaBars,
   FaTimes,
+  FaSpinner,
 } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import "./Sidebar.css";
@@ -17,11 +17,19 @@ function Sidebar() {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
-  // Handle logout
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
+  // Handle logout with loading state
+  const handleLogout = async () => {
+    if (loggingOut) return; // Prevent multiple clicks
+
+    setLoggingOut(true);
+
+    // Small delay for UX to show loading state
+    setTimeout(() => {
+      logout();
+      navigate("/login");
+    }, 500);
   };
 
   // Toggle mobile sidebar
@@ -98,9 +106,14 @@ function Sidebar() {
             onClick={handleLogout}
             className="logout-button"
             aria-label="Log out"
+            disabled={loggingOut}
           >
-            <FaSignOutAlt className="logout-icon" />
-            <span>Logout</span>
+            {loggingOut ? (
+              <FaSpinner className="logout-icon spinning" />
+            ) : (
+              <FaSignOutAlt className="logout-icon" />
+            )}
+            <span>{loggingOut ? "Logging out..." : "Logout"}</span>
           </button>
         </div>
       </aside>
