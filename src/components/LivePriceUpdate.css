@@ -1,0 +1,57 @@
+/* Live update styling */
+.price-updated {
+  animation: highlightRow 2s ease-out;
+}
+
+@keyframes highlightRow {
+  0% {
+    background-color: rgba(125, 103, 255, 0.3);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.bolt-icon {
+  display: inline-block;
+  margin-left: 0.5rem;
+  color: #7d67ff;
+  animation: boltFade 2s ease-out;
+}
+
+@keyframes boltFade {
+  0%,
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+.price-cell {
+  display: flex;
+  align-items: center;
+}
+
+.live-indicator {
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  color: #7d67ff;
+}
+
+.live-indicator.spinning {
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
