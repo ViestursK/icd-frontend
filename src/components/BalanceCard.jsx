@@ -1,12 +1,63 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { FaBolt, FaPowerOff } from "react-icons/fa";
+import binanceService, { BINANCE_EVENTS } from "../services/binanceService";
 import "./BalanceCard.css";
 import "./skeleton.css";
-import PremiumBackground from "./ui/PremiumBackground";
+import "./LivePriceUpdate.css";
 
 export default function BalanceCard({ balance, changePercent, isLoading }) {
+  // State for live mode
+  const [liveMode, setLiveMode] = useState(false);
+  // State for animation
+  const [priceUpdated, setPriceUpdated] = useState(false);
+  // Connection state
+  const [isConnected, setIsConnected] = useState(false);
+
   // Define color scheme for percentage changes
   const colors = { red: "#FF1C1C", green: "#3EDD87", white: "#F2F2FA" };
+
+  // Toggle live price updates
+  const toggleLiveMode = () => {
+    const newLiveMode = !liveMode;
+    setLiveMode(newLiveMode);
+    binanceService.setLiveMode(newLiveMode);
+  };
+
+  // Subscribe to Binance WebSocket events
+  useEffect(() => {
+    // Initial state check
+    setLiveMode(binanceService.isLiveModeEnabled());
+
+    // Subscribe to price updates to animate the balance card
+    const priceUnsubscribe = binanceService.subscribe(
+      BINANCE_EVENTS.PRICE_UPDATE,
+      (data) => {
+        // Trigger animation for price update
+        setPriceUpdated(true);
+
+        // Reset animation after a delay
+        setTimeout(() => {
+          setPriceUpdated(false);
+        }, 2000);
+      }
+    );
+
+    // Subscribe to connection state changes
+    const connectionUnsubscribe = binanceService.subscribe(
+      BINANCE_EVENTS.CONNECTION_STATE,
+      (state) => {
+        setIsConnected(state.connected);
+        setLiveMode(state.liveMode);
+      }
+    );
+
+    // Clean up subscriptions when component unmounts
+    return () => {
+      priceUnsubscribe();
+      connectionUnsubscribe();
+    };
+  }, []);
 
   // Determine the color based on percentage change
   const getChangeColor = () => {
@@ -36,12 +87,31 @@ export default function BalanceCard({ balance, changePercent, isLoading }) {
   };
 
   return (
-    <div className="balance-card" aria-busy={isLoading}>
+    <div
+      className={`balance-card ${priceUpdated ? "price-updated" : ""}`}
+      aria-busy={isLoading}
+    >
       <div className="balance-card-content">
-      {/* <PremiumBackground /> */}
         <div className="balance-info">
           <div className="balance-header">
             <span className="balance-label">Total Balance</span>
+            <button
+              className={`live-toggle ${liveMode ? "active" : ""}`}
+              onClick={toggleLiveMode}
+              title={liveMode ? "Disable live updates" : "Enable live updates"}
+              aria-pressed={liveMode}
+            >
+              {liveMode ? (
+                <FaBolt
+                  className={`live-icon ${isConnected ? "connected" : ""}`}
+                />
+              ) : (
+                <FaPowerOff className="live-icon" />
+              )}
+              <span className="sr-only">
+                {liveMode ? "Disable live updates" : "Enable live updates"}
+              </span>
+            </button>
           </div>
 
           {isLoading ? (
@@ -52,6 +122,9 @@ export default function BalanceCard({ balance, changePercent, isLoading }) {
             <div className="balance-amount">
               <span className="currency-symbol">$</span>
               <span className="balance-value">{formatBalance(balance)}</span>
+              {liveMode && isConnected && (
+                <span className="live-badge">LIVE</span>
+              )}
             </div>
           )}
 

@@ -9,6 +9,7 @@ import RefreshButton from "../components/ui/RefreshButton";
 import TabSelector from "../components/TabSelector";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
+import LiveControls from "../components/LiveControls";
 import "./Dashboard.css";
 
 // Define tab options
@@ -120,7 +121,10 @@ function Dashboard() {
     <div className="dashboard-container">
       <div className="top-container">
         <Header title="DASHBOARD" />
-        <WalletForm />
+        <div className="header-actions">
+          <LiveControls />
+          <WalletForm />
+        </div>
       </div>
 
       {error && (
@@ -150,12 +154,14 @@ function Dashboard() {
         <div className="holdings-container">
           <div className="holdings-header">
             <h3>{getTableTitle()}</h3>
-            <RefreshButton
-              onRefresh={handleRefresh}
-              isLoading={isLoading || refreshing}
-              label={refreshing ? "Refreshing..." : "Refresh"}
-              aria-label="Refresh portfolio data"
-            />
+            <div className="header-actions">
+              <RefreshButton
+                onRefresh={handleRefresh}
+                isLoading={isLoading || refreshing}
+                label={refreshing ? "Refreshing..." : "Refresh"}
+                aria-label="Refresh portfolio data"
+              />
+            </div>
           </div>
 
           <TabSelector

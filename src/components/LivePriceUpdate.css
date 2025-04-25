@@ -1,57 +1,77 @@
-/* Live update styling */
-.price-updated {
+/* Live price update animations for asset and wallet tables */
+
+/* Row highlight animation for price changes */
+.price-updated-row {
   animation: highlightRow 2s ease-out;
 }
 
 @keyframes highlightRow {
   0% {
-    background-color: rgba(125, 103, 255, 0.3);
+    background-color: rgba(125, 103, 255, 0.2);
   }
   100% {
     background-color: transparent;
   }
 }
 
-.bolt-icon {
-  display: inline-block;
-  margin-left: 0.5rem;
-  color: #7d67ff;
-  animation: boltFade 2s ease-out;
+/* Different animations for price increase vs decrease */
+.price-increase {
+  color: #32c376;
+  animation: priceIncrease 1.5s ease-out;
 }
 
-@keyframes boltFade {
-  0%,
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1);
-  }
+.price-decrease {
+  color: #ff4c4c;
+  animation: priceDecrease 1.5s ease-out;
 }
 
-.price-cell {
-  display: flex;
-  align-items: center;
-}
-
-.live-indicator {
-  display: inline-block;
-  margin-left: 0.5rem;
-  font-size: 0.75rem;
-  color: #7d67ff;
-}
-
-.live-indicator.spinning {
-  animation: spin 1.5s linear infinite;
-}
-
-@keyframes spin {
+@keyframes priceIncrease {
   0% {
-    transform: rotate(0deg);
+    color: #32c376;
+    text-shadow: 0 0 8px rgba(50, 195, 118, 0.8);
+  }
+  50% {
+    color: #32c376;
+    text-shadow: 0 0 5px rgba(50, 195, 118, 0.4);
   }
   100% {
-    transform: rotate(360deg);
+    color: #32c376;
+    text-shadow: none;
+  }
+}
+
+@keyframes priceDecrease {
+  0% {
+    color: #ff4c4c;
+    text-shadow: 0 0 8px rgba(255, 76, 76, 0.8);
+  }
+  50% {
+    color: #ff4c4c;
+    text-shadow: 0 0 5px rgba(255, 76, 76, 0.4);
+  }
+  100% {
+    color: #ff4c4c;
+    text-shadow: none;
+  }
+}
+
+/* Animation for the value itself */
+.price-animated {
+  transition: color 0.3s ease;
+}
+
+/* Live badge animation */
+.live-badge {
+  display: inline-block;
+  animation: pulseBadge 2s infinite;
+}
+
+@keyframes pulseBadge {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
   }
 }

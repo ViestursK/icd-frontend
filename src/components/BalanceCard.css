@@ -1,12 +1,28 @@
 .balance-card {
- /* From https://css.glass */
-background: rgba(255, 255, 255, 0.08);
-border-radius: 16px;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(5px);
--webkit-backdrop-filter: blur(5px);
-border: 1px solid rgba(255, 255, 255, 0.3);
-transition: all 0.3s ease;
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* Added price update animation */
+.balance-card.price-updated {
+  animation: card-highlight 2s ease-out;
+}
+
+@keyframes card-highlight {
+  0% {
+    box-shadow: 0 0 20px rgba(125, 103, 255, 0.8);
+    border-color: rgba(125, 103, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
 }
 
 .balance-card:hover {
@@ -24,12 +40,14 @@ transition: all 0.3s ease;
 .balance-info {
   display: flex;
   flex-direction: column;
- 
+  flex: 1;
 }
 
 .balance-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
 }
 
 .balance-label {
@@ -38,6 +56,53 @@ transition: all 0.3s ease;
   color: rgba(242, 242, 250, 0.8);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Live toggle button styling */
+.live-toggle {
+  background: none;
+  border: none;
+  color: #9e9ea0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.live-toggle:hover {
+  background-color: rgba(125, 103, 255, 0.1);
+  color: #f2f2fa;
+}
+
+.live-toggle.active {
+  color: #7d67ff;
+}
+
+.live-toggle.active:hover {
+  color: #9381ff;
+}
+
+.live-icon {
+  font-size: 1rem;
+}
+
+.live-icon.connected {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .balance-amount {
@@ -57,6 +122,20 @@ transition: all 0.3s ease;
   font-weight: 700;
   color: #f2f2fa;
   letter-spacing: 0.02em;
+}
+
+/* Live badge styling */
+.live-badge {
+  margin-left: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: rgba(125, 103, 255, 0.2);
+  color: #7d67ff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  align-self: center;
+  letter-spacing: 0.05em;
+  animation: pulse 2s infinite ease-in-out;
 }
 
 .balance-change {
@@ -105,6 +184,19 @@ transition: all 0.3s ease;
     rgba(255, 255, 255, 0.2) 50%,
     rgba(255, 255, 255, 0) 100%
   );
+}
+
+/* Hide screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 /* Responsive adjustments */

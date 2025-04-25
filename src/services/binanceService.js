@@ -4,6 +4,7 @@
 // Constants
 const BINANCE_WS_BASE_URL = "wss://stream.binance.com:9443/ws";
 const PRICE_UPDATE_EVENT = "PRICE_UPDATE";
+const CONNECTION_STATE_EVENT = "CONNECTION_STATE";
 
 class BinanceService {
   constructor() {
@@ -16,19 +17,63 @@ class BinanceService {
     this.subscribedSymbols = new Set();
     this.lastPrices = {};
     this.reconnectTimer = null;
+
+    // Added to control live mode
+    this.liveMode = false;
+
+    // Rate limiting - don't update UI too frequently
+    this.updateThrottleMs = 1000; // Update UI max once per second
+    this.lastUpdateTimestamp = {};
+  }
+
+  /**
+   * Enable or disable live price updates
+   * @param {boolean} enabled - Whether to enable live mode
+   */
+  setLiveMode(enabled) {
+    // If no change in state, do nothing
+    if (this.liveMode === enabled) return;
+
+    this.liveMode = enabled;
+
+    if (enabled) {
+      // Start the connection if we have symbols to subscribe to
+      if (this.subscribedSymbols.size > 0 && !this.isConnected) {
+        this.initialize();
+      }
+    } else {
+      // Disconnect if we're turning off live mode
+      this.close();
+    }
+
+    // Notify subscribers about the connection state change
+    this.notifySubscribers(CONNECTION_STATE_EVENT, {
+      connected: this.isConnected,
+      liveMode: this.liveMode,
+    });
+  }
+
+  /**
+   * Check if live mode is enabled
+   * @returns {boolean} - Whether live mode is enabled
+   */
+  isLiveModeEnabled() {
+    return this.liveMode;
   }
 
   /**
    * Initialize the WebSocket connection
    */
   initialize() {
+    // Don't connect if live mode is disabled
+    if (!this.liveMode) return;
+
     if (this.websocket) {
       this.close();
     }
 
     try {
       // Create a new connection with combined streams endpoint
-      // This format allows for subscribing to multiple streams in a single connection
       this.websocket = new WebSocket(BINANCE_WS_BASE_URL);
 
       // Set up event handlers
@@ -37,7 +82,10 @@ class BinanceService {
       this.websocket.onerror = this.handleError.bind(this);
       this.websocket.onclose = this.handleClose.bind(this);
 
-      console.log("Binance WebSocket - Connecting...");
+      // Only log in development mode
+      if (process.env.NODE_ENV === "development") {
+        console.log("Binance WebSocket - Connecting...");
+      }
     } catch (error) {
       console.error("Binance WebSocket - Connection error:", error);
       this.attemptReconnect();
@@ -48,12 +96,22 @@ class BinanceService {
    * Handle WebSocket connection open
    */
   handleOpen() {
-    console.log("Binance WebSocket - Connected");
+    // Only log in development mode
+    if (process.env.NODE_ENV === "development") {
+      console.log("Binance WebSocket - Connected");
+    }
+
     this.isConnected = true;
     this.reconnectAttempts = 0;
 
     // Subscribe to current symbols
     this.subscribeToSymbols();
+
+    // Notify subscribers about the connection state
+    this.notifySubscribers(CONNECTION_STATE_EVENT, {
+      connected: true,
+      liveMode: this.liveMode,
+    });
   }
 
   /**
@@ -76,19 +134,30 @@ class BinanceService {
 
     // Send subscription request
     this.websocket.send(JSON.stringify(subscribeMsg));
-    console.log(`Binance WebSocket - Subscribed to: ${channels.join(", ")}`);
+
+    // Only log in development mode
+    if (process.env.NODE_ENV === "development") {
+      console.log(`Binance WebSocket - Subscribed to: ${channels.join(", ")}`);
+    }
   }
 
   /**
    * Handle incoming WebSocket messages
    */
   handleMessage(event) {
+    // Skip processing if live mode is disabled
+    if (!this.liveMode) return;
+
     try {
       const data = JSON.parse(event.data);
-      console.log("Received WebSocket message:", data);
 
-      // Skip subscription confirmation messages
-      if (data.result === null && data.id) {
+      // Skip logging for every message to reduce console spam
+      // Only log subscription confirmations in development mode
+      if (
+        data.result === null &&
+        data.id &&
+        process.env.NODE_ENV === "development"
+      ) {
         console.log("Subscription confirmation received");
         return;
       }
@@ -103,29 +172,51 @@ class BinanceService {
         const priceChange24h = parseFloat(data.p);
         const priceChangePercent24h = parseFloat(data.P);
 
-        console.log(
-          `Price update for ${symbol}: $${price} (${priceChangePercent24h}%)`
-        );
+        // Apply rate limiting - only update UI at most once per second per symbol
+        const now = Date.now();
+        if (
+          this.lastUpdateTimestamp[symbol] &&
+          now - this.lastUpdateTimestamp[symbol] < this.updateThrottleMs
+        ) {
+          return;
+        }
 
-        // Store last price
+        this.lastUpdateTimestamp[symbol] = now;
+
+        // Store last price with previous price for animation
+        const previousPrice = this.lastPrices[symbol]?.price || price;
+
         this.lastPrices[symbol] = {
           price,
+          previousPrice,
           priceChange24h,
           priceChangePercent24h,
-          lastUpdate: Date.now(),
+          lastUpdate: now,
+          direction:
+            price > previousPrice
+              ? "up"
+              : price < previousPrice
+              ? "down"
+              : "unchanged",
         };
 
         // Notify subscribers
         this.notifySubscribers(PRICE_UPDATE_EVENT, {
           symbol,
           price,
+          previousPrice,
+          direction:
+            price > previousPrice
+              ? "up"
+              : price < previousPrice
+              ? "down"
+              : "unchanged",
           priceChange24h,
           priceChangePercent24h,
         });
       }
     } catch (error) {
       console.error("Binance WebSocket - Error parsing message:", error);
-      console.log("Raw message data:", event.data);
     }
   }
 
@@ -134,6 +225,13 @@ class BinanceService {
    */
   handleError(error) {
     console.error("Binance WebSocket - Error:", error);
+
+    // Notify subscribers about the connection state
+    this.notifySubscribers(CONNECTION_STATE_EVENT, {
+      connected: false,
+      liveMode: this.liveMode,
+      error: "Connection error",
+    });
   }
 
   /**
@@ -141,12 +239,22 @@ class BinanceService {
    */
   handleClose(event) {
     this.isConnected = false;
-    console.log(
-      `Binance WebSocket - Connection closed: ${event.code} ${event.reason}`
-    );
 
-    // Attempt to reconnect if not a normal closure
-    if (event.code !== 1000) {
+    // Only log in development mode
+    if (process.env.NODE_ENV === "development") {
+      console.log(
+        `Binance WebSocket - Connection closed: ${event.code} ${event.reason}`
+      );
+    }
+
+    // Notify subscribers about the connection state
+    this.notifySubscribers(CONNECTION_STATE_EVENT, {
+      connected: false,
+      liveMode: this.liveMode,
+    });
+
+    // Attempt to reconnect if not a normal closure and live mode is still enabled
+    if (event.code !== 1000 && this.liveMode) {
       this.attemptReconnect();
     }
   }
@@ -155,15 +263,24 @@ class BinanceService {
    * Attempt to reconnect to WebSocket
    */
   attemptReconnect() {
-    if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      console.log("Binance WebSocket - Max reconnect attempts reached");
+    if (this.reconnectAttempts >= this.maxReconnectAttempts || !this.liveMode) {
+      // Only log in development mode
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          "Binance WebSocket - Max reconnect attempts reached or live mode disabled"
+        );
+      }
       return;
     }
 
     this.reconnectAttempts++;
-    console.log(
-      `Binance WebSocket - Reconnecting (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})...`
-    );
+
+    // Only log in development mode
+    if (process.env.NODE_ENV === "development") {
+      console.log(
+        `Binance WebSocket - Reconnecting (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})...`
+      );
+    }
 
     // Clear any existing timer
     if (this.reconnectTimer) {
@@ -172,7 +289,9 @@ class BinanceService {
 
     // Attempt reconnection after delay
     this.reconnectTimer = setTimeout(() => {
-      this.initialize();
+      if (this.liveMode) {
+        this.initialize();
+      }
     }, this.reconnectDelay);
   }
 
@@ -187,7 +306,7 @@ class BinanceService {
     this.subscribedSymbols.add(formattedSymbol);
 
     // If already connected, send subscription
-    if (this.isConnected) {
+    if (this.isConnected && this.liveMode) {
       const channel = `${formattedSymbol.toLowerCase()}usdt@ticker`;
       const subscribeMsg = {
         method: "SUBSCRIBE",
@@ -195,7 +314,14 @@ class BinanceService {
         id: Date.now(),
       };
       this.websocket.send(JSON.stringify(subscribeMsg));
-      console.log(`Binance WebSocket - Subscribed to: ${channel}`);
+
+      // Only log in development mode
+      if (process.env.NODE_ENV === "development") {
+        console.log(`Binance WebSocket - Subscribed to: ${channel}`);
+      }
+    } else if (this.liveMode && !this.isConnected && !this.websocket) {
+      // Initialize if live mode is on but not connected
+      this.initialize();
     }
 
     return formattedSymbol;
@@ -215,7 +341,11 @@ class BinanceService {
         id: Date.now(),
       };
       this.websocket.send(JSON.stringify(unsubscribeMsg));
-      console.log(`Binance WebSocket - Unsubscribed from: ${channel}`);
+
+      // Only log in development mode
+      if (process.env.NODE_ENV === "development") {
+        console.log(`Binance WebSocket - Unsubscribed from: ${channel}`);
+      }
     }
 
     // Remove from set of subscribed symbols
@@ -236,10 +366,10 @@ class BinanceService {
     });
 
     // If already connected, send subscription
-    if (this.isConnected) {
+    if (this.isConnected && this.liveMode) {
       this.subscribeToSymbols();
-    } else if (!this.websocket) {
-      // Initialize if not already done
+    } else if (this.liveMode && !this.websocket) {
+      // Initialize if live mode is on but not connected
       this.initialize();
     }
   }
@@ -258,7 +388,16 @@ class BinanceService {
         this.reconnectTimer = null;
       }
 
-      console.log("Binance WebSocket - Connection closed");
+      // Only log in development mode
+      if (process.env.NODE_ENV === "development") {
+        console.log("Binance WebSocket - Connection closed");
+      }
+
+      // Notify subscribers about the connection state
+      this.notifySubscribers(CONNECTION_STATE_EVENT, {
+        connected: false,
+        liveMode: this.liveMode,
+      });
     }
   }
 
@@ -320,6 +459,7 @@ const binanceService = new BinanceService();
 // Export constants and service
 export const BINANCE_EVENTS = {
   PRICE_UPDATE: PRICE_UPDATE_EVENT,
+  CONNECTION_STATE: CONNECTION_STATE_EVENT,
 };
 
 export default binanceService;
