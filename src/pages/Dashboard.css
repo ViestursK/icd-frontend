@@ -1,3 +1,4 @@
+/* Dashboard.css improvements */
 .dashboard-container {
   display: flex;
   flex-direction: column;
@@ -22,32 +23,23 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  border-radius: 0.5rem;
 }
 
-/* New portfolio overview section */
+/* Improved portfolio overview section */
 .portfolio-overview {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
   gap: 1rem;
 }
 
 .balance-section {
-  width: 100%;
+  
+  /* background-color: royalblue; */
 }
 
 .stats-section {
-  display: grid;
-  grid-template-areas:
-    "total-value total-value"
-    "total-assets total-assets"
-    "total-change total-change";
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 1rem;
+  /* background-color: #ff4c4c; */
+  
 }
 
 /* Holdings container */
@@ -73,6 +65,13 @@
   margin: 0;
   font-size: 1.2rem;
   color: #f2f2fa;
+}
+
+/* Table container with fixed height */
+.wallet-table-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  min-height: 400px; /* Fixed minimum height for table container */
 }
 
 .error-alert {
@@ -239,18 +238,18 @@
 }
 
 /* Responsive adjustments */
-@media (min-width: 1024px) {
+@media (max-width: 1024px) {
   .portfolio-overview {
-    flex-direction: row;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
   }
 
   .balance-section {
-    flex: 1;
-    max-width: 450px;
+    min-height: 200px;
   }
 
   .stats-section {
-    flex: 2;
+    min-height: 200px;
   }
 }
 
@@ -260,13 +259,8 @@
     align-items: stretch;
   }
 
-  .portfolio-overview {
-    flex-direction: column;
-  }
-
-  .balance-section,
   .stats-section {
-    width: 100%;
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -275,5 +269,10 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
+  }
+
+  .stats-section {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
   }
 }

@@ -1,4 +1,4 @@
-/* AssetTable specific styles */
+/* AssetTable specific styles with improved skeleton loading */
 .asset-logo {
   width: 36px;
   height: 36px;
@@ -10,6 +10,7 @@
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .asset-info {
@@ -30,6 +31,7 @@
   font-size: 14px;
   background-color: rgba(125, 103, 255, 0.1);
   color: #7d67ff;
+  flex-shrink: 0;
 }
 
 /* Asset-specific icon colors */
@@ -71,12 +73,16 @@
 .asset-name-container {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .asset-name {
   font-weight: 500;
   font-size: 0.9rem;
   color: #f2f2fa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .asset-symbol {
@@ -106,6 +112,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
 }
 
 .positive-change {
@@ -128,7 +135,7 @@
   color: #ff4c4c;
 }
 
-/* Table headers */
+/* Table headers with consistent width */
 .sortable-column {
   cursor: pointer;
   user-select: none;
@@ -147,6 +154,27 @@
 .sort-icon {
   display: flex;
   align-items: center;
+}
+
+/* Fixed widths for columns to prevent layout shifts */
+.wallet-table thead th:nth-child(1) {
+  width: 40%;
+}
+
+.wallet-table thead th:nth-child(2) {
+  width: 15%;
+}
+
+.wallet-table thead th:nth-child(3) {
+  width: 15%;
+}
+
+.wallet-table thead th:nth-child(4) {
+  width: 15%;
+}
+
+.wallet-table thead th:nth-child(5) {
+  width: 15%;
 }
 
 /* Search and filter controls */
@@ -269,22 +297,35 @@
   border-color: rgba(125, 103, 255, 0.3);
 }
 
+/* Improved skeleton loading */
+.skeleton-row td {
+  padding: 1.5rem 1rem;
+}
+
+.skeleton-row .skeleton-text {
+  height: 1.25rem;
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.skeleton-row .skeleton-text.medium {
+  height: 1.25rem;
+  width: 80%;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .asset-name-container {
     max-width: 120px;
   }
 
-  .asset-name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
   .filter-buttons {
     overflow-x: auto;
     padding-bottom: 0.5rem;
     scrollbar-width: none; /* Firefox */
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-wrap: nowrap;
   }
 
   .filter-buttons::-webkit-scrollbar {
@@ -293,6 +334,7 @@
 
   .filter-button {
     white-space: nowrap;
+    flex-shrink: 0;
   }
 }
 

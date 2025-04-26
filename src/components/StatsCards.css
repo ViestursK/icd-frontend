@@ -1,11 +1,16 @@
 .stats-cards-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 1rem;
+  width: 100%;
+  height: 100%;
+  align-items: stretch;
+  justify-items: stretch;
 }
 
 .stat-card {
-  padding: 1rem;
+  padding: 1.5rem;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -15,6 +20,9 @@
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
 }
 
 .stat-card:hover {
@@ -63,7 +71,7 @@
 }
 
 .stat-card-label {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: rgba(242, 242, 250, 0.8);
   text-transform: uppercase;
@@ -71,7 +79,7 @@
 }
 
 .stat-card-icon {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   opacity: 0.8;
 }
 
@@ -92,24 +100,25 @@
 }
 
 .stat-card-value {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: #f2f2fa;
   letter-spacing: 0.02em;
   display: flex;
   align-items: baseline;
   gap: 0.25rem;
+  margin-top: auto;
 }
 
 .stat-card-value-symbol {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   opacity: 0.8;
   margin-right: 0.25rem;
 }
 
 .stat-card-value-amount {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 .stat-card-impact {
@@ -126,13 +135,67 @@
   color: #ff4c4c;
 }
 
+/* Skeleton loader - fixed height and consistent appearance */
 .stat-card-skeleton {
   border-radius: 1rem;
-  padding: 1rem;
+  padding: 1.5rem;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
+  justify-content: space-between;
+  height: 100%;
 }
 
+.stat-card-skeleton .skeleton {
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.stat-card-skeleton .skeleton-text.medium {
+  height: 1.25rem;
+  width: 70%;
+}
+
+.stat-card-skeleton .skeleton-text.large {
+  height: 2rem;
+  width: 90%;
+  margin-top: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .stat-card {
+    padding: 1.25rem;
+  }
+
+  .stat-card-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .stat-card-label {
+    font-size: 0.75rem;
+  }
+
+  .stat-card-icon {
+    font-size: 1.25rem;
+  }
+
+  .stat-card-value {
+    font-size: 1.25rem;
+  }
+
+  .stat-card-value-amount {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-cards-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, minmax(100px, 1fr));
+  }
+}

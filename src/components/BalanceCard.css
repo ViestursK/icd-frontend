@@ -1,39 +1,41 @@
 .balance-card {
- /* From https://css.glass */
-background: rgba(255, 255, 255, 0.08);
-border-radius: 16px;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(5px);
--webkit-backdrop-filter: blur(5px);
-border: 1px solid rgba(255, 255, 255, 0.3);
-transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
 }
 
 .balance-card:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(125, 103, 255, 0.3);
   background-color: rgba(231, 230, 236, 0.178);
 }
 
 .balance-card-content {
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 1rem;
 }
 
 .balance-info {
   display: flex;
   flex-direction: column;
- 
+  max-width: 100%;
+  margin: 1.6rem;
 }
 
 .balance-header {
   display: flex;
   align-items: center;
+  margin-bottom: 1rem;
 }
 
 .balance-label {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 500;
   color: rgba(242, 242, 250, 0.8);
   text-transform: uppercase;
@@ -43,55 +45,64 @@ transition: all 0.3s ease;
 .balance-amount {
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;
 }
 
 .currency-symbol {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 400;
   color: #f2f2fa;
-  margin-right: 0.25rem;
+  margin-right: 0.5rem;
 }
 
 .balance-value {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 700;
   color: #f2f2fa;
   letter-spacing: 0.02em;
+  line-height: 1.2;
+  word-break: break-word;
 }
 
 .balance-change {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
 }
 
 .change-label {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: rgba(242, 242, 250, 0.8);
 }
 
 .change-value {
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .balance-chart {
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 70px;
-  margin-left: 1rem;
+  align-items: center;
+  margin: 3rem 1rem;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .chart-svg {
-  height: 100%;
-  width: auto;
-  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
+  height: auto;
+  width: 15rem;
+  margin: 1rem;
 }
 
 /* Skeleton loader adjustments */
 .skeleton-wrapper {
-  margin: 0.25rem 0;
+  margin: 0.5rem 0;
+  width: 100%;
 }
 
 .balance-card .skeleton {
@@ -107,27 +118,74 @@ transition: all 0.3s ease;
   );
 }
 
+.balance-card .skeleton-text.large {
+  height: 3.5rem;
+  width: 80%;
+  max-width: 300px;
+}
+
+.balance-card .skeleton-text.small {
+  height: 1.5rem;
+  width: 40%;
+  max-width: 150px;
+}
+
+.balance-card .skeleton-chart {
+  height: 80px;
+  width: 80%;
+  max-width: 250px;
+  margin-top: 1rem;
+  align-self: flex-end;
+}
+
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .balance-card-content {
-    padding: 1.25rem;
+    padding: 2rem;
   }
 
   .balance-value {
-    font-size: 2rem;
+    font-size: 2.5rem;
+  }
+  .balance-chart {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .balance-card {
+    aspect-ratio: auto;
+    min-height: 250px;
+  }
+
+  .balance-card-content {
+    padding: 1.5rem;
+  }
+
+  .balance-value {
+    font-size: 2.25rem;
+  }
+
+  .balance-chart {
+    height: auto;
   }
 }
 
 @media (max-width: 480px) {
   .balance-card-content {
-    flex-direction: row;
-    align-items: center;
+    padding: 1.25rem;
     gap: 1rem;
   }
 
-  .balance-chart {
-    margin-left: 0;
-    width: 100%;
-    justify-content: flex-start;
+  .balance-value {
+    font-size: 2rem;
+  }
+
+  .currency-symbol {
+    font-size: 1.5rem;
+  }
+
+  .change-value {
+    font-size: 1rem;
   }
 }
