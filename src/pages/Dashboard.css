@@ -26,20 +26,37 @@
   border-radius: 0.5rem;
 }
 
-.stat-container {
+/* New portfolio overview section */
+.portfolio-overview {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   gap: 1rem;
-  flex-wrap: wrap;
 }
 
+.balance-section {
+  width: 100%;
+}
+
+.stats-section {
+  display: grid;
+  grid-template-areas:
+    "total-value total-value"
+    "total-assets total-assets"
+    "total-change total-change";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 1rem;
+}
+
+/* Holdings container */
 .holdings-container {
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-
   border-radius: 1rem;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -83,32 +100,7 @@
   padding: 0.25rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .top-container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .stat-container {
-    width: 100%;
-  }
-
-  .balance-card {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .holdings-header {
-    flex-direction: row;
-    /* align-items: flex-start; */
-    gap: 0.5rem;
-  }
-}
-
-/* Add these modal styles to your Dashboard.css file */
-
+/* Modal styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -131,6 +123,9 @@
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
+  animation: modalFadeIn 0.3s ease;
+  width: 90%;
+  max-width: 500px;
 }
 
 @keyframes modalFadeIn {
@@ -241,4 +236,44 @@
 .modal-delete-button:hover {
   background-color: rgba(255, 76, 76, 1);
   box-shadow: 0 0 10px rgba(255, 76, 76, 0.5);
+}
+
+/* Responsive adjustments */
+@media (min-width: 1024px) {
+  .portfolio-overview {
+    flex-direction: row;
+  }
+
+  .balance-section {
+    flex: 1;
+    max-width: 450px;
+  }
+
+  .stats-section {
+    flex: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .portfolio-overview {
+    flex-direction: column;
+  }
+
+  .balance-section,
+  .stats-section {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .holdings-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
 }

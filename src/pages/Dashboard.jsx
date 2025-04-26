@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { FaWallet, FaCoins, FaTrashAlt, FaTimes, FaSync } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
@@ -7,6 +7,7 @@ import WalletTable from "../components/WalletTable";
 import AssetTable from "../components/AssetTable";
 import RefreshButton from "../components/ui/RefreshButton";
 import TabSelector from "../components/TabSelector";
+import StatsCards from "../components/StatsCards";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import "./Dashboard.css";
@@ -40,6 +41,47 @@ function Dashboard() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   // State for refresh operation
   const [refreshing, setRefreshing] = useState(false);
+
+  // Calculate portfolio statistics for the StatsCards component
+  const portfolioStats = useMemo(() => {
+    // Count of wallets and assets
+    const walletCount = wallets.length;
+    const assetCount = assets.length;
+
+    // Find the most valuable asset
+    const topAsset =
+      assets.length > 0
+        ? assets.sort(
+            (a, b) => parseFloat(b.total_value) - parseFloat(a.total_value)
+          )[0]
+        : null;
+
+    // Find the asset with the biggest price impact (positive or negative)
+    const biggestImpact =
+      assets.length > 0
+        ? assets.sort((a, b) => {
+            return (
+              Math.abs(parseFloat(b.price_24h_change_percent)) -
+              Math.abs(parseFloat(a.price_24h_change_percent))
+            );
+          })[0]
+        : null;
+
+    return {
+      walletCount,
+      assetCount,
+      topAsset: topAsset
+        ? { symbol: topAsset.symbol, value: topAsset.total_value }
+        : { symbol: "N/A", value: "0" },
+      biggestImpact: biggestImpact
+        ? {
+            symbol: biggestImpact.symbol,
+            value: biggestImpact.total_value,
+            change: biggestImpact.price_24h_change_percent,
+          }
+        : { symbol: "N/A", value: "0", change: "0" },
+    };
+  }, [wallets, assets]);
 
   // Handle refresh button click
   const handleRefresh = async () => {
@@ -136,15 +178,24 @@ function Dashboard() {
         </div>
       )}
 
-      <h2 className="section-title">Portfolio</h2>
+      <h2 className="section-title">Portfolio Overview</h2>
 
       <div className="container">
-        <div className="stat-container">
-          <BalanceCard
-            balance={totalBalance}
-            changePercent={changePercent}
-            isLoading={isLoading || refreshing}
-          />
+        <div className="portfolio-overview">
+          <div className="balance-section">
+            <BalanceCard
+              balance={totalBalance}
+              changePercent={changePercent}
+              isLoading={isLoading || refreshing}
+            />
+          </div>
+
+          <div className="stats-section">
+            <StatsCards
+              stats={portfolioStats}
+              isLoading={isLoading || refreshing}
+            />
+          </div>
         </div>
 
         <div className="holdings-container">
