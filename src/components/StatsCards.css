@@ -1,12 +1,9 @@
 .stats-cards-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
   gap: 1rem;
   width: 100%;
   height: 100%;
-  align-items: stretch;
-  justify-items: stretch;
 }
 
 .stat-card {
@@ -21,8 +18,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
   height: 100%;
+  min-height: 130px;
 }
 
 .stat-card:hover {
@@ -135,7 +132,7 @@
   color: #ff4c4c;
 }
 
-/* Skeleton loader - fixed height and consistent appearance */
+/* Skeleton loader */
 .stat-card-skeleton {
   border-radius: 1rem;
   padding: 1.5rem;
@@ -146,22 +143,7 @@
   gap: 1rem;
   justify-content: space-between;
   height: 100%;
-}
-
-.stat-card-skeleton .skeleton {
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-.stat-card-skeleton .skeleton-text.medium {
-  height: 1.25rem;
-  width: 70%;
-}
-
-.stat-card-skeleton .skeleton-text.large {
-  height: 2rem;
-  width: 90%;
-  margin-top: auto;
+  min-height: 130px;
 }
 
 /* Responsive adjustments */
@@ -175,7 +157,12 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
+  .stats-cards-container {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+  }
+
   .stat-card-label {
     font-size: 0.75rem;
   }
@@ -195,7 +182,12 @@
 
 @media (max-width: 480px) {
   .stats-cards-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, minmax(100px, 1fr));
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .stat-card {
+    min-height: 110px;
+    padding: 1rem;
   }
 }
