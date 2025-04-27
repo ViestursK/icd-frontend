@@ -5,11 +5,15 @@ import "./WalletTable.css";
 import "./AssetTable.css";
 import "./skeleton.css";
 
-const AssetTable = ({ assets = [], isLoading }) => {
+const AssetTable = ({
+  assets = [],
+  isLoading,
+  visibleCount = 15,
+  setVisibleCount,
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortField, setSortField] = useState("total_value"); // Default sort by value
   const [sortDirection, setSortDirection] = useState("desc"); // Default highest value first
-  const [visibleCount, setVisibleCount] = useState(10);
   const [selectedChain, setSelectedChain] = useState("all");
 
   // Collect all unique chains from assets
@@ -164,6 +168,11 @@ const AssetTable = ({ assets = [], isLoading }) => {
     setSearchQuery("");
   }, []);
 
+  // Handle showing more assets
+  const handleShowMore = useCallback(() => {
+    setVisibleCount((prev) => prev + 10);
+  }, [setVisibleCount]);
+
   // Handle showing skeleton loading state
   if (isLoading) {
     return (
@@ -193,7 +202,7 @@ const AssetTable = ({ assets = [], isLoading }) => {
             </tr>
           </thead>
           <tbody>
-            {[...Array(5)].map((_, index) => (
+            {[...Array(8)].map((_, index) => (
               <tr key={index} className="wallet-row skeleton-row">
                 <td>
                   <div className="skeleton skeleton-text medium"></div>
@@ -404,10 +413,7 @@ const AssetTable = ({ assets = [], isLoading }) => {
       </table>
 
       {visibleCount < filteredAssets.length && (
-        <button
-          onClick={() => setVisibleCount((prev) => prev + 10)}
-          className="show-more-button"
-        >
+        <button onClick={handleShowMore} className="show-more-button">
           Show more assets ({visibleCount} of {filteredAssets.length})
         </button>
       )}
@@ -418,6 +424,8 @@ const AssetTable = ({ assets = [], isLoading }) => {
 AssetTable.propTypes = {
   assets: PropTypes.array,
   isLoading: PropTypes.bool,
+  visibleCount: PropTypes.number,
+  setVisibleCount: PropTypes.func,
 };
 
 export default AssetTable;

@@ -7,57 +7,61 @@
 }
 
 .stat-card {
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.08);
+  padding: 1.25rem;
+  background: rgba(28, 24, 51, 0.6);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  min-height: 130px;
+  min-height: 120px;
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .stat-card.blue {
   background: linear-gradient(
     135deg,
-    rgba(63, 140, 255, 0.15),
-    rgba(33, 107, 214, 0.1)
+    rgba(63, 140, 255, 0.1),
+    rgba(28, 24, 51, 0.7)
   );
+  border-left: 2px solid rgba(63, 140, 255, 0.5);
 }
 
 .stat-card.purple {
   background: linear-gradient(
     135deg,
-    rgba(125, 103, 255, 0.15),
-    rgba(96, 79, 196, 0.1)
+    rgba(125, 103, 255, 0.1),
+    rgba(28, 24, 51, 0.7)
   );
+  border-left: 2px solid rgba(125, 103, 255, 0.5);
 }
 
 .stat-card.gold {
   background: linear-gradient(
     135deg,
-    rgba(243, 186, 47, 0.15),
-    rgba(192, 147, 35, 0.1)
+    rgba(243, 186, 47, 0.1),
+    rgba(28, 24, 51, 0.7)
   );
+  border-left: 2px solid rgba(243, 186, 47, 0.5);
 }
 
 .stat-card.gradient {
   background: linear-gradient(
     135deg,
-    rgba(53, 208, 186, 0.15),
-    rgba(70, 116, 193, 0.1)
+    rgba(53, 208, 186, 0.1),
+    rgba(28, 24, 51, 0.7)
   );
+  border-left: 2px solid rgba(53, 208, 186, 0.5);
 }
 
 .stat-card-header {
@@ -68,7 +72,7 @@
 }
 
 .stat-card-label {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: rgba(242, 242, 250, 0.8);
   text-transform: uppercase;
@@ -76,7 +80,7 @@
 }
 
 .stat-card-icon {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   opacity: 0.8;
 }
 
@@ -97,7 +101,7 @@
 }
 
 .stat-card-value {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #f2f2fa;
   letter-spacing: 0.02em;
@@ -108,14 +112,14 @@
 }
 
 .stat-card-value-symbol {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   opacity: 0.8;
   margin-right: 0.25rem;
 }
 
 .stat-card-value-amount {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
 }
 
 .stat-card-impact {
@@ -135,25 +139,25 @@
 /* Skeleton loader */
 .stat-card-skeleton {
   border-radius: 1rem;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1.25rem;
+  background: rgba(28, 24, 51, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
   gap: 1rem;
   justify-content: space-between;
   height: 100%;
-  min-height: 130px;
+  min-height: 120px;
 }
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .stat-card {
-    padding: 1.25rem;
+    padding: 1.15rem;
   }
 
   .stat-card-value {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
   }
 }
 
@@ -164,19 +168,19 @@
   }
 
   .stat-card-label {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 
   .stat-card-icon {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 
   .stat-card-value {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 
   .stat-card-value-amount {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 }
 

@@ -1,4 +1,11 @@
-
+/* Improved wallet table styling */
+.wallet-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  max-height: calc(100vh - 330px);
+  min-height: 300px;
+}
 
 .wallet-table {
   width: 100%;
@@ -6,20 +13,24 @@
   border-spacing: 0;
   font-size: 0.875rem;
   background-color: transparent;
+  table-layout: fixed;
 }
 
 .wallet-table th {
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   font-weight: 600;
   text-align: left;
   border-bottom: 1px solid rgba(125, 103, 255, 0.3);
   position: sticky;
   top: 0;
   z-index: 1;
+  background-color: rgba(28, 24, 51, 0.95);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .wallet-table td {
-  padding: 1rem;
+  padding: 0.6rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   color: #f2f2fa;
 }
@@ -46,6 +57,7 @@
 .address-text {
   font-family: monospace;
   letter-spacing: 0.5px;
+  font-size: 0.85rem;
 }
 
 .copy-button {
@@ -106,9 +118,9 @@
 
 .chain-badge {
   display: inline-block;
-  padding: 0.25rem 0.5rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 1rem;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
   text-transform: uppercase;
 }
@@ -158,7 +170,7 @@
   text-align: left;
   font-family: monospace;
   font-weight: 500;
-  font-size: 0.9375rem;
+  font-size: 0.9rem;
 }
 
 /* Empty state */
@@ -321,13 +333,13 @@
 
 .actions-cell {
   text-align: center;
-  width: 80px;
+  width: 60px;
 }
 
 .action-button {
   background: none;
   border: none;
-  padding: 8px;
+  padding: 6px;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -348,26 +360,19 @@
   background-color: rgba(255, 76, 76, 0.1);
 }
 
-/* Improve copy button styling */
-.copy-button {
-  background: none;
-  border: none;
-  color: #9e9ea0;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 0.25rem;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.5;
+/* Column widths for better data display */
+.wallet-table thead th:nth-child(1) {
+  width: 45%;
 }
 
-.address-container:hover .copy-button {
-  opacity: 1;
+.wallet-table thead th:nth-child(2) {
+  width: 20%;
 }
 
-.copy-button:hover {
-  color: #7d67ff;
-  background-color: rgba(125, 103, 255, 0.1);
+.wallet-table thead th:nth-child(3) {
+  width: 25%;
+}
+
+.wallet-table thead th:nth-child(4) {
+  width: 10%;
 }

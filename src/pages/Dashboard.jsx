@@ -41,6 +41,8 @@ function Dashboard() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   // State for refresh operation
   const [refreshing, setRefreshing] = useState(false);
+  // State for visible assets count (default to 20 for better initial density)
+  const [visibleCount, setVisibleCount] = useState(20);
 
   // Calculate portfolio statistics for the StatsCards component
   const portfolioStats = useMemo(() => {
@@ -134,7 +136,14 @@ function Dashboard() {
 
     switch (activeTab) {
       case "assets":
-        return <AssetTable assets={assets} isLoading={tableLoading} />;
+        return (
+          <AssetTable
+            assets={assets}
+            isLoading={tableLoading}
+            visibleCount={visibleCount}
+            setVisibleCount={setVisibleCount}
+          />
+        );
       case "wallets":
       default:
         return (
@@ -178,9 +187,8 @@ function Dashboard() {
         </div>
       )}
 
-      <h2 className="section-title">Portfolio Overview</h2>
-
       <div className="container">
+        {/* Compact Portfolio Overview Section */}
         <div className="portfolio-overview">
           <div className="balance-section">
             <BalanceCard
@@ -206,6 +214,9 @@ function Dashboard() {
               isLoading={isLoading || refreshing}
               label={refreshing ? "Refreshing..." : "Refresh"}
               aria-label="Refresh portfolio data"
+              variant="secondary"
+              size="small"
+              showLabel={true}
             />
           </div>
 

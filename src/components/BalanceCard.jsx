@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import BalanceChart from "./BalanceChart"; // Import the SVG-based chart
 import "./BalanceCard.css";
 import "./skeleton.css";
 
@@ -47,10 +48,7 @@ export default function BalanceCard({ balance, changePercent, isLoading }) {
     <div className="balance-card" aria-busy={isLoading}>
       <div className="balance-card-content">
         <div className="balance-info">
-          <div className="balance-header">
-            <span className="balance-label">Total Balance</span>
-          </div>
-
+          <span className="balance-label">Total Balance</span>
           {isLoading ? (
             <div className="skeleton-wrapper">
               <div className="skeleton skeleton-text large"></div>
@@ -61,13 +59,15 @@ export default function BalanceCard({ balance, changePercent, isLoading }) {
               <span className="balance-value">{formatBalance(balance)}</span>
             </div>
           )}
+        </div>
 
+        <div className="balance-header">
           <div className="balance-change">
             {isLoading ? (
               <div className="skeleton skeleton-text small"></div>
             ) : (
               <>
-                <span className="change-label">Last 24 hours</span>
+                <span className="change-label">24h</span>
                 <span
                   className="change-value"
                   style={{ color: getChangeColor() }}
@@ -87,12 +87,7 @@ export default function BalanceCard({ balance, changePercent, isLoading }) {
           {isLoading ? (
             <div className="skeleton skeleton-chart"></div>
           ) : (
-            <img
-              src="/assets/Chart.svg"
-              className="chart-svg"
-              alt=""
-              aria-hidden="true"
-            />
+            <BalanceChart balance={balance} changePercent={changePercent} />
           )}
         </div>
       </div>
