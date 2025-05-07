@@ -1,3 +1,4 @@
+/* Enhanced BalanceCard Component Styles */
 .balance-card {
   background: rgba(28, 24, 51, 0.6);
   border-radius: 16px;
@@ -6,9 +7,10 @@
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
-  width: 100%;
-  height: 100%;
-  position: relative; /* Added for absolute positioning of badges */
+  /* width: 100%; */
+  max-width: 35rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .balance-card:hover {
@@ -21,21 +23,18 @@
   display: grid;
   grid-template-columns: 1fr;
   padding: 1.5rem;
+  position: relative;
 }
 
 .balance-info {
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-.balance-header {
-  display: flex;
-  flex-direction: column;
+  padding-right: 0.5rem;
 }
 
 .balance-label {
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: rgba(242, 242, 250, 0.8);
   text-transform: uppercase;
@@ -45,6 +44,7 @@
 .balance-amount {
   display: flex;
   align-items: baseline;
+  margin: 0.5rem 0;
   flex-wrap: wrap;
 }
 
@@ -61,122 +61,22 @@
   color: #f2f2fa;
   letter-spacing: 0.02em;
   line-height: 1.2;
-  word-break: break-word;
 }
 
 .balance-change {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin-top: 0.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .change-label {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: rgba(242, 242, 250, 0.8);
 }
 
 .change-value {
-  font-size: 1.15rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.balance-chart {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  border-radius: 1rem;
-  width: 100%;
-}
-
-.chart-svg {
-  height: auto;
-  max-width: 100%;
-  width: auto;
-  opacity: 0.8;
-}
-
-.balance-card {
-  background: rgba(28, 24, 51, 0.6);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-  width: 100%;
-  height: 100%;
-  position: relative; /* Added for absolute positioning of badges */
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.balance-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(125, 103, 255, 0.3);
-  border-color: rgba(125, 103, 255, 0.2);
-}
-
-.balance-card-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  padding: 1.5rem;
-}
-
-.balance-info {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.balance-label {
   font-size: 1rem;
-  font-weight: 500;
-  color: rgba(242, 242, 250, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.balance-amount {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-}
-
-.currency-symbol {
-  font-size: 1.75rem;
-  font-weight: 400;
-  color: #f2f2fa;
-  margin-right: 0.25rem;
-}
-
-.balance-value {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #f2f2fa;
-  letter-spacing: 0.02em;
-  line-height: 1.2;
-  word-break: break-word;
-}
-
-.balance-change {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin-top: 0.75rem;
-}
-
-.change-label {
-  font-size: 0.8rem;
-  color: rgba(242, 242, 250, 0.8);
-}
-
-.change-value {
-  font-size: 1.15rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -184,394 +84,199 @@
 }
 
 .balance-chart {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
+  bottom: 1rem;
+  right: 0;
   height: 100%;
-  border-radius: 1rem;
-  width: 100%;
-  max-height: 120px;
 }
 
-.chart-svg {
-  height: auto;
-  max-width: 100%;
-  width: auto;
-  opacity: 0.8;
-}
-
-/* Improved Stat Badges Styles - Single Row */
+/* Stat badges */
 .stat-badges-container {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
+  z-index: 10;
 }
 
 .stat-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  padding: 0.35rem 0.5rem;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  cursor: help; /* Show question mark cursor for tooltip */
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  background: rgba(28, 24, 51, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  white-space: nowrap;
-}
-
-.stat-badge:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-  border-color: rgba(255, 255, 255, 0.2);
+  padding: 0.3rem;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .stat-badge-icon {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
 }
 
 .stat-badge-value {
-  font-family: monospace;
-  font-weight: 700;
   font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .stat-badge-label {
-  display: none; /* Hide label in compact mode */
+  font-size: 0.6rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  margin-top: 0.1rem;
 }
 
-/* Badge color variations - with more distinct gradients */
+/* Badge color variations */
 .stat-badge.blue {
-  background: linear-gradient(
-    135deg,
-    rgba(63, 140, 255, 0.15),
-    rgba(63, 140, 255, 0.05)
-  );
   color: #3f8cff;
-  border-left: 2px solid rgba(63, 140, 255, 0.4);
 }
 
 .stat-badge.purple {
-  background: linear-gradient(
-    135deg,
-    rgba(125, 103, 255, 0.15),
-    rgba(125, 103, 255, 0.05)
-  );
   color: #7d67ff;
-  border-left: 2px solid rgba(125, 103, 255, 0.4);
 }
 
 .stat-badge.gold {
-  background: linear-gradient(
-    135deg,
-    rgba(243, 186, 47, 0.15),
-    rgba(243, 186, 47, 0.05)
-  );
   color: #f3ba2f;
-  border-left: 2px solid rgba(243, 186, 47, 0.4);
 }
 
 .stat-badge.green {
-  background: linear-gradient(
-    135deg,
-    rgba(50, 195, 118, 0.15),
-    rgba(50, 195, 118, 0.05)
-  );
   color: #32c376;
-  border-left: 2px solid rgba(50, 195, 118, 0.4);
 }
 
 .stat-badge.red {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 76, 76, 0.15),
-    rgba(255, 76, 76, 0.05)
-  );
   color: #ff4c4c;
-  border-left: 2px solid rgba(255, 76, 76, 0.4);
+}
+
+/* Skeleton loading states */
+.skeleton {
+  background-color: rgba(199, 199, 199, 0.1);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(199, 199, 199, 0) 0%,
+    rgba(199, 199, 199, 0.15) 50%,
+    rgba(199, 199, 199, 0) 100%
+  );
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.skeleton-text.large {
+  height: 40px;
+  width: 80%;
+  margin-bottom: 1rem;
+}
+
+.skeleton-text.small {
+  height: 16px;
+  width: 60%;
+  margin-top: 0.5rem;
+}
+
+.skeleton-chart {
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 1rem;
 }
 
 /* Responsive adjustments */
 @media (min-width: 768px) {
   .balance-card-content {
-    align-items: center;
+    padding: 2rem;
+  }
+
+  .stat-badges-container {
+    top: 1rem;
+    right: 1rem;
+    gap: 0.75rem;
   }
 
   .balance-chart {
-    height: 120px;
-  }
-}
-
-@media (max-width: 767px) {
-  .balance-card-content {
-    padding: 1.25rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 60%;
   }
 
   .balance-value {
-    font-size: 1.9rem;
-  }
-
-  .currency-symbol {
-    font-size: 1.5rem;
-  }
-
-  .change-value {
-    font-size: 1rem;
-  }
-
-  .balance-chart {
-    height: 100px;
-  }
-
-  /* For tablets, keep the badges in a row but make them smaller */
-  .stat-badges-container {
-    gap: 0.4rem;
-  }
-
-  .stat-badge {
-    padding: 0.3rem 0.4rem;
-    border-radius: 5px;
-  }
-
-  .stat-badge-icon {
-    font-size: 0.75rem;
-  }
-
-  .stat-badge-value {
-    font-size: 0.75rem;
+    font-size: 2.5rem;
   }
 }
 
-@media (max-width: 600px) {
-  /* For mobile, start adjusting to vertical layout */
-  .stat-badges-container {
-    flex-wrap: wrap;
-    max-width: 180px;
-    justify-content: flex-end;
-  }
-
-  .stat-badge {
-    padding: 0.25rem 0.35rem;
-    font-size: 0.65rem;
-  }
-
-  .stat-badge-icon {
-    font-size: 0.7rem;
-  }
-
-  .stat-badge-value {
-    font-size: 0.7rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .balance-card-content {
-    padding: 1.25rem;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-  }
-
-  .balance-value {
-    font-size: 1.75rem;
-  }
-
-  .currency-symbol {
-    font-size: 1.35rem;
-  }
-
-  .change-value {
-    font-size: 1rem;
-  }
-
-  .balance-chart {
-    height: 80px;
-    justify-content: flex-start;
-  }
-
-  /* For very small mobile screens, switch to full-width badges */
-  .stat-badges-container {
-    position: relative;
-    top: auto;
-    right: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
+@media (max-width: 768px) {
+  .balance-card {
     width: 100%;
-    margin-top: 1rem;
-    gap: 0.3rem;
-    justify-content: space-between;
-  }
-
-  .stat-badge {
-    flex: 1 0 calc(50% - 0.3rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0.4rem;
-  }
-
-  .stat-badge-icon {
-    font-size: 0.8rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .stat-badge-value {
-    font-size: 0.7rem;
-  }
-
-  /* Show labels on mobile for better understanding */
-  .stat-badge-label {
-    display: block;
-    font-size: 0.5rem;
-    opacity: 0.7;
-    margin-top: 0.1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-}
-
-/* Responsive adjustments */
-@media (min-width: 768px) {
-  .balance-card-content {
-    align-items: center;
-  }
-
-  .balance-chart {
-    height: 120px;
-  }
-}
-
-@media (max-width: 900px) {
-  .stat-badges-container {
-    grid-template-columns: repeat(2, 1fr);
-    top: 0.75rem;
-    right: 0.75rem;
-    max-width: 160px;
-  }
-
-  .stat-badge {
-    padding: 0.4rem;
-  }
-
-  .stat-badge-icon {
-    font-size: 0.9rem;
-  }
-
-  .stat-badge-value {
-    font-size: 0.8rem;
-  }
-
-  .stat-badge-label {
-    font-size: 0.55rem;
-  }
-}
-
-@media (max-width: 767px) {
-  .balance-card-content {
-    padding: 1.25rem;
-  }
-
-  .balance-value {
-    font-size: 1.9rem;
-  }
-
-  .currency-symbol {
-    font-size: 1.5rem;
-  }
-
-  .change-value {
-    font-size: 1rem;
-  }
-
-  .balance-chart {
-    height: 100px;
-  }
-}
-
-@media (max-width: 600px) {
-  .stat-badges-container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.4rem;
-    max-width: 140px;
-  }
-
-  .stat-badge {
-    padding: 0.35rem;
-  }
-
-  .stat-badge-icon {
-    font-size: 0.85rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .stat-badge-value {
-    font-size: 0.75rem;
-  }
-
-  .stat-badge-label {
-    font-size: 0.5rem;
-    margin-top: 0.1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .balance-card-content {
-    padding: 1.25rem;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-  }
-
-  .balance-value {
-    font-size: 1.75rem;
-  }
-
-  .currency-symbol {
-    font-size: 1.35rem;
-  }
-
-  .change-value {
-    font-size: 1rem;
-  }
-
-  .balance-chart {
-    height: 80px;
-    justify-content: flex-start;
-  }
-
-  /* For very small mobile screens, make badges appear in a single row */
-  .stat-badges-container {
-    position: relative;
-    top: auto;
-    right: auto;
-    grid-template-columns: repeat(4, 1fr);
     max-width: 100%;
-    margin-top: 1rem;
+    padding: 1rem 0.5rem;
+
+  }
+
+  .stat-badges-container {
+    position: absolute;
+    top: 1rem;
+    right: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .balance-value {
+    font-size: 4rem;
+  }
+
+  .currency-symbol {
+    font-size: 2rem;
+  }
+
+  .balance-chart {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 17rem;
+  }
+
+  .stat-badges-container {
+
     gap: 0.3rem;
   }
 
   .stat-badge {
-    padding: 0.3rem;
-    border-radius: 6px;
+    width: 3rem;
+    height: 3rem;
   }
 
   .stat-badge-icon {
-    font-size: 0.8rem;
-    margin-bottom: 0.1rem;
+    font-size: auto;
   }
 
   .stat-badge-value {
-    font-size: 0.7rem;
+    font-size: auto;
   }
 
   .stat-badge-label {
-    font-size: 0.45rem;
+    font-size: auto;
   }
 }

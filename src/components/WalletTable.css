@@ -314,21 +314,8 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .asset-name-container {
-    max-width: 120px;
-  }
-
-  .asset-name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .exchange-name {
-    max-width: 100px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    max-width: 100%;
+  } 
 }
 
 .actions-cell {

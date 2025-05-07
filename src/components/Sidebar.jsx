@@ -47,8 +47,8 @@ function Sidebar() {
   // Navigation links data
   const navLinks = [
     { path: "/dashboard", icon: <FaHome />, label: "Dashboard" },
-    { path: "/dashboard/settings", icon: <FaCogs />, label: "Settings" },
-    { path: "/dashboard/profile", icon: <FaUser />, label: "Profile" },
+    // { path: "/dashboard/settings", icon: <FaCogs />, label: "Settings" },
+    // { path: "/dashboard/profile", icon: <FaUser />, label: "Profile" },
   ];
 
   return (
