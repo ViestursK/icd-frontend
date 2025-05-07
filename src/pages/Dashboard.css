@@ -31,19 +31,10 @@
   width: 100%;
 }
 
-/* Improved portfolio overview section */
-.portfolio-overview {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 1rem;
-}
-
+/* Simplified balance section - no more grid */
 .balance-section {
-  /* width: 100%; */
-}
-
-.stats-section {
-  /* width: 100%; */
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 /* Holdings container */
@@ -55,8 +46,8 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
   padding: 1.5rem;
-  margin-top: 1rem;
-  /* width: 100%; */
+  margin-top: 0.5rem;
+  width: 100%;
 }
 
 .holdings-header {
@@ -64,7 +55,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  /* width: 100%; */
+  width: 100%;
 }
 
 .holdings-header h3 {
@@ -257,18 +248,6 @@
 }
 
 /* Media queries for responsive layout */
-@media (min-width: 768px) {
-  .portfolio-overview {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .portfolio-overview {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-}
-
 @media (max-width: 767px) {
   .top-container {
     flex-direction: column;
@@ -282,4 +261,27 @@
   .modal-container {
     max-width: 90%;
   }
+
+  .balance-section {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Show more button styles */
+.show-more-button {
+  padding: 0.6rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #f2f2fa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+.show-more-button:hover {
+  background-color: rgba(125, 103, 255, 0.1);
+  border-color: rgba(125, 103, 255, 0.3);
 }

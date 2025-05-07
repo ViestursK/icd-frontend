@@ -7,7 +7,6 @@ import WalletTable from "../components/WalletTable";
 import AssetTable from "../components/AssetTable";
 import RefreshButton from "../components/ui/RefreshButton";
 import TabSelector from "../components/TabSelector";
-import StatsCards from "../components/StatsCards";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import "./Dashboard.css";
@@ -44,7 +43,7 @@ function Dashboard() {
   // State for visible assets count (default to 20 for better initial density)
   const [visibleCount, setVisibleCount] = useState(20);
 
-  // Calculate portfolio statistics for the StatsCards component
+  // Calculate portfolio statistics for the stats badges
   const portfolioStats = useMemo(() => {
     // Count of wallets and assets
     const walletCount = wallets.length;
@@ -188,22 +187,14 @@ function Dashboard() {
       )}
 
       <div className="container">
-        {/* Compact Portfolio Overview Section */}
-        <div className="portfolio-overview">
-          <div className="balance-section">
-            <BalanceCard
-              balance={totalBalance}
-              changePercent={changePercent}
-              isLoading={isLoading || refreshing}
-            />
-          </div>
-
-          <div className="stats-section">
-            <StatsCards
-              stats={portfolioStats}
-              isLoading={isLoading || refreshing}
-            />
-          </div>
+        {/* Balance Card with integrated stat badges */}
+        <div className="balance-section">
+          <BalanceCard
+            balance={totalBalance}
+            changePercent={changePercent}
+            isLoading={isLoading || refreshing}
+            stats={portfolioStats} // Pass the stats directly to BalanceCard
+          />
         </div>
 
         <div className="holdings-container">

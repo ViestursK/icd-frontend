@@ -9,66 +9,81 @@ const BalanceChart = ({ balance, changePercent }) => {
   const isPositive = parseFloat(changePercent) >= 0;
   const strokeColor = isPositive ? "#32c376" : "#ff4c4c";
   const gradientStart = isPositive
-    ? "rgba(50, 195, 118, 0.3)"
-    : "rgba(255, 76, 76, 0.3)";
+    ? "rgba(50, 195, 118, 0.2)"
+    : "rgba(255, 76, 76, 0.2)";
   const gradientEnd = "rgba(28, 24, 51, 0)";
 
   useEffect(() => {
+    // Don't generate chart paths if there's no balance
+    if (parseFloat(balance) <= 0) {
+      setChartPath("");
+      setAreaPath("");
+      return;
+    }
+    
     // Generate points for a natural-looking chart
     const generatePoints = () => {
-      // We'll create a simple upward or downward curve based on the change percent
-      const numPoints = 10;
+      const numPoints = 12; // More points for a smoother curve
       const width = 100;
       const height = 50;
-
-      // Create control points for a smooth curve
       const points = [];
 
+      // Add slight randomness based on change percent for better visualization
+      const changeValue = parseFloat(changePercent) || 0;
+      const direction = changeValue >= 0 ? -1 : 1; // Negative means line goes up (SVG y is inverted)
+      
       for (let i = 0; i < numPoints; i++) {
         const x = (i / (numPoints - 1)) * width;
-
-        // Base y position (should be in the middle for neutral)
-        let baseY = height / 2;
-
-        // Adjust based on change percent
-        const changeValue = parseFloat(changePercent) || 0;
-        const direction = changeValue >= 0 ? -1 : 1; // Negative means the line goes up (in SVG y is inverted)
-
-        // Create a smooth curve with a bit of randomness
-        // For positive change: mostly goes down (visually up)
-        // For negative change: mostly goes up (visually down)
         const progress = i / (numPoints - 1);
-
-        // Start around the middle and end with an appropriate trend
-        let trendFactor = direction * Math.abs(changeValue) * 0.25;
-
-        // Add slight randomness for a more natural look
-        const randomness = Math.sin(i * 1.5) * 5;
-
+        
+        // Base y position (middle for neutral)
+        let baseY = height / 2;
+        
+        // Create a smoother curve with less randomness for cleaner look
+        const trendFactor = direction * Math.abs(changeValue) * 0.2;
+        
+        // Less randomness for more stable line
+        const randomness = Math.sin(i * 1.5) * 3;
+        
         // Calculate final y position
         const y = baseY + progress * trendFactor * height + randomness;
-
+        
         // Ensure y stays within bounds
         const clampedY = Math.min(Math.max(y, 5), height - 5);
-
+        
         points.push({ x, y: clampedY });
       }
-
+      
       return points;
     };
 
     const points = generatePoints();
 
-    // Create SVG path for line
+    // Create SVG path for line - smoother with curve interpolation
     let linePath = "";
     let areaPathData = "";
 
     points.forEach((point, i) => {
       if (i === 0) {
+        // Starting point
         linePath = `M${point.x},${point.y}`;
         areaPathData = `M${point.x},50 L${point.x},${point.y}`;
-      } else {
+      } else if (i === points.length - 1) {
+        // End point - straight line to last point
         linePath += ` L${point.x},${point.y}`;
+        areaPathData += ` L${point.x},${point.y}`;
+      } else {
+        // Use curve for smoother lines - use cubic bezier for smoother look
+        const prevPoint = points[i - 1];
+        const nextPoint = points[i + 1];
+        
+        // Control points for subtle curve
+        const cp1x = prevPoint.x + (point.x - prevPoint.x) * 0.5;
+        const cp1y = prevPoint.y;
+        const cp2x = point.x - (point.x - prevPoint.x) * 0.5;
+        const cp2y = point.y;
+        
+        linePath += ` C${cp1x},${cp1y} ${cp2x},${cp2y} ${point.x},${point.y}`;
         areaPathData += ` L${point.x},${point.y}`;
       }
     });
@@ -79,6 +94,11 @@ const BalanceChart = ({ balance, changePercent }) => {
     setChartPath(linePath);
     setAreaPath(areaPathData);
   }, [balance, changePercent]);
+
+  // Don't render anything if there's no chart data
+  if (!chartPath || !areaPath) {
+    return null;
+  }
 
   return (
     <svg
@@ -93,33 +113,41 @@ const BalanceChart = ({ balance, changePercent }) => {
         </linearGradient>
       </defs>
 
-      {/* Grid lines for better visibility */}
+      {/* Grid lines for better visibility - more subtle */}
       <line
         x1="0"
         y1="25"
         x2="100"
         y2="25"
-        stroke="rgba(255,255,255,0.05)"
+        stroke="rgba(255,255,255,0.03)"
         strokeWidth="0.5"
       />
       <line
         x1="0"
-        y1="50"
+        y1="38"
         x2="100"
-        y2="50"
-        stroke="rgba(255,255,255,0.1)"
+        y2="38"
+        stroke="rgba(255,255,255,0.02)"
+        strokeWidth="0.5"
+      />
+      <line
+        x1="0"
+        y1="12"
+        x2="100"
+        y2="12"
+        stroke="rgba(255,255,255,0.02)"
         strokeWidth="0.5"
       />
 
       {/* Area fill under the curve */}
       <path d={areaPath} fill="url(#chartGradient)" stroke="none" />
 
-      {/* The line chart itself */}
+      {/* The line chart itself - with rounded line joins for smoother look */}
       <path
         d={chartPath}
         fill="none"
         stroke={strokeColor}
-        strokeWidth="1.5"
+        strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
