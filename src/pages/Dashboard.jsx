@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { FaWallet, FaCoins, FaTrashAlt, FaTimes, FaSync } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
@@ -9,6 +9,7 @@ import RefreshButton from "../components/ui/RefreshButton";
 import TabSelector from "../components/TabSelector";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
+import StatsCard from "../components/StatsCard";
 import "./Dashboard.css";
 
 // Define tab options
@@ -187,13 +188,15 @@ function Dashboard() {
       )}
 
       <div className="container">
-        {/* Balance Card with integrated stat badges */}
-        <div className="balance-section">
+        <div className="balance-stats-wrapper">
           <BalanceCard
             balance={totalBalance}
             changePercent={changePercent}
             isLoading={isLoading || refreshing}
-            stats={portfolioStats} // Pass the stats directly to BalanceCard
+          />
+          <StatsCard
+            stats={portfolioStats}
+            isLoading={isLoading || refreshing}
           />
         </div>
 
