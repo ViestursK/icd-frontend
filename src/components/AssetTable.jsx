@@ -27,7 +27,7 @@ const AssetTable = ({
 
   // Format number with commas and decimal places
   const formatNumber = useCallback((number, decimalPlaces = 2) => {
-    if (!number || isNaN(parseFloat(number))) return "0.00";
+    if (!number && number !== 0) return "0.00";
     return parseFloat(number).toLocaleString("en-US", {
       minimumFractionDigits: decimalPlaces,
       maximumFractionDigits: decimalPlaces,
@@ -37,32 +37,18 @@ const AssetTable = ({
   // Format crypto amount with appropriate decimal places
   const formatCryptoAmount = useCallback(
     (amount, symbol) => {
-      // Use more decimal places for low-unit-value tokens
+      if (!amount && amount !== 0) return "0.00";
+
+      // Use more decimal places for high-value tokens
       const decimalPlaces = ["BTC", "ETH", "WBTC"].includes(
         symbol?.toUpperCase()
       )
         ? 6
-        : 3;
+        : 4;
       return formatNumber(amount, decimalPlaces);
     },
     [formatNumber]
   );
-
-  // Get icon for price change direction
-  const getChangeIcon = useCallback((changePercent) => {
-    const numericChange = parseFloat(changePercent);
-    if (numericChange > 0) return <FaCaretUp className="change-icon up" />;
-    if (numericChange < 0) return <FaCaretDown className="change-icon down" />;
-    return null;
-  }, []);
-
-  // Format percent change with + or - sign
-  const formatPercentChange = useCallback((change) => {
-    const numericChange = parseFloat(change);
-    if (isNaN(numericChange)) return "0.00%";
-    const sign = numericChange >= 0 ? "+" : "";
-    return `${sign}${numericChange.toFixed(2)}%`;
-  }, []);
 
   // Render asset icon (logo or fallback)
   const renderAssetIcon = useCallback((asset) => {
@@ -118,31 +104,26 @@ const AssetTable = ({
     if (!sortField) return filteredAssets;
 
     return [...filteredAssets].sort((a, b) => {
-      let aValue = a[sortField];
-      let bValue = b[sortField];
+      let aValue, bValue;
 
-      // Handle numeric fields
-      if (
-        [
-          "price",
-          "price_24h_change_percent",
-          "total_amount",
-          "total_value",
-        ].includes(sortField)
-      ) {
-        aValue = parseFloat(aValue) || 0;
-        bValue = parseFloat(bValue) || 0;
-        return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+      switch (sortField) {
+        case "symbol":
+        case "name":
+          aValue = a[sortField]?.toLowerCase() || "";
+          bValue = b[sortField]?.toLowerCase() || "";
+          return sortDirection === "asc"
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        case "price":
+        case "price_24h_change_percent":
+        case "total_amount":
+        case "total_value":
+          aValue = parseFloat(a[sortField]) || 0;
+          bValue = parseFloat(b[sortField]) || 0;
+          return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+        default:
+          return 0;
       }
-
-      // Handle string fields
-      if (typeof aValue === "string" && typeof bValue === "string") {
-        return sortDirection === "asc"
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
-
-      return 0;
     });
   }, [filteredAssets, sortField, sortDirection]);
 
@@ -171,7 +152,9 @@ const AssetTable = ({
 
   // Handle showing more assets
   const handleShowMore = useCallback(() => {
-    setVisibleCount((prev) => prev + 10);
+    if (setVisibleCount) {
+      setVisibleCount((prev) => prev + 10);
+    }
   }, [setVisibleCount]);
 
   // Handle showing skeleton loading state
@@ -181,6 +164,7 @@ const AssetTable = ({
         className="wallet-table-container"
         role="region"
         aria-label="Asset holdings"
+        aria-busy="true"
       >
         <table className="wallet-table">
           <thead>
@@ -206,7 +190,13 @@ const AssetTable = ({
             {[...Array(8)].map((_, index) => (
               <tr key={index} className="wallet-row skeleton-row">
                 <td>
-                  <div className="skeleton skeleton-text medium"></div>
+                  <div className="asset-info">
+                    <div className="skeleton asset-icon"></div>
+                    <div
+                      className="skeleton-text medium"
+                      style={{ width: "100px" }}
+                    ></div>
+                  </div>
                 </td>
                 <td>
                   <div className="skeleton skeleton-text medium"></div>
@@ -348,7 +338,10 @@ const AssetTable = ({
         <tbody>
           {visibleAssets.length > 0 ? (
             visibleAssets.map((asset, index) => (
-              <tr key={index} className="wallet-row">
+              <tr
+                key={`${asset.symbol}-${asset.chain}-${index}`}
+                className="wallet-row"
+              >
                 <td className="asset-cell">
                   <div className="asset-info">
                     {renderAssetIcon(asset)}
@@ -370,6 +363,7 @@ const AssetTable = ({
                     symbol={asset.symbol}
                     showChange={false}
                     size="small"
+                    defaultPrice={parseFloat(asset.price)}
                   />
                 </td>
                 <td>
@@ -378,11 +372,15 @@ const AssetTable = ({
                     showChange={true}
                     showIcon={false}
                     size="small"
+                    defaultPrice={parseFloat(asset.price)}
+                    defaultChange={parseFloat(asset.price_24h_change_percent)}
                   />
                 </td>
                 <td>
-                  {formatCryptoAmount(asset.total_amount, asset.symbol)}{" "}
-                  {asset.symbol}
+                  <span className="token-amount">
+                    {formatCryptoAmount(asset.total_amount, asset.symbol)}{" "}
+                    <span className="token-symbol">{asset.symbol}</span>
+                  </span>
                 </td>
                 <td className="balance-cell">
                   ${formatNumber(asset.total_value)}
@@ -405,7 +403,7 @@ const AssetTable = ({
                     <p>
                       {searchQuery || selectedChain !== "all"
                         ? "No assets found matching your filters. Try adjusting your search criteria."
-                        : "No assets found in your portfolio."}
+                        : "No assets found in your portfolio. Add a wallet to get started."}
                     </p>
                   </div>
                 </div>

@@ -5,6 +5,8 @@
   font-family: var(--font-family);
   position: relative;
   transition: all 0.2s ease;
+  padding: 0.15rem 0;
+  border-radius: 4px;
 }
 
 /* Size variations */
@@ -25,6 +27,7 @@
 .price-value {
   font-family: monospace;
   transition: color 0.2s ease;
+  min-width: 50px; /* Prevent layout shifts when prices change */
 }
 
 /* Change indicator colors */
@@ -44,6 +47,8 @@
   padding: 0.1rem 0.3rem;
   border-radius: 3px;
   transition: all 0.2s ease;
+  min-width: 55px; /* Prevent layout shifts when percentages change */
+  text-align: center;
 }
 
 .price-change.price-positive {
@@ -62,12 +67,17 @@
 @keyframes price-flash {
   0% {
     opacity: 0.3;
+    transform: scale(0.98);
   }
   50% {
     opacity: 1;
+    transform: scale(1.03);
+    background-color: rgba(125, 103, 255, 0.1);
   }
   100% {
     opacity: 1;
+    transform: scale(1);
+    background-color: transparent;
   }
 }
 
@@ -77,6 +87,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 12px;
+  height: 12px;
 }
 
 /* Add a subtle pulse effect for positive price changes */
@@ -111,4 +123,15 @@
   100% {
     text-shadow: 0 0 0 rgba(255, 76, 76, 0);
   }
+}
+
+/* Improve layout for table cells */
+td .live-price {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+/* Prevent price value from wrapping */
+.price-value {
+  white-space: nowrap;
 }
