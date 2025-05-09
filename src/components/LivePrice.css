@@ -1,0 +1,114 @@
+.live-price {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-family);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* Size variations */
+.price-small {
+  font-size: 0.75rem;
+}
+
+.price-medium {
+  font-size: 0.875rem;
+}
+
+.price-large {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Price value */
+.price-value {
+  font-family: monospace;
+  transition: color 0.2s ease;
+}
+
+/* Change indicator colors */
+.price-positive {
+  color: #32c376;
+  transition: color 0.2s ease;
+}
+
+.price-negative {
+  color: #ff4c4c;
+  transition: color 0.2s ease;
+}
+
+/* Price change text */
+.price-change {
+  font-size: 0.8em;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.price-change.price-positive {
+  background-color: rgba(50, 195, 118, 0.1);
+}
+
+.price-change.price-negative {
+  background-color: rgba(255, 76, 76, 0.1);
+}
+
+/* Price update animation */
+.price-update {
+  animation: price-flash 0.5s ease;
+}
+
+@keyframes price-flash {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Icon styles */
+.price-icon {
+  font-size: 0.7em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Add a subtle pulse effect for positive price changes */
+.price-positive .price-icon {
+  animation: pulse-green 2s infinite;
+}
+
+/* Add a subtle pulse effect for negative price changes */
+.price-negative .price-icon {
+  animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% {
+    text-shadow: 0 0 0 rgba(50, 195, 118, 0);
+  }
+  50% {
+    text-shadow: 0 0 3px rgba(50, 195, 118, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(50, 195, 118, 0);
+  }
+}
+
+@keyframes pulse-red {
+  0% {
+    text-shadow: 0 0 0 rgba(255, 76, 76, 0);
+  }
+  50% {
+    text-shadow: 0 0 3px rgba(255, 76, 76, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 0 rgba(255, 76, 76, 0);
+  }
+}

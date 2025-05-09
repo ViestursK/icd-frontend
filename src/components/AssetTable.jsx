@@ -4,6 +4,7 @@ import { FaCaretUp, FaCaretDown, FaSearch, FaTimes } from "react-icons/fa";
 import "./WalletTable.css";
 import "./AssetTable.css";
 import "./skeleton.css";
+import LivePrice from "./LivePrice";
 
 const AssetTable = ({
   assets = [],
@@ -364,20 +365,20 @@ const AssetTable = ({
                     </div>
                   </div>
                 </td>
-                <td>${formatNumber(asset.price)}</td>
                 <td>
-                  <div
-                    className={`price-change-container ${
-                      parseFloat(asset.price_24h_change_percent) >= 0
-                        ? "positive-change"
-                        : "negative-change"
-                    }`}
-                  >
-                    {getChangeIcon(asset.price_24h_change_percent)}
-                    <span>
-                      {formatPercentChange(asset.price_24h_change_percent)}
-                    </span>
-                  </div>
+                  <LivePrice
+                    symbol={asset.symbol}
+                    showChange={false}
+                    size="small"
+                  />
+                </td>
+                <td>
+                  <LivePrice
+                    symbol={asset.symbol}
+                    showChange={true}
+                    showIcon={false}
+                    size="small"
+                  />
                 </td>
                 <td>
                   {formatCryptoAmount(asset.total_amount, asset.symbol)}{" "}

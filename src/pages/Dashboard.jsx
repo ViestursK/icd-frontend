@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { FaWallet, FaCoins, FaTrashAlt, FaTimes, FaSync } from "react-icons/fa";
+import { FaWallet, FaCoins, FaTrashAlt, FaTimes, FaSync, FaChartLine } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
 import WalletForm from "../components/WalletForm";
@@ -10,12 +10,15 @@ import TabSelector from "../components/TabSelector";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import StatsCard from "../components/StatsCard";
+import PriceDashboard from "../components/PriceDashboard";
+
 import "./Dashboard.css";
 
 // Define tab options
 const TABS = [
   { id: "assets", label: "Assets", icon: <FaCoins /> },
   { id: "wallets", label: "Wallets", icon: <FaWallet /> },
+  { id: "prices", label: "Live Prices", icon: <FaChartLine /> },
 ];
 
 function Dashboard() {
@@ -145,6 +148,15 @@ function Dashboard() {
           />
         );
       case "wallets":
+        return (
+          <WalletTable
+            wallets={wallets}
+            isLoading={tableLoading}
+            onDeleteClick={handleDeleteClick}
+          />
+        );
+      case "prices": // Add this case
+        return <PriceDashboard />; // Add this line
       default:
         return (
           <WalletTable
