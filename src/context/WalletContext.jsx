@@ -1,3 +1,5 @@
+// src/context/WalletContext.jsx - Improved version
+
 import React, {
   createContext,
   useContext,
@@ -7,6 +9,7 @@ import React, {
 } from "react";
 import { walletService } from "../services/walletService";
 import { useAuth } from "./AuthContext";
+import { useToast } from "./ToastContext";
 
 // Create wallet context
 const WalletContext = createContext(null);
@@ -14,6 +17,7 @@ const WalletContext = createContext(null);
 // Wallet provider component
 export const WalletProvider = ({ children }) => {
   const { isAuthenticated } = useAuth();
+  const toast = useToast();
 
   // State for different data types
   const [wallets, setWallets] = useState([]);
@@ -24,6 +28,7 @@ export const WalletProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [supportedChains, setSupportedChains] = useState([]);
   const [loadingChains, setLoadingChains] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   // Load wallets and assets on mount if authenticated
   useEffect(() => {
@@ -38,6 +43,7 @@ export const WalletProvider = ({ children }) => {
       setTotalBalance("0.00");
       setChangePercent("0.00");
       setSupportedChains([]);
+      setLastUpdated(null);
     }
   }, [isAuthenticated]);
 
@@ -52,16 +58,19 @@ export const WalletProvider = ({ children }) => {
       try {
         const walletsData = await walletService.fetchWallets(forceRefresh);
         setWallets(walletsData || []);
-        
-        // Note: We'll calculate total balance from assets now, as it's more reliable
+        setLastUpdated(new Date());
+
+        return walletsData;
       } catch (err) {
         // Only set error if it's not a case of a new user with no wallets
         // New users will just see empty wallet tables, not an error message
         if (err.response?.status !== 404) {
-          const errorMessage = err.response?.data?.detail || "Failed to load wallet data.";
+          const errorMessage =
+            err.response?.data?.detail || "Failed to load wallet data.";
           setError(errorMessage);
           console.error("Error fetching wallets:", err);
         }
+        return [];
       } finally {
         setIsLoading(false);
       }
@@ -79,22 +88,35 @@ export const WalletProvider = ({ children }) => {
 
       try {
         const assetsData = await walletService.fetchAssets(forceRefresh);
-        setAssets(assetsData || []);
-        
-        // Calculate and update total balance from assets
-        const calculatedBalance = walletService.calculateTotalBalance(assetsData);
-        setTotalBalance(calculatedBalance);
-        
-        // Calculate and update 24h change percentage
-        const calculatedChangePercent = walletService.calculate24hChangePercent(assetsData);
-        setChangePercent(calculatedChangePercent);
+
+        // Make sure we have valid data
+        if (Array.isArray(assetsData)) {
+          setAssets(assetsData);
+
+          // Calculate and update total balance from assets
+          const calculatedBalance =
+            walletService.calculateTotalBalance(assetsData);
+          setTotalBalance(calculatedBalance);
+
+          // Calculate and update 24h change percentage
+          const calculatedChangePercent =
+            walletService.calculate24hChangePercent(assetsData);
+          setChangePercent(calculatedChangePercent);
+
+          setLastUpdated(new Date());
+
+          return assetsData;
+        }
+        return [];
       } catch (err) {
         // Only set error if it's not a case of a new user with no assets
         if (err.response?.status !== 404) {
-          const errorMessage = err.response?.data?.detail || "Failed to load asset data.";
+          const errorMessage =
+            err.response?.data?.detail || "Failed to load asset data.";
           setError(errorMessage);
           console.error("Error fetching assets:", err);
         }
+        return [];
       } finally {
         setIsLoading(false);
       }
@@ -112,9 +134,11 @@ export const WalletProvider = ({ children }) => {
       try {
         const chains = await walletService.getSupportedChains(forceRefresh);
         setSupportedChains(chains || []);
+        return chains;
       } catch (err) {
         console.error("Error fetching supported chains:", err);
         // Don't set global error for this as it's not critical
+        return [];
       } finally {
         setLoadingChains(false);
       }
@@ -125,7 +149,8 @@ export const WalletProvider = ({ children }) => {
   // Add a new wallet
   const addWallet = useCallback(
     async (walletData) => {
-      if (!isAuthenticated) return;
+      if (!isAuthenticated)
+        return { success: false, error: "Not authenticated" };
 
       setIsLoading(true);
       setError(null);
@@ -133,12 +158,13 @@ export const WalletProvider = ({ children }) => {
       try {
         const newWallet = await walletService.addWallet(walletData);
 
-        // Refresh data after adding wallet
+        // Refresh data after adding wallet with forced refresh
         await fetchWallets(true);
-        await fetchAssets(true);
+        const newAssets = await fetchAssets(true);
 
-        // Don't use toast here
-        return { success: true, wallet: newWallet };
+        toast.success(`Wallet added successfully!`);
+
+        return { success: true, wallet: newWallet, assets: newAssets };
       } catch (err) {
         const errorMessage =
           err.response?.data?.detail || "Failed to add wallet.";
@@ -150,13 +176,14 @@ export const WalletProvider = ({ children }) => {
         setIsLoading(false);
       }
     },
-    [isAuthenticated, fetchWallets, fetchAssets]
+    [isAuthenticated, fetchWallets, fetchAssets, toast]
   );
 
   // Remove wallet
   const removeWallet = useCallback(
     async (walletData) => {
-      if (!isAuthenticated) return;
+      if (!isAuthenticated)
+        return { success: false, error: "Not authenticated" };
 
       setIsLoading(true);
       setError(null);
@@ -164,12 +191,13 @@ export const WalletProvider = ({ children }) => {
       try {
         const result = await walletService.removeWallet(walletData);
 
-        // Refresh data after removing wallet
+        // Refresh data after removing wallet with forced refresh
         await fetchWallets(true);
-        await fetchAssets(true);
+        const newAssets = await fetchAssets(true);
 
-        // Don't use toast here
-        return { success: true, result };
+        toast.success(`Wallet removed successfully!`);
+
+        return { success: true, result, assets: newAssets };
       } catch (err) {
         const errorMessage =
           err.response?.data?.detail || "Failed to remove wallet.";
@@ -181,7 +209,7 @@ export const WalletProvider = ({ children }) => {
         setIsLoading(false);
       }
     },
-    [isAuthenticated, fetchWallets, fetchAssets]
+    [isAuthenticated, fetchWallets, fetchAssets, toast]
   );
 
   // Handle refresh button click
@@ -191,32 +219,36 @@ export const WalletProvider = ({ children }) => {
 
     try {
       // Refresh both wallets and assets
-      await Promise.all([
-        fetchWallets(true),
-        fetchAssets(true)
-      ]);
-      
-      // Don't use toast here
-      return { success: true };
+      await fetchWallets(true);
+      const newAssets = await fetchAssets(true);
+
+      toast.success("Portfolio data refreshed successfully!");
+
+      return { success: true, assets: newAssets };
     } catch (err) {
-      const errorMessage = err.response?.data?.detail || "Failed to refresh data.";
+      const errorMessage =
+        err.response?.data?.detail || "Failed to refresh data.";
       setError(errorMessage);
+      toast.error(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
       setIsLoading(false);
     }
-  }, [fetchWallets, fetchAssets]);
+  }, [fetchWallets, fetchAssets, toast]);
 
   // Provide context value
   const contextValue = {
     wallets,
     assets,
     totalBalance,
+    setTotalBalance,
     changePercent,
+    setChangePercent,
     isLoading,
     error,
     supportedChains,
     loadingChains,
+    lastUpdated,
     fetchWallets,
     fetchAssets,
     addWallet,
