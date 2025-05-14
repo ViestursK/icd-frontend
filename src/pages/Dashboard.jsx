@@ -1,15 +1,19 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaWallet, FaCoins, FaTrashAlt, FaTimes, FaSync } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
 import WalletForm from "../components/WalletForm";
 import WalletTable from "../components/WalletTable";
 import AssetTable from "../components/AssetTable";
+import WalletSelector from "../components/WalletSelector";
+import ViewIndicator from "../components/ui/ViewIndicator";
 import RefreshButton from "../components/ui/RefreshButton";
 import TabSelector from "../components/TabSelector";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import StatsCard from "../components/StatsCard";
+import { walletService } from "../services/walletService";
 import "./Dashboard.css";
 
 // Define tab options
@@ -32,6 +36,8 @@ function Dashboard() {
   } = useWallet();
 
   const toast = useToast();
+  const navigate = useNavigate();
+  const { chain, address } = useParams();
 
   // State for active tab
   const [activeTab, setActiveTab] = useState("assets");
@@ -43,25 +49,79 @@ function Dashboard() {
   const [refreshing, setRefreshing] = useState(false);
   // State for visible assets count (default to 20 for better initial density)
   const [visibleCount, setVisibleCount] = useState(20);
+  // State for single wallet view
+  const [currentWallet, setCurrentWallet] = useState(null);
+  const [walletAssets, setWalletAssets] = useState([]);
+  const [loadingWallet, setLoadingWallet] = useState(false);
+
+  // Load single wallet data if chain and address are provided
+  useEffect(() => {
+    const loadWalletData = async () => {
+      if (chain && address) {
+        setLoadingWallet(true);
+        try {
+          // Find the wallet in the wallets list
+          const wallet = wallets.find(
+            (w) =>
+              w.chain.toLowerCase() === chain.toLowerCase() &&
+              w.address.toLowerCase() === address.toLowerCase()
+          );
+
+          if (wallet) {
+            setCurrentWallet(wallet);
+
+            // Fetch wallet tokens
+            const walletData = await walletService.getWalletDetail(
+              address,
+              chain
+            );
+            const transformedAssets =
+              walletService.transformWalletTokensToAssets(walletData.tokens);
+            setWalletAssets(transformedAssets);
+          } else {
+            toast.error("Wallet not found");
+            navigate("/dashboard");
+          }
+        } catch (error) {
+          toast.error("Failed to load wallet data");
+          console.error("Error loading wallet data:", error);
+          navigate("/dashboard");
+        } finally {
+          setLoadingWallet(false);
+        }
+      } else {
+        // Reset to all wallets view
+        setCurrentWallet(null);
+        setWalletAssets([]);
+      }
+    };
+
+    if (wallets.length > 0) {
+      loadWalletData();
+    }
+  }, [chain, address, wallets, navigate, toast]);
 
   // Calculate portfolio statistics for the stats badges
   const portfolioStats = useMemo(() => {
+    // Determine which assets to use based on view
+    const activeAssets = currentWallet ? walletAssets : assets;
+
     // Count of wallets and assets
-    const walletCount = wallets.length;
-    const assetCount = assets.length;
+    const walletCount = currentWallet ? 1 : wallets.length;
+    const assetCount = activeAssets.length;
 
     // Find the most valuable asset
     const topAsset =
-      assets.length > 0
-        ? assets.sort(
+      activeAssets.length > 0
+        ? activeAssets.sort(
             (a, b) => parseFloat(b.total_value) - parseFloat(a.total_value)
           )[0]
         : null;
 
     // Find the asset with the biggest price impact (positive or negative)
     const biggestImpact =
-      assets.length > 0
-        ? assets.sort((a, b) => {
+      activeAssets.length > 0
+        ? activeAssets.sort((a, b) => {
             return (
               Math.abs(parseFloat(b.price_24h_change_percent)) -
               Math.abs(parseFloat(a.price_24h_change_percent))
@@ -81,98 +141,187 @@ function Dashboard() {
             value: biggestImpact.total_value,
             change: biggestImpact.price_24h_change_percent,
           }
-        : { symbol: "N/A", value: "0", change: "0" },
-    };
-  }, [wallets, assets]);
-
-  // Handle refresh button click
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    try {
-      const result = await refreshData();
-      if (result.success) {
-        toast.success("Portfolio data refreshed");
-      } else if (result.error) {
-        toast.error(result.error);
-      }
-    } catch (error) {
-      toast.error("Failed to refresh data. Please try again.");
-    } finally {
-      setRefreshing(false);
-    }
-  };
-
-  // Handle wallet delete click
-  const handleDeleteClick = (wallet) => {
-    setSelectedWallet(wallet);
-    setShowDeleteModal(true);
-  };
-
-  // Handle confirm delete
-  const handleConfirmDelete = async () => {
-    if (!selectedWallet) return;
-
-    try {
-      setRefreshing(true);
-      const result = await removeWallet({
-        address: selectedWallet.address,
-        chain: selectedWallet.chain,
-      });
-
-      toast.success("Wallet removed successfully!");
-      setShowDeleteModal(false);
-      setSelectedWallet(null);
-    } catch (error) {
-      toast.error("Failed to remove wallet. Please try again.");
-    } finally {
-      setRefreshing(false);
-    }
-  };
-
-  // Function to render the active table based on tab
-  const renderActiveTable = () => {
-    // Combined loading state - either global loading or local refreshing
-    const tableLoading = isLoading || refreshing;
-
+          : { symbol: "N/A", value: "0", change: "0" },
+        };
+      }, [wallets, assets, currentWallet, walletAssets]);
+      
+      // Handle refresh button click
+      const handleRefresh = async () => {
+        setRefreshing(true);
+        try {
+          if (currentWallet) {
+            // Refresh single wallet
+            try {
+              const walletData = await walletService.getWalletDetail(
+                address,
+                chain
+              );
+              const transformedAssets = walletService.transformWalletTokensToAssets(
+                walletData.tokens
+              );
+              setWalletAssets(transformedAssets);
+              toast.success(
+                `Wallet ${currentWallet.address.substring(0, 6)}... refreshed`
+              );
+            } catch (error) {
+              toast.error("Failed to refresh wallet data");
+            }
+          } else {
+            // Refresh all wallets
+            const result = await refreshData();
+            if (result.success) {
+              toast.success("Portfolio data refreshed");
+            } else if (result.error) {
+              toast.error(result.error);
+            }
+          }
+        } catch (error) {
+          toast.error("Failed to refresh data. Please try again.");
+        } finally {
+          setRefreshing(false);
+        }
+      };
+      
+      // Handle wallet delete click
+      const handleDeleteClick = (wallet) => {
+        setSelectedWallet(wallet);
+        setShowDeleteModal(true);
+      };
+      
+      // Handle confirm delete
+      const handleConfirmDelete = async () => {
+        if (!selectedWallet) return;
+        
+        try {
+          setRefreshing(true);
+          const result = await removeWallet({
+            address: selectedWallet.address,
+            chain: selectedWallet.chain,
+          });
+          
+          toast.success("Wallet removed successfully!");
+          setShowDeleteModal(false);
+          setSelectedWallet(null);
+          
+          // If we deleted the current wallet, go back to all wallets view
+          if (
+            currentWallet &&
+            currentWallet.address === selectedWallet.address &&
+            currentWallet.chain === selectedWallet.chain
+          ) {
+            navigate("/dashboard");
+          }
+        } catch (error) {
+          toast.error("Failed to remove wallet. Please try again.");
+        } finally {
+          setRefreshing(false);
+        }
+      };
+      
+      // Handle wallet selection from dropdown
+      const handleWalletSelect = (wallet) => {
+        if (wallet) {
+          // Navigate to specific wallet view
+          navigate(`/dashboard/wallet/${wallet.chain}/${wallet.address}`);
+        } else {
+          // Navigate to all wallets view
+          navigate("/dashboard");
+        }
+      };
+      
+      // Function to render the active table based on tab
+      const renderActiveTable = () => {
+    // Combined loading state - either global loading or local refreshing or loading wallet
+    const tableLoading = isLoading || refreshing || loadingWallet;
+    
     switch (activeTab) {
       case "assets":
         return (
           <AssetTable
-            assets={assets}
-            isLoading={tableLoading}
-            visibleCount={visibleCount}
-            setVisibleCount={setVisibleCount}
+          assets={currentWallet ? walletAssets : assets}
+          isLoading={tableLoading}
+          visibleCount={visibleCount}
+          setVisibleCount={setVisibleCount}
           />
         );
-      case "wallets":
-      default:
-        return (
-          <WalletTable
-            wallets={wallets}
-            isLoading={tableLoading}
-            onDeleteClick={handleDeleteClick}
-          />
-        );
-    }
-  };
-
-  // Get the title based on active tab
-  const getTableTitle = () => {
-    switch (activeTab) {
-      case "assets":
-        return "Crypto Assets";
-      case "wallets":
-      default:
-        return "Crypto Wallets";
-    }
-  };
-
+        case "wallets":
+          default:
+            return (
+              <WalletTable
+              wallets={currentWallet ? [currentWallet] : wallets}
+              isLoading={tableLoading}
+              onDeleteClick={handleDeleteClick}
+              />
+            );
+          }
+        };
+        
+        // Get the title based on active tab and current view
+        const getTableTitle = () => {
+          const prefix = currentWallet
+          ? `${currentWallet.chain.toUpperCase()} Wallet`
+          : "";
+          
+          switch (activeTab) {
+            case "assets":
+              return prefix ? `${prefix} Assets` : "Crypto Assets";
+              case "wallets":
+                default:
+                  return prefix ? prefix : "Crypto Wallets";
+                }
+              };
+              
+              // Get balance and change percent for current view
+              const getCurrentBalance = () => {
+                if (currentWallet) {
+                  return currentWallet.balance_usd;
+                }
+                return totalBalance;
+              };
+              
+              const getCurrentChangePercent = () => {
+                if (currentWallet) {
+                  // Calculate change percent for wallet assets
+                  const totalValue = walletAssets.reduce(
+                    (sum, asset) => sum + parseFloat(asset.total_value || 0),
+                    0
+                  );
+                  
+                  const totalChange = walletAssets.reduce(
+                    (sum, asset) => sum + parseFloat(asset.total_value_24h_change || 0),
+                    0
+                  );
+                  
+                  if (totalValue === 0) return "0.00";
+                  
+                  // Calculate percentage change relative to current value
+                  const percentChange = (totalChange / (totalValue - totalChange)) * 100;
+                  return percentChange.toFixed(2);
+                }
+                return changePercent;
+              };
+              
+              // Create header actions with the wallet selector
+              const headerActions = (
+                <WalletSelector
+                wallets={wallets}
+                selectedWallet={currentWallet}
+                onWalletSelect={handleWalletSelect}
+                />
+              );
+              
   return (
     <div className="dashboard-container">
       <div className="top-container">
-        <Header title="DASHBOARD" />
-        <WalletForm />
+        <Header
+          title="DASHBOARD"
+          actions={wallets.length > 0 ? headerActions : null}
+        />
       </div>
+        <WalletForm />
+
+      {/* View Indicator */}
+      {wallets.length > 0 && <ViewIndicator currentWallet={currentWallet} />}
 
       {error && (
         <div className="error-alert" role="alert">
@@ -190,13 +339,13 @@ function Dashboard() {
       <div className="container">
         <div className="balance-stats-wrapper">
           <BalanceCard
-            balance={totalBalance}
-            changePercent={changePercent}
-            isLoading={isLoading || refreshing}
+            balance={getCurrentBalance()}
+            changePercent={getCurrentChangePercent()}
+            isLoading={isLoading || refreshing || loadingWallet}
           />
           <StatsCard
             stats={portfolioStats}
-            isLoading={isLoading || refreshing}
+            isLoading={isLoading || refreshing || loadingWallet}
           />
         </div>
 
@@ -205,7 +354,7 @@ function Dashboard() {
             <h3>{getTableTitle()}</h3>
             <RefreshButton
               onRefresh={handleRefresh}
-              isLoading={isLoading || refreshing}
+              isLoading={isLoading || refreshing || loadingWallet}
               label={refreshing ? "Refreshing..." : "Refresh"}
               aria-label="Refresh portfolio data"
               variant="secondary"

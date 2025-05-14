@@ -78,7 +78,13 @@ function AppRouter() {
             </ProtectedRoute>
           }
         >
+          {/* Main dashboard (all wallets) */}
           <Route index element={<Dashboard />} />
+
+          {/* Single wallet view */}
+          <Route path="wallet/:chain/:address" element={<Dashboard />} />
+
+          {/* Other dashboard routes */}
           <Route path="settings" element={<Settings />} />
           <Route path="profile" element={<Profile />} />
         </Route>

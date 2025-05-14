@@ -5,6 +5,8 @@
   border-radius: 0.5rem;
   max-height: calc(100vh - 330px);
   min-height: 300px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(125, 103, 255, 0.2) transparent;
 }
 
 .wallet-table {
