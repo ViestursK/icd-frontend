@@ -6,8 +6,9 @@
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.2s ease;
-  max-width: 30rem;
   overflow: hidden;
+  max-width: 30rem;
+  width: 100%;
 }
 
 .balance-card:hover {
@@ -17,9 +18,15 @@
 }
 
 .balance-card-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   padding: 1.5rem;
+  width: 100%;
+}
+
+/* Balance info styles */
+.balance-info-container {
+  margin-bottom: 1rem;
 }
 
 .balance-info {
@@ -38,28 +45,39 @@
 .balance-amount {
   display: flex;
   align-items: baseline;
-  font-size: auto;
+  margin: 0.25rem 0;
 }
 
 .currency-symbol {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-right: 0.25rem;
 }
 
 .balance-value {
   font-weight: 700;
-  font-size: clamp(3rem, 1vw, 2rem);
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  line-height: 1.2;
+}
+
+/* Font size classes based on balance length */
+.balance-value-large {
+  font-size: 2.5rem;
+}
+
+.balance-value-medium {
+  font-size: 2rem;
+}
+
+.balance-value-small {
+  font-size: 1.75rem;
 }
 
 .balance-change {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .change-label {
@@ -71,41 +89,284 @@
   display: flex;
   align-items: center;
   font-size: 0.8rem;
+  gap: 0.25rem;
 }
 
-/* tablet */
+/* Chart container */
+.chart-container {
+  width: 100%;
+  height: 80px;
+}
 
-@media (max-width: 768px) {
-  .balance-card {
-    max-width: 100%;
+/* Skeleton loading states */
+.skeleton {
+  background-color: rgba(199, 199, 199, 0.1);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(199, 199, 199, 0) 0%,
+    rgba(199, 199, 199, 0.15) 50%,
+    rgba(199, 199, 199, 0) 100%
+  );
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
   }
+  100% {
+    left: 100%;
+  }
+}
+
+.skeleton-text.large {
+  height: 2.5rem;
+  width: 80%;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-text.small {
+  height: 1rem;
+  width: 50%;
+}
+
+.skeleton-chart {
+  height: 80px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  /* Slightly reduce font sizes on mobile */
+  .balance-value-large {
+    font-size: 2rem;
+  }
+
+  .balance-value-medium {
+    font-size: 1.75rem;
+  }
+
+  .balance-value-small {
+    font-size: 1.5rem;
+  }
+}
+
+/* For extremely small screens */
+@media (max-width: 360px) {
   .balance-card-content {
-    grid-template-columns: 1fr 1fr;
+    padding: 1rem;
   }
 
-  .balance-info {
-    padding-right: 0;
+  .balance-value-large,
+  .balance-value-medium,
+  .balance-value-small {
+    font-size: 1.5rem;
   }
-  .balance-label {
-    font-size: 1rem;
-  }
-  .balance-value {
-    font-weight: 700;
-    font-size: clamp(3rem, 5vw, 1rem);
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .currency-symbol {
-    font-size: clamp(2rem, 5vw, 1rem);
-    margin-right: 0.25rem;
+  
+  .chart-container,
+  .skeleton-chart {
+    height: 70px;
   }
 }
 
-/* mobile */
 
-@media (max-width: 640px) {
-  .balance-card {
-    max-width: 100%;
+.balance-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(125, 103, 255, 0.3);
+  border-color: rgba(125, 103, 255, 0.2);
+}
+
+.balance-card-content {
+  display: flex;
+  padding: 1.5rem;
+  width: 100%;
+  /* Default to vertical layout for all cards regardless of screen size */
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Balance info container */
+.balance-info-container {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Chart container - bigger by default */
+.chart-container {
+  width: 100%;
+  height: 100px; /* Increased height for a bigger chart */
+  position: relative;
+}
+
+/* Balance info styles */
+.balance-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.balance-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(242, 242, 250, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.balance-amount {
+  display: flex;
+  align-items: baseline;
+  width: 100%;
+  margin: 0.25rem 0;
+  overflow: hidden;
+}
+
+.currency-symbol {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-right: 0.25rem;
+  flex-shrink: 0;
+}
+
+.balance-value {
+  font-weight: 700;
+  overflow: visible; /* Don't hide overflow, allow full visibility */
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+/* Font size classes based on balance length */
+.balance-value-large {
+  font-size: 2.5rem;
+}
+
+.balance-value-medium {
+  font-size: 2rem;
+}
+
+.balance-value-small {
+  font-size: 1.75rem;
+}
+
+.balance-change {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.change-label {
+  color: rgba(242, 242, 250, 0.8);
+  font-size: 0.8rem;
+}
+
+.change-value {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  gap: 0.25rem;
+}
+
+/* Skeleton loading states */
+.skeleton {
+  background-color: rgba(199, 199, 199, 0.1);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(199, 199, 199, 0) 0%,
+    rgba(199, 199, 199, 0.15) 50%,
+    rgba(199, 199, 199, 0) 100%
+  );
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.skeleton-text.large {
+  height: 2.5rem;
+  width: 80%;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-text.small {
+  height: 1rem;
+  width: 50%;
+}
+
+.skeleton-chart {
+  height: 100px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  /* Slightly reduce font sizes on mobile */
+  .balance-value-large {
+    font-size: 2rem;
+  }
+
+  .balance-value-medium {
+    font-size: 1.75rem;
+  }
+
+  .balance-value-small {
+    font-size: 1.5rem;
+  }
+  
+  /* Adjust chart height for smaller screens */
+  .chart-container, 
+  .skeleton-chart {
+    height: 80px;
+  }
+}
+
+/* For extremely small screens */
+@media (max-width: 360px) {
+  .balance-card-content {
+    padding: 1rem;
+  }
+
+  .balance-value-large,
+  .balance-value-medium,
+  .balance-value-small {
+    font-size: 1.5rem;
+  }
+  
+  /* Further reduce chart height for very small screens */
+  .chart-container, 
+  .skeleton-chart {
+    height: 70px;
   }
 }

@@ -1,23 +1,26 @@
-import React from "react";
+// BalanceCard.jsx
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import {
-  FaArrowUp,
-  FaArrowDown,
-  FaWallet,
-  FaCoins,
-  FaStar,
-  FaChartLine,
-} from "react-icons/fa";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import "./BalanceCard.css";
-import BalanceChart from "./BalanceChart"; // Updated import
+import BalanceChart from "./BalanceChart";
 
-const BalanceCard = ({ balance, changePercent, isLoading, stats }) => {
-  const formatBalance = (balance) =>
-    Number(balance).toLocaleString("en-US", {
+const BalanceCard = ({ balance, changePercent, isLoading }) => {
+  // Format balance with proper thousands separators and 2 decimal places
+  const formatBalance = (balance) => {
+    if (balance === null || balance === undefined || isNaN(balance)) {
+      return "0.00";
+    }
+
+    // Parse as float and use standard number formatting with exactly 2 decimal places
+    const num = parseFloat(balance);
+    return num.toLocaleString('en-US', {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
+  };
 
+  // Format change percent with sign
   const formatChangePercent = (percent) => {
     if (!percent) return "0.00%";
     const numericChange = parseFloat(percent);
@@ -25,6 +28,7 @@ const BalanceCard = ({ balance, changePercent, isLoading, stats }) => {
     return `${sign}${numericChange.toFixed(2)}%`;
   };
 
+  // Get icon for the change direction
   const getChangeIcon = () => {
     const numericChange = parseFloat(changePercent);
     if (numericChange > 0) return <FaArrowUp />;
@@ -32,6 +36,7 @@ const BalanceCard = ({ balance, changePercent, isLoading, stats }) => {
     return null;
   };
 
+  // Get color for the change value
   const getChangeColor = () => {
     if (!changePercent) return "#F2F2FA";
     const numericChange = parseFloat(changePercent);
@@ -40,44 +45,60 @@ const BalanceCard = ({ balance, changePercent, isLoading, stats }) => {
     return "#F2F2FA";
   };
 
+  // Get dynamic font size class based on balance length
+  const balanceFontClass = useMemo(() => {
+    const formattedBalance = formatBalance(balance);
+    
+    if (formattedBalance.length > 14) {
+      return "balance-value-small";
+    } else if (formattedBalance.length > 10) {
+      return "balance-value-medium";
+    } else {
+      return "balance-value-large";
+    }
+  }, [balance]);
+
   return (
     <div className="balance-card" aria-busy={isLoading}>
       <div className="balance-card-content">
-        <div className="balance-info">
-          <span className="balance-label">TOTAL BALANCE</span>
-          {isLoading ? (
-            <div className="skeleton-wrapper">
-              <div className="skeleton skeleton-text large"></div>
-            </div>
-          ) : (
-            <div className="balance-amount">
-              <span className="currency-symbol">$</span>
-              <span className="balance-value">{formatBalance(balance)}</span>
-            </div>
-          )}
-
-          <div className="balance-change">
+        <div className="balance-info-container">
+          <div className="balance-info">
+            <span className="balance-label">TOTAL BALANCE</span>
             {isLoading ? (
-              <div className="skeleton skeleton-text small"></div>
+              <div className="skeleton skeleton-text large"></div>
             ) : (
-              <>
-                <span className="change-label">24h</span>
-                <span
-                  className="change-value"
-                  style={{ color: getChangeColor() }}
-                  aria-label={`${formatChangePercent(
-                    changePercent
-                  )} change in the last 24 hours`}
+              <div className="balance-amount">
+                <span className="currency-symbol">$</span>
+                <span 
+                  className={`balance-value ${balanceFontClass}`} 
+                  title={`${formatBalance(balance)}`}
                 >
-                  {getChangeIcon()}
-                  {formatChangePercent(changePercent)}
+                  {formatBalance(balance)}
                 </span>
-              </>
+              </div>
             )}
+
+            <div className="balance-change">
+              {isLoading ? (
+                <div className="skeleton skeleton-text small"></div>
+              ) : (
+                <>
+                  <span className="change-label">24h</span>
+                  <span
+                    className="change-value"
+                    style={{ color: getChangeColor() }}
+                    aria-label={`${formatChangePercent(changePercent)} change in the last 24 hours`}
+                  >
+                    {getChangeIcon()}
+                    {formatChangePercent(changePercent)}
+                  </span>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="balance-chart">
+        <div className="chart-container">
           {isLoading ? (
             <div className="skeleton skeleton-chart"></div>
           ) : (
@@ -96,27 +117,25 @@ const BalanceCard = ({ balance, changePercent, isLoading, stats }) => {
 BalanceCard.propTypes = {
   balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   changePercent: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  isLoading: PropTypes.bool,
-  stats: PropTypes.shape({
-    walletCount: PropTypes.number,
-    assetCount: PropTypes.number,
-    topAsset: PropTypes.shape({
-      symbol: PropTypes.string,
-      value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    }),
-    biggestImpact: PropTypes.shape({
-      symbol: PropTypes.string,
-      value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      change: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    }),
-  }),
+  isLoading: PropTypes.bool
 };
 
 BalanceCard.defaultProps = {
   balance: "0.00",
   changePercent: "0.00",
-  isLoading: false,
-  stats: null,
+  isLoading: false
+};
+
+BalanceCard.propTypes = {
+  balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  changePercent: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  isLoading: PropTypes.bool
+};
+
+BalanceCard.defaultProps = {
+  balance: "0.00",
+  changePercent: "0.00",
+  isLoading: false
 };
 
 export default BalanceCard;
