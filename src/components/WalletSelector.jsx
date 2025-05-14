@@ -87,6 +87,17 @@ const WalletSelector = ({
     setIsOpen(!isOpen);
   };
 
+  // Get the display name for the selected wallet in the toggle button
+  const getSelectedWalletDisplayName = () => {
+    if (!selectedWallet) return "All Wallets";
+
+    if (selectedWallet.name) {
+      return selectedWallet.name;
+    }
+
+    return formatAddress(selectedWallet.address);
+  };
+
   return (
     <div className="wallet-selector" ref={dropdownRef}>
       <button
@@ -103,7 +114,7 @@ const WalletSelector = ({
               {selectedWallet.chain.toUpperCase()}
             </span>
             <span className="wallet-selector-address">
-              {formatAddress(selectedWallet.address)}
+              {getSelectedWalletDisplayName()}
             </span>
           </>
         ) : (
@@ -165,7 +176,7 @@ const WalletSelector = ({
               </div>
               <div className="wallet-selector-item-details">
                 <span className="wallet-selector-item-name">
-                  {formatAddress(wallet.address)}
+                  {wallet.name || formatAddress(wallet.address)}
                 </span>
                 <div className="wallet-selector-item-meta">
                   <span className="wallet-selector-item-chain">

@@ -1,3 +1,4 @@
+// Modified WalletForm.jsx to include name field
 import React, { useState, useRef, useEffect } from "react";
 import {
   FaWallet,
@@ -8,6 +9,7 @@ import {
   FaEthereum,
   FaCoins,
   FaChevronRight,
+  FaTag,
 } from "react-icons/fa";
 import { SiBinance, SiCoinbase } from "react-icons/si";
 import { useWallet } from "../context/WalletContext";
@@ -22,6 +24,7 @@ export default function WalletForm() {
   // Form states for manual wallet addition
   const [walletAddress, setWalletAddress] = useState("");
   const [selectedChain, setSelectedChain] = useState("");
+  const [walletName, setWalletName] = useState(""); // New state for wallet name
   // Loading states
   const [connectingWallet, setConnectingWallet] = useState(false);
 
@@ -76,6 +79,7 @@ export default function WalletForm() {
     setIsModalOpen(false);
     setWalletAddress("");
     setSelectedChain("");
+    setWalletName(""); // Reset wallet name
     setActiveTab("wallet-connect");
   };
 
@@ -106,6 +110,25 @@ export default function WalletForm() {
     }, 1500);
   };
 
+  // Generate a default wallet name based on chain and address
+  const generateDefaultWalletName = () => {
+    if (selectedChain && walletAddress) {
+      const chainName = selectedChain.toUpperCase();
+      const addressShort = `${walletAddress.substring(0, 4)}...${walletAddress.substring(
+        walletAddress.length - 4
+      )}`;
+      return `${chainName} ${addressShort}`;
+    }
+    return "";
+  };
+
+  // Auto-fill wallet name when address and chain are set
+  useEffect(() => {
+    if (selectedChain && walletAddress && !walletName) {
+      setWalletName(generateDefaultWalletName());
+    }
+  }, [selectedChain, walletAddress, walletName]);
+
   // Handle manual form submission
   const handleSubmitManual = async (e) => {
     e.preventDefault();
@@ -121,19 +144,24 @@ export default function WalletForm() {
       return;
     }
 
+    // Use default name if none provided
+    const nameToUse = walletName.trim() || generateDefaultWalletName();
+
     setConnectingWallet(true);
 
     try {
-      // Call the addWallet function from context
+      // Call the addWallet function from context with the new name parameter
       const result = await addWallet({
         address: walletAddress.trim(),
         chain: selectedChain,
+        name: nameToUse,
       });
 
       if (result.success) {
         // Reset form on success
         setWalletAddress("");
         setSelectedChain("");
+        setWalletName("");
         closeModal();
         toast.success("Wallet added successfully!");
       } else if (result.error) {
@@ -392,6 +420,28 @@ export default function WalletForm() {
                       className="form-input"
                       disabled={connectingWallet}
                     />
+                  </div>
+
+                  {/* New wallet name field */}
+                  <div className="form-group">
+                    <label htmlFor="wallet-name-input">
+                      Wallet Name (optional)
+                    </label>
+                    <div className="input-wrapper">
+                      <FaTag className="input-icon" />
+                      <input
+                        type="text"
+                        id="wallet-name-input"
+                        value={walletName}
+                        onChange={(e) => setWalletName(e.target.value)}
+                        placeholder="Enter a name for this wallet"
+                        className="form-input with-icon"
+                        disabled={connectingWallet}
+                      />
+                    </div>
+                    <p className="form-hint">
+                      A name helps you identify this wallet more easily.
+                    </p>
                   </div>
 
                   <button

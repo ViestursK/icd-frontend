@@ -1,3 +1,4 @@
+// Updated walletService.js to support wallet naming
 import api from "../api/api";
 import { getUserIdFromToken } from "../utils/auth";
 
@@ -107,12 +108,40 @@ export const walletService = {
       // The API returns an array of wallets
       const wallets = response.data || [];
 
-      // Cache the wallet data
+      // Now fetch the wallet names from the asset API for each wallet
+      // We do this in parallel for efficiency
+      const walletsWithNames = await Promise.all(
+        wallets.map(async (wallet) => {
+          try {
+            // Get wallet details including the name
+            const nameResponse = await api.post("/api/assets/", {
+              address: wallet.address,
+              chain: wallet.chain,
+            });
+
+            // Add the name from the response
+            const walletWithName = {
+              ...wallet,
+              name: nameResponse.data.wallet_name || null,
+            };
+            return walletWithName;
+          } catch (error) {
+            // If there's an error, just return the wallet without a name
+            console.error(
+              `[DEBUG] Error fetching name for wallet ${wallet.address}:`,
+              error
+            );
+            return wallet;
+          }
+        })
+      );
+
+      // Cache the wallet data with names
       if (walletsCacheKey) {
-        cacheService.set(walletsCacheKey, wallets);
+        cacheService.set(walletsCacheKey, walletsWithNames);
       }
 
-      return wallets;
+      return walletsWithNames;
     } catch (error) {
       console.error("[DEBUG] Error fetching wallets:", error);
       console.error(
@@ -184,14 +213,20 @@ export const walletService = {
         cacheService.remove(assetsCacheKey);
       }
 
-      return response.data;
+      return { success: true, data: response.data };
     } catch (error) {
       console.error("[DEBUG] Error adding wallet:", error);
       console.error(
         "[DEBUG] Error details:",
         error.response?.data || error.message
       );
-      throw error;
+      return {
+        success: false,
+        error:
+          error.response?.data?.error ||
+          error.response?.data?.errors ||
+          "Failed to add wallet",
+      };
     }
   },
 
@@ -215,14 +250,45 @@ export const walletService = {
         cacheService.remove(assetsCacheKey);
       }
 
-      return response.data;
+      return { success: true, data: response.data };
     } catch (error) {
       console.error("[DEBUG] Error removing wallet:", error);
       console.error(
         "[DEBUG] Error details:",
         error.response?.data || error.message
       );
-      throw error;
+      return {
+        success: false,
+        error: error.response?.data?.error || "Failed to remove wallet",
+      };
+    }
+  },
+
+  // Update wallet name
+  updateWalletName: async (walletData) => {
+    try {
+      console.log("[DEBUG] Updating wallet name:", walletData);
+      const response = await api.put("/api/wallets/update-name/", walletData);
+
+      console.log("[DEBUG] Update wallet name response:", response.data);
+
+      // Invalidate wallet cache to force a refresh
+      const walletsCacheKey = getWalletsCacheKey();
+      if (walletsCacheKey) {
+        cacheService.remove(walletsCacheKey);
+      }
+
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error("[DEBUG] Error updating wallet name:", error);
+      console.error(
+        "[DEBUG] Error details:",
+        error.response?.data || error.message
+      );
+      return {
+        success: false,
+        error: error.response?.data?.error || "Failed to update wallet name",
+      };
     }
   },
 
@@ -334,8 +400,11 @@ export const walletService = {
       console.log(`[DEBUG] Wallet tokens:`, response.data);
 
       return {
-        wallet: wallet,
-        tokens: response.data || [],
+        wallet: {
+          ...wallet,
+          name: response.data.wallet_name || null,
+        },
+        tokens: response.data.tokens || [],
       };
     } catch (error) {
       console.error(`[DEBUG] Error fetching wallet details:`, error);

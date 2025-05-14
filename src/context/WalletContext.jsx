@@ -52,13 +52,14 @@ export const WalletProvider = ({ children }) => {
       try {
         const walletsData = await walletService.fetchWallets(forceRefresh);
         setWallets(walletsData || []);
-        
+
         // Note: We'll calculate total balance from assets now, as it's more reliable
       } catch (err) {
         // Only set error if it's not a case of a new user with no wallets
         // New users will just see empty wallet tables, not an error message
         if (err.response?.status !== 404) {
-          const errorMessage = err.response?.data?.detail || "Failed to load wallet data.";
+          const errorMessage =
+            err.response?.data?.detail || "Failed to load wallet data.";
           setError(errorMessage);
           console.error("Error fetching wallets:", err);
         }
@@ -80,18 +81,21 @@ export const WalletProvider = ({ children }) => {
       try {
         const assetsData = await walletService.fetchAssets(forceRefresh);
         setAssets(assetsData || []);
-        
+
         // Calculate and update total balance from assets
-        const calculatedBalance = walletService.calculateTotalBalance(assetsData);
+        const calculatedBalance =
+          walletService.calculateTotalBalance(assetsData);
         setTotalBalance(calculatedBalance);
-        
+
         // Calculate and update 24h change percentage
-        const calculatedChangePercent = walletService.calculate24hChangePercent(assetsData);
+        const calculatedChangePercent =
+          walletService.calculate24hChangePercent(assetsData);
         setChangePercent(calculatedChangePercent);
       } catch (err) {
         // Only set error if it's not a case of a new user with no assets
         if (err.response?.status !== 404) {
-          const errorMessage = err.response?.data?.detail || "Failed to load asset data.";
+          const errorMessage =
+            err.response?.data?.detail || "Failed to load asset data.";
           setError(errorMessage);
           console.error("Error fetching assets:", err);
         }
@@ -131,14 +135,14 @@ export const WalletProvider = ({ children }) => {
       setError(null);
 
       try {
-        const newWallet = await walletService.addWallet(walletData);
+        const result = await walletService.addWallet(walletData);
 
         // Refresh data after adding wallet
         await fetchWallets(true);
         await fetchAssets(true);
 
         // Don't use toast here
-        return { success: true, wallet: newWallet };
+        return { success: true, wallet: result.data };
       } catch (err) {
         const errorMessage =
           err.response?.data?.detail || "Failed to add wallet.";
@@ -184,6 +188,51 @@ export const WalletProvider = ({ children }) => {
     [isAuthenticated, fetchWallets, fetchAssets]
   );
 
+  // Update wallet name
+  const updateWalletName = useCallback(
+    async (walletData) => {
+      if (!isAuthenticated)
+        return { success: false, error: "Not authenticated" };
+
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const result = await walletService.updateWalletName(walletData);
+
+        if (result.success) {
+          // Refresh wallets after updating name
+          await fetchWallets(true);
+
+          // Update the wallet name in the local state for immediate UI update
+          setWallets((prevWallets) =>
+            prevWallets.map((wallet) => {
+              if (
+                wallet.address === walletData.address &&
+                wallet.chain === walletData.chain
+              ) {
+                return { ...wallet, name: walletData.name };
+              }
+              return wallet;
+            })
+          );
+        }
+
+        return result;
+      } catch (err) {
+        const errorMessage =
+          err.response?.data?.error || "Failed to update wallet name.";
+        setError(errorMessage);
+        console.error("Error updating wallet name:", err);
+
+        return { success: false, error: errorMessage };
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isAuthenticated, fetchWallets]
+  );
+
   // Handle refresh button click
   const refreshData = useCallback(async () => {
     setIsLoading(true);
@@ -191,15 +240,13 @@ export const WalletProvider = ({ children }) => {
 
     try {
       // Refresh both wallets and assets
-      await Promise.all([
-        fetchWallets(true),
-        fetchAssets(true)
-      ]);
-      
+      await Promise.all([fetchWallets(true), fetchAssets(true)]);
+
       // Don't use toast here
       return { success: true };
     } catch (err) {
-      const errorMessage = err.response?.data?.detail || "Failed to refresh data.";
+      const errorMessage =
+        err.response?.data?.detail || "Failed to refresh data.";
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
@@ -221,6 +268,7 @@ export const WalletProvider = ({ children }) => {
     fetchAssets,
     addWallet,
     removeWallet,
+    updateWalletName,
     refreshData,
     fetchSupportedChains,
     clearError: () => setError(null),

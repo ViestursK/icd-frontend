@@ -49,6 +49,13 @@
   border-bottom: none;
 }
 
+.wallet-name-display {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 /* Address display and copy functionality */
 .address-container {
   display: flex;
