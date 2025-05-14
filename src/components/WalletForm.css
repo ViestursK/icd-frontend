@@ -44,7 +44,7 @@
 }
 
 .wallet-modal-container {
-  background: rgba(15, 12, 29, 0.95);
+  background: rgba(24, 18, 48, 0.95);
   border-radius: 1rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   width: 100%;
@@ -52,9 +52,11 @@
   overflow: hidden;
   position: relative;
   animation: modalSlideIn 0.3s ease;
+  z-index: 1001;
 }
 
 .wallet-modal-handle {
+  display: none;
   width: 40px;
   height: 4px;
   background-color: rgba(255, 255, 255, 0.3);
@@ -468,6 +470,10 @@
     box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
     animation: slideUp 0.3s ease;
     margin: 0;
+  }
+
+  .wallet-modal-handle{
+    display: block;
   }
 
   .wallet-modal-overlay {

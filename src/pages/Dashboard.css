@@ -109,17 +109,27 @@
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
+  animation: fade-in 0.3s ease;
 }
 
 .modal-container {
-  background: #1c1833;
+  background: rgba(24, 18, 48, 0.95);
   border-radius: 1rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   width: 100%;
   max-width: 500px;
   padding: 0;
   overflow: hidden;
-  border: 1px solid rgba(125, 103, 255, 0.2);
+  animation: slide-up 0.3s ease;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(1);
+  }
 }
 
 .modal-header {
@@ -241,7 +251,6 @@
   animation: spin 1s linear infinite;
 }
 
-
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -281,7 +290,6 @@
     flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
-
   }
 
   .top-container {

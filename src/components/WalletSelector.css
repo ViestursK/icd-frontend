@@ -27,28 +27,11 @@
   border-color: rgba(125, 103, 255, 0.3);
 }
 
-.wallet-selector-address {
-  font-family: monospace;
-  letter-spacing: 0.5px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.wallet-selector-balance {
-  margin-left: auto;
-  font-weight: 500;
-}
-
-.wallet-selector-all {
-  font-weight: 500;
-}
-
 /* Dropdown styles */
 .wallet-selector-dropdown {
   position: absolute;
   top: calc(100% + 0.5rem);
   right: 0;
-  width: 13rem;
   max-height: 400px;
   overflow-y: auto;
   background: rgba(28, 24, 51, 0.95);
@@ -58,6 +41,7 @@
   border: 1px solid rgba(125, 103, 255, 0.2);
   border-radius: 0.5rem;
   z-index: 100;
+  width: min-content;
 }
 
 .wallet-selector-header {
@@ -95,24 +79,16 @@
 
 .wallet-selector-item-icon {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
 }
 
 .wallet-selector-item-details {
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-width: 0; /* Enable text-overflow in children */
 }
 
 .wallet-selector-item-name {
-  font-weight: 500;
-  color: #f2f2fa;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-family: monospace
 }
 
 .wallet-selector-item-meta {
@@ -185,114 +161,23 @@
   font-size: 0.75rem;
 }
 
-/* Mobile-specific styles */
-@media (max-width: 480px) {
-  .wallet-selector-footer {
-    padding: 1rem;
-    background-color: rgba(28, 24, 51, 0.95);
-    position: sticky;
-    bottom: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .wallet-selector-add-button {
-    background: linear-gradient(135deg, #7d67ff, #9381ff);
-    padding: 0.875rem;
-  }
-
-  .wallet-selector-add-button:hover {
-    background: linear-gradient(135deg, #8d77ff, #a391ff);
-    box-shadow: 0 4px 8px rgba(125, 103, 255, 0.3);
-  }
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .wallet-selector-toggle {
-    max-width: 150px;
-  }
-
-  .wallet-selector-dropdown {
-    width: 260px;
-    right: -10px;
-  }
-}
-
-/* Enhanced mobile experience */
 @media (max-width: 480px) {
   .wallet-selector {
-    position: static; /* Allow full width dropdown */
     width: 100%;
   }
 
   .wallet-selector-toggle {
     max-width: none;
     width: 100%;
-    justify-content: space-between;
-    margin-top: 0.5rem;
-    height: 38px;
+    justify-content: center;
   }
-
   .wallet-selector-dropdown {
-    position: fixed;
-    top: auto;
-    left: 0;
-    right: 0;
-    bottom: 0;
     width: 100%;
-    max-height: 80vh;
-    border-radius: 1rem 1rem 0 0;
-    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
-    animation: slide-up 0.3s ease;
-    z-index: 1000;
-    padding-top: 1rem;
-  }
-  .wallet-selector-balance {
-    display: none;
-  }
-
-  @keyframes slide-up {
-    from {
-      transform: translateY(100%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-
-  .wallet-selector-header {
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .wallet-selector-header h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #f2f2fa;
-  }
-
-  /* Replace ::after with ::before to match WalletForm */
-  .wallet-selector-header::before {
-    content: none;
-  }
-
-  /* Add handle indicator to match WalletForm */
-  .wallet-selector-dropdown::after {
-    content: "";
-    display: block;
-    width: 40px;
-    height: 4px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .wallet-selector-item {
-    padding: 1rem;
+    right: 0;
+    left: 0;
+    border-radius: 1rem;
+    max-height: calc(100vh - 4rem);
+    top: calc(100% + 1rem);
+    padding-bottom: 1rem;
   }
 }
