@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   align-self: center;
-  z-index: 100; 
+  z-index: 100;
   scrollbar-color: rgba(125, 103, 255, 0.2) transparent;
   scrollbar-width: thin;
 }
@@ -18,7 +18,7 @@
   color: #f2f2fa;
   font-size: 0.875rem;
   cursor: pointer;
-  transition:  0.5s ease;
+  transition: 0.5s ease;
   /* white-space: nowrap; */
 }
 
@@ -144,7 +144,7 @@
   padding: 0.5rem;
   text-align: center;
   background-color: rgba(125, 103, 255, 0.15);
-  /* color: #7d67ff; */
+  color: #7d67ff;
   border-radius: 0.25rem;
   font-size: 0.875rem;
   font-weight: 500;
@@ -167,7 +167,7 @@
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .wallet-selector-toggle {
-    max-width: 150px;
+    width: max-content;
   }
 
   .wallet-selector-dropdown {
@@ -179,15 +179,7 @@
 /* Enhanced mobile experience */
 @media (max-width: 480px) {
   .wallet-selector {
-    position: static; /* Allow full width dropdown */
     width: 100%;
-  }
-
-  .wallet-selector-toggle {
-    max-width: none;
-    width: 100%;
-    justify-content: space-between;
-    margin-top: 0.5rem;
   }
 
   .wallet-selector-dropdown {
