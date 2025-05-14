@@ -51,7 +51,7 @@
 .sidebar-nav {
   flex: 1;
   /* padding: 1.5rem 0; */
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
 
 .nav-list {
@@ -218,7 +218,7 @@
     color: white;
     box-shadow: 0 0 15px rgba(125, 103, 255, 0.8);
   }
-  
+
   /* Improve backdrop filter on iOS */
   .sidebar-container {
     background-color: rgba(31, 31, 31, 0.9);

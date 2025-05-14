@@ -4,20 +4,27 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaExternalLinkAlt,
+  FaPlus,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "./WalletSelector.css";
 
 /**
  * WalletSelector component displays a dropdown for selecting a specific wallet
- * or viewing all wallets.
+ * or viewing all wallets, with an option to add a new wallet.
  *
  * @param {Object} props
  * @param {Array} props.wallets - List of wallet objects
  * @param {Object|null} props.selectedWallet - Currently selected wallet or null if viewing all
  * @param {Function} props.onWalletSelect - Callback when a wallet is selected
+ * @param {Function} props.onAddWalletClick - Callback to handle add wallet action
  */
-const WalletSelector = ({ wallets, selectedWallet, onWalletSelect }) => {
+const WalletSelector = ({
+  wallets,
+  selectedWallet,
+  onWalletSelect,
+  onAddWalletClick,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -67,6 +74,14 @@ const WalletSelector = ({ wallets, selectedWallet, onWalletSelect }) => {
     }
   };
 
+  // Handle add wallet click
+  const handleAddWalletClick = () => {
+    setIsOpen(false);
+    if (onAddWalletClick) {
+      onAddWalletClick();
+    }
+  };
+
   // Toggle dropdown open/close
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -89,9 +104,6 @@ const WalletSelector = ({ wallets, selectedWallet, onWalletSelect }) => {
             </span>
             <span className="wallet-selector-address">
               {formatAddress(selectedWallet.address)}
-            </span>
-            <span className="wallet-selector-balance">
-              ${formatBalance(selectedWallet.balance_usd)}
             </span>
           </>
         ) : (
@@ -166,11 +178,7 @@ const WalletSelector = ({ wallets, selectedWallet, onWalletSelect }) => {
               </div>
             </div>
           ))}
-          <div className="wallet-selector-footer">
-            <Link to="/dashboard" className="wallet-selector-add-button">
-              + Add New Wallet
-            </Link>
-          </div>
+          <div className="wallet-selector-footer"></div>
         </div>
       )}
     </div>

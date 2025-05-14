@@ -8,7 +8,7 @@
   color: white;
   border: thin solid rgba(131, 16, 240, 0.3);
   border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -448,10 +448,9 @@
   .add-wallet-button {
     display: flex;
     width: 100%;
-    /* text-wrap: nowrap; */
+    padding: 0.8rem 1rem;
+    align-self:last baseline ;
   }
-
- 
 }
 
 /* Mobile optimizations */
