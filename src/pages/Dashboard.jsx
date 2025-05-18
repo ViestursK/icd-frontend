@@ -7,7 +7,6 @@ import BalanceCard from "../components/BalanceCard";
 import WalletForm from "../components/WalletForm";
 import AssetTable from "../components/AssetTable";
 import WalletSelector from "../components/WalletSelector";
-import ViewIndicator from "../components/ui/ViewIndicator";
 import RefreshButton from "../components/ui/RefreshButton";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
@@ -252,11 +251,6 @@ function Dashboard() {
             <WalletForm />
           </div>
         )}
-      </div>
-
-      {/* Add ViewIndicator here */}
-      <div className="view-indicator-wrapper">
-        <ViewIndicator currentWallet={currentWallet} />
       </div>
 
       {error && (

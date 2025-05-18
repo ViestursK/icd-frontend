@@ -1,3 +1,9 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.75rem;
+}
+
 .wallet-subtitle {
   color: #9e9ea0;
   font-size: 0.875rem;
@@ -6,18 +12,16 @@
 }
 
 .wallet-list {
-  justify-content: flex;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 1.5rem;
 }
 
 .wallet-item {
   background-color: rgba(28, 24, 51, 0.7);
   border-radius: 0.75rem;
   min-width: 20rem;
-  width: 24%;
+  width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.05);
   overflow: hidden;
   transition: all 0.2s ease;
