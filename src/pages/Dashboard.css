@@ -29,15 +29,19 @@
 
 .container {
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  justify-content: space-around;
 }
 
-.balance-stats-wrapper {
+.balance-stats-wrapper .card-wrapper {
+  flex: 1; /* each card takes equal width */
   display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* If you want inner content (e.g. the chart) to stretch as well: */
+.balance-stats-wrapper .card-wrapper > * {
+  flex: 1;
 }
 
 /* Holdings container */
@@ -358,4 +362,137 @@
 .show-more-button:hover {
   background-color: rgba(125, 103, 255, 0.1);
   border-color: rgba(125, 103, 255, 0.3);
+}
+
+/* Manage Wallets Button Styling */
+.manage-wallets-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #f2f2fa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.manage-wallets-button:hover {
+  background-color: rgba(125, 103, 255, 0.1);
+  border-color: rgba(125, 103, 255, 0.3);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.dashboard-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.main-column {
+  flex: 1;
+}
+
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0; /* Ensures the column can shrink below content size */
+}
+
+/* Responsive layout */
+@media (min-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* Balance stats wrapper */
+.balance-stats-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .balance-stats-wrapper {
+    flex-direction: column;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Holdings actions container */
+.holdings-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .holdings-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .holdings-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Create more space for ViewIndicator */
+.view-indicator-wrapper {
+  margin: 0.5rem 0 1rem;
+  width: 100%;
+}
+
+/* Ensure components don't overflow on small screens */
+.holdings-container,
+.wallet-table-container,
+.asset-allocation-chart-container {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Make sure the manage wallets button is properly aligned */
+.manage-wallets-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #f2f2fa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.manage-wallets-button:hover {
+  background-color: rgba(125, 103, 255, 0.1);
+  border-color: rgba(125, 103, 255, 0.3);
+}
+
+@media (max-width: 640px) {
+  .manage-wallets-button,
+  .refresh-button {
+    width: 48%; /* Make buttons fill half the width on small screens */
+  }
 }

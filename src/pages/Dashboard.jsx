@@ -1,3 +1,4 @@
+// Import existing components and hooks
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaCoins, FaTrashAlt, FaTimes, FaSync, FaWallet } from "react-icons/fa";
@@ -11,6 +12,7 @@ import RefreshButton from "../components/ui/RefreshButton";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import StatsCard from "../components/StatsCard";
+import AssetAllocationChart from "../components/AssetAllocationChart";
 import { walletService } from "../services/walletService";
 import "./Dashboard.css";
 
@@ -213,6 +215,15 @@ function Dashboard() {
     return changePercent;
   };
 
+  // Prepare data for asset allocation chart
+  const chartData = useMemo(() => {
+    const dataToUse = currentWallet ? walletAssets : assets;
+    return dataToUse.map((asset) => ({
+      name: asset.symbol,
+      value: parseFloat(asset.total_value || 0),
+    }));
+  }, [assets, walletAssets, currentWallet]);
+
   // Determine which assets to display
   const activeAssets = currentWallet ? walletAssets : assets;
 
@@ -243,6 +254,11 @@ function Dashboard() {
         )}
       </div>
 
+      {/* Add ViewIndicator here */}
+      <div className="view-indicator-wrapper">
+        <ViewIndicator currentWallet={currentWallet} />
+      </div>
+
       {error && (
         <div className="error-alert" role="alert">
           <p>{error}</p>
@@ -257,53 +273,65 @@ function Dashboard() {
       )}
 
       <div className="container">
-        <div className="dashboard-grid">
-          {/* Balance and Stats - Left side */}
-          <div className="dashboard-column main-column">
-            <div className="balance-stats-wrapper">
+        {/* Balance and Stats - Left side */}
+        <div className="dashboard-column main-column">
+          <div className="balance-stats-wrapper">
+            <div className="card-wrapper">
               <BalanceCard
                 balance={getCurrentBalance()}
                 changePercent={getCurrentChangePercent()}
                 isLoading={isLoading || refreshing || loadingWallet}
               />
+            </div>
+            <div className="card-wrapper">
               <StatsCard
                 stats={portfolioStats}
                 isLoading={isLoading || refreshing || loadingWallet}
               />
             </div>
-
-            <div className="holdings-container">
-              <div className="holdings-header">
-                <h3>Crypto Assets</h3>
-                <div className="holdings-actions">
-                  <RefreshButton
-                    onRefresh={handleRefresh}
-                    isLoading={isLoading || refreshing || loadingWallet}
-                    label={refreshing ? "Refreshing..." : "Refresh"}
-                    aria-label="Refresh portfolio data"
-                    variant="secondary"
-                    size="small"
-                    showLabel={true}
-                  />
-                  {wallets.length > 0 && (
-                    <button
-                      className="manage-wallets-button"
-                      onClick={() => navigate("/dashboard/wallets")}
-                    >
-                      <FaWallet style={{ marginRight: "0.5rem" }} />
-                      Manage Wallets
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <AssetTable
-                assets={activeAssets}
-                isLoading={isLoading || refreshing || loadingWallet}
-                visibleCount={visibleCount}
-                setVisibleCount={setVisibleCount}
+            <div className="card-wrapper">
+              <AssetAllocationChart
+                data={chartData}
+                title="Asset Allocation"
+                valueKey="value"
+                nameKey="name"
+                loading={isLoading || refreshing || loadingWallet}
+                othersThreshold={2}
               />
             </div>
+          </div>
+
+          <div className="holdings-container">
+            <div className="holdings-header">
+              <h3>Crypto Assets</h3>
+              <div className="holdings-actions">
+                <RefreshButton
+                  onRefresh={handleRefresh}
+                  isLoading={isLoading || refreshing || loadingWallet}
+                  label={refreshing ? "Refreshing..." : "Refresh"}
+                  aria-label="Refresh portfolio data"
+                  variant="secondary"
+                  size="small"
+                  showLabel={true}
+                />
+                {wallets.length > 0 && (
+                  <button
+                    className="manage-wallets-button"
+                    onClick={() => navigate("/dashboard/wallets")}
+                  >
+                    <FaWallet style={{ marginRight: "0.5rem" }} />
+                    Manage Wallets
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <AssetTable
+              assets={activeAssets}
+              isLoading={isLoading || refreshing || loadingWallet}
+              visibleCount={visibleCount}
+              setVisibleCount={setVisibleCount}
+            />
           </div>
         </div>
       </div>
