@@ -132,6 +132,13 @@
   }
 }
 
+.holdings-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -290,6 +297,14 @@
     flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
+  }
+
+  .refresh-button {
+    width: 100%;
+  }
+
+  .add-wallet-button {
+    width: 100%;
   }
 
   .top-container {

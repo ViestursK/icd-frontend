@@ -1,10 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaWallet, FaCoins, FaTrashAlt, FaTimes, FaSync } from "react-icons/fa";
+import { FaCoins, FaTrashAlt, FaTimes, FaSync, FaWallet } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
 import WalletForm from "../components/WalletForm";
-import WalletTable from "../components/WalletTable";
 import AssetTable from "../components/AssetTable";
 import WalletSelector from "../components/WalletSelector";
 import ViewIndicator from "../components/ui/ViewIndicator";
@@ -16,11 +15,8 @@ import StatsCard from "../components/StatsCard";
 import { walletService } from "../services/walletService";
 import "./Dashboard.css";
 
-// Define tab options
-const TABS = [
-  { id: "assets", label: "Assets", icon: <FaCoins /> },
-  { id: "wallets", label: "Wallets", icon: <FaWallet /> },
-];
+// Define tab options - removed wallets tab, now just assets
+const TABS = [{ id: "assets", label: "Assets", icon: <FaCoins /> }];
 
 function Dashboard() {
   const {
@@ -31,7 +27,6 @@ function Dashboard() {
     isLoading,
     error,
     refreshData,
-    removeWallet,
     clearError,
   } = useWallet();
 
@@ -39,12 +34,8 @@ function Dashboard() {
   const navigate = useNavigate();
   const { chain, address } = useParams();
 
-  // State for active tab
+  // State for active tab - now defaults to assets since it's the only option
   const [activeTab, setActiveTab] = useState("assets");
-  // State for wallet being deleted
-  const [selectedWallet, setSelectedWallet] = useState(null);
-  // State for delete confirmation modal
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   // State for refresh operation
   const [refreshing, setRefreshing] = useState(false);
   // State for visible assets count (default to 20 for better initial density)
@@ -182,42 +173,6 @@ function Dashboard() {
     }
   };
 
-  // Handle wallet delete click
-  const handleDeleteClick = (wallet) => {
-    setSelectedWallet(wallet);
-    setShowDeleteModal(true);
-  };
-
-  // Handle confirm delete
-  const handleConfirmDelete = async () => {
-    if (!selectedWallet) return;
-
-    try {
-      setRefreshing(true);
-      const result = await removeWallet({
-        address: selectedWallet.address,
-        chain: selectedWallet.chain,
-      });
-
-      toast.success("Wallet removed successfully!");
-      setShowDeleteModal(false);
-      setSelectedWallet(null);
-
-      // If we deleted the current wallet, go back to all wallets view
-      if (
-        currentWallet &&
-        currentWallet.address === selectedWallet.address &&
-        currentWallet.chain === selectedWallet.chain
-      ) {
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      toast.error("Failed to remove wallet. Please try again.");
-    } finally {
-      setRefreshing(false);
-    }
-  };
-
   // Handle wallet selection from dropdown
   const handleWalletSelect = (wallet) => {
     if (wallet) {
@@ -226,48 +181,6 @@ function Dashboard() {
     } else {
       // Navigate to all wallets view
       navigate("/dashboard");
-    }
-  };
-
-  // Function to render the active table based on tab
-  const renderActiveTable = () => {
-    // Combined loading state - either global loading or local refreshing or loading wallet
-    const tableLoading = isLoading || refreshing || loadingWallet;
-
-    switch (activeTab) {
-      case "assets":
-        return (
-          <AssetTable
-            assets={currentWallet ? walletAssets : assets}
-            isLoading={tableLoading}
-            visibleCount={visibleCount}
-            setVisibleCount={setVisibleCount}
-          />
-        );
-      case "wallets":
-      default:
-        return (
-          <WalletTable
-            wallets={currentWallet ? [currentWallet] : wallets}
-            isLoading={tableLoading}
-            onDeleteClick={handleDeleteClick}
-          />
-        );
-    }
-  };
-
-  // Get the title based on active tab and current view
-  const getTableTitle = () => {
-    const prefix = currentWallet
-      ? `${currentWallet.chain.toUpperCase()} Wallet`
-      : "";
-
-    switch (activeTab) {
-      case "assets":
-        return prefix ? `${prefix} Assets` : "Crypto Assets";
-      case "wallets":
-      default:
-        return prefix ? prefix : "Crypto Wallets";
     }
   };
 
@@ -300,15 +213,6 @@ function Dashboard() {
     }
     return changePercent;
   };
-
-  // Create header actions with the wallet selector
-  const headerActions = (
-    <WalletSelector
-      wallets={wallets}
-      selectedWallet={currentWallet}
-      onWalletSelect={handleWalletSelect}
-    />
-  );
 
   return (
     <div className="dashboard-container">
@@ -365,82 +269,78 @@ function Dashboard() {
 
         <div className="holdings-container">
           <div className="holdings-header">
-            <h3>{getTableTitle()}</h3>
-            <RefreshButton
-              onRefresh={handleRefresh}
-              isLoading={isLoading || refreshing || loadingWallet}
-              label={refreshing ? "Refreshing..." : "Refresh"}
-              aria-label="Refresh portfolio data"
-              variant="secondary"
-              size="small"
-              showLabel={true}
-            />
+            <h3>Crypto Assets</h3>
+            <div className="holdings-actions">
+              <RefreshButton
+                onRefresh={handleRefresh}
+                isLoading={isLoading || refreshing || loadingWallet}
+                label={refreshing ? "Refreshing..." : "Refresh"}
+                aria-label="Refresh portfolio data"
+                variant="secondary"
+                size="small"
+                showLabel={true}
+              />
+              {wallets.length > 0 && (
+                <button
+                  className="manage-wallets-button"
+                  onClick={() => navigate("/dashboard/wallets")}
+                >
+                  <FaWallet style={{ marginRight: "0.5rem" }} />
+                  Manage Wallets
+                </button>
+              )}
+            </div>
           </div>
 
-          <TabSelector
-            tabs={TABS}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
+          <AssetTable
+            assets={currentWallet ? walletAssets : assets}
+            isLoading={isLoading || refreshing || loadingWallet}
+            visibleCount={visibleCount}
+            setVisibleCount={setVisibleCount}
           />
-
-          {renderActiveTable()}
         </div>
       </div>
 
-      {/* Delete confirmation modal */}
-      {showDeleteModal && selectedWallet && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <div className="modal-header">
-              <h3>Remove Wallet</h3>
-              <button
-                className="modal-close-button"
-                onClick={() => setShowDeleteModal(false)}
-                aria-label="Close modal"
-                disabled={refreshing}
-              >
-                <FaTimes />
-              </button>
-            </div>
+      <style jsx>{`
+        .holdings-actions {
+          display: flex;
+          gap: 0.5rem;
+          align-items: center;
+        }
 
-            <div className="modal-content">
-              <p>Are you sure you want to remove this wallet?</p>
-              <div className="wallet-preview">
-                <div className="wallet-chain">
-                  <span
-                    className={`chain-badge ${selectedWallet.chain.toLowerCase()}`}
-                  >
-                    {selectedWallet.chain}
-                  </span>
-                </div>
-                <div className="wallet-address">{selectedWallet.address}</div>
-              </div>
-            </div>
+        .manage-wallets-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          background: transparent;
+          color: #7d67ff;
+          border: 1px solid rgba(125, 103, 255, 0.3);
+          border-radius: 0.5rem;
+          padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
 
-            <div className="modal-actions">
-              <button
-                className="modal-cancel-button"
-                onClick={() => setShowDeleteModal(false)}
-                disabled={refreshing}
-              >
-                Cancel
-              </button>
-              <button
-                className="modal-delete-button"
-                onClick={handleConfirmDelete}
-                disabled={refreshing}
-              >
-                {refreshing ? (
-                  <FaSync className="button-spinner" />
-                ) : (
-                  <FaTrashAlt />
-                )}
-                {refreshing ? " Removing..." : " Remove"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+        .manage-wallets-button:hover {
+          background-color: rgba(125, 103, 255, 0.1);
+          border-color: rgba(125, 103, 255, 0.5);
+        }
+
+        @media (max-width: 640px) {
+          .holdings-actions {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+          }
+
+          .manage-wallets-button {
+            width: 100%;
+          }
+        }
+      `}</style>
     </div>
   );
 }
