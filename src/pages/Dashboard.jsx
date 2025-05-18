@@ -8,7 +8,6 @@ import AssetTable from "../components/AssetTable";
 import WalletSelector from "../components/WalletSelector";
 import ViewIndicator from "../components/ui/ViewIndicator";
 import RefreshButton from "../components/ui/RefreshButton";
-import TabSelector from "../components/TabSelector";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import StatsCard from "../components/StatsCard";
@@ -214,6 +213,9 @@ function Dashboard() {
     return changePercent;
   };
 
+  // Determine which assets to display
+  const activeAssets = currentWallet ? walletAssets : assets;
+
   return (
     <div className="dashboard-container">
       <div className="top-container">
@@ -255,92 +257,56 @@ function Dashboard() {
       )}
 
       <div className="container">
-        <div className="balance-stats-wrapper">
-          <BalanceCard
-            balance={getCurrentBalance()}
-            changePercent={getCurrentChangePercent()}
-            isLoading={isLoading || refreshing || loadingWallet}
-          />
-          <StatsCard
-            stats={portfolioStats}
-            isLoading={isLoading || refreshing || loadingWallet}
-          />
-        </div>
-
-        <div className="holdings-container">
-          <div className="holdings-header">
-            <h3>Crypto Assets</h3>
-            <div className="holdings-actions">
-              <RefreshButton
-                onRefresh={handleRefresh}
+        <div className="dashboard-grid">
+          {/* Balance and Stats - Left side */}
+          <div className="dashboard-column main-column">
+            <div className="balance-stats-wrapper">
+              <BalanceCard
+                balance={getCurrentBalance()}
+                changePercent={getCurrentChangePercent()}
                 isLoading={isLoading || refreshing || loadingWallet}
-                label={refreshing ? "Refreshing..." : "Refresh"}
-                aria-label="Refresh portfolio data"
-                variant="secondary"
-                size="small"
-                showLabel={true}
               />
-              {wallets.length > 0 && (
-                <button
-                  className="manage-wallets-button"
-                  onClick={() => navigate("/dashboard/wallets")}
-                >
-                  <FaWallet style={{ marginRight: "0.5rem" }} />
-                  Manage Wallets
-                </button>
-              )}
+              <StatsCard
+                stats={portfolioStats}
+                isLoading={isLoading || refreshing || loadingWallet}
+              />
+            </div>
+
+            <div className="holdings-container">
+              <div className="holdings-header">
+                <h3>Crypto Assets</h3>
+                <div className="holdings-actions">
+                  <RefreshButton
+                    onRefresh={handleRefresh}
+                    isLoading={isLoading || refreshing || loadingWallet}
+                    label={refreshing ? "Refreshing..." : "Refresh"}
+                    aria-label="Refresh portfolio data"
+                    variant="secondary"
+                    size="small"
+                    showLabel={true}
+                  />
+                  {wallets.length > 0 && (
+                    <button
+                      className="manage-wallets-button"
+                      onClick={() => navigate("/dashboard/wallets")}
+                    >
+                      <FaWallet style={{ marginRight: "0.5rem" }} />
+                      Manage Wallets
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <AssetTable
+                assets={activeAssets}
+                isLoading={isLoading || refreshing || loadingWallet}
+                visibleCount={visibleCount}
+                setVisibleCount={setVisibleCount}
+              />
             </div>
           </div>
-
-          <AssetTable
-            assets={currentWallet ? walletAssets : assets}
-            isLoading={isLoading || refreshing || loadingWallet}
-            visibleCount={visibleCount}
-            setVisibleCount={setVisibleCount}
-          />
         </div>
       </div>
-
-      <style jsx>{`
-        .holdings-actions {
-          display: flex;
-          gap: 0.5rem;
-          align-items: center;
-        }
-
-        .manage-wallets-button {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-          background: transparent;
-          color: #7d67ff;
-          border: 1px solid rgba(125, 103, 255, 0.3);
-          border-radius: 0.5rem;
-          padding: 0.5rem 1rem;
-          font-size: 0.875rem;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .manage-wallets-button:hover {
-          background-color: rgba(125, 103, 255, 0.1);
-          border-color: rgba(125, 103, 255, 0.5);
-        }
-
-        @media (max-width: 640px) {
-          .holdings-actions {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.75rem;
-          }
-
-          .manage-wallets-button {
-            width: 100%;
-          }
-        }
-      `}</style>
     </div>
   );
 }
