@@ -15,9 +15,9 @@
 }
 
 .stats-card:hover {
-  transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(var(--color-primary-rgb), 0.25);
-  border-color: rgba(var(--color-primary-rgb), 0.2);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+  background-color: var(--color-card-background);
 }
 
 .stat-badge {
@@ -52,7 +52,6 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-
 
 /* Badge color variations */
 .stat-badge.blue {

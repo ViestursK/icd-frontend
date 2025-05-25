@@ -29,8 +29,9 @@
 }
 
 .wallet-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(var(--color-primary-rgb), 0.2);
+  border-color: rgba(var(--color-primary-rgb), 0.5);
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.1);
+  transform: translateY(-2px);
 }
 
 /* Wallet card sections */
@@ -40,7 +41,7 @@
   justify-content: space-between;
   padding: 1.25rem;
   border-bottom: 1px solid var(--color-border);
-  background-color: var(--color-card-bg);
+  background-color: var(--color-card-background);
 }
 
 .wallet-card-body {
@@ -57,6 +58,7 @@
   border-top: 1px solid var(--color-border);
   display: flex;
   gap: 0.75rem;
+  background-color: var(--color-card-background);
 }
 
 /* Wallet name display and editing */
@@ -290,24 +292,6 @@
 .wallet-action-button.delete:hover {
   background-color: rgba(var(--color-error-rgb), 0.1);
   border-color: rgba(var(--color-error-rgb), 0.2);
-}
-
-/* Skeleton loading states */
-.wallet-list-skeleton {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  width: 100%;
-}
-
-.wallet-card.skeleton {
-  min-height: 200px;
-  cursor: default;
-}
-
-.wallet-card.skeleton:hover {
-  transform: none;
-  box-shadow: 0 4px 12px var(--color-shadow);
 }
 
 /* Light mode adjustments */

@@ -54,7 +54,7 @@
 .loading-screen.light .loading-message,
 .loading-screen[data-theme="light"] .loading-message {
   color: var(--color-text-secondary);
-  font-size: 2rem;
+  font-size: 1.3rem;
 }
 
 [data-theme="light"] .pulse,
@@ -82,7 +82,7 @@
 .loading-screen.light .loading-message,
 .loading-screen[data-theme="dark"] .loading-message {
   color: var(--color-text-secondary);
-  font-size: 2rem;
+  font-size: 1.3rem;
 }
 
 [data-theme="dark"] .pulse,
