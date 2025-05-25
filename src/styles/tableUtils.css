@@ -1,11 +1,13 @@
+/* Fix for DataTable overflow */
 .data-table-container {
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
-  border-radius: var(--radius-md);
-  max-height: calc(100vh - 330px);
-  min-height: 300px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(var(--color-primary-rgb), 0.2) transparent;
+}
+
+.data-table {
+  min-width: auto; /* Override any min-width that forces horizontal scroll */
+  width: 100%;
 }
 
 .data-table-container::-webkit-scrollbar {
@@ -20,15 +22,6 @@
 .data-table-container::-webkit-scrollbar-thumb {
   background-color: rgba(var(--color-primary-rgb), 0.2);
   border-radius: 6px;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: var(--font-size-sm);
-  background-color: var(--color-card-bg);
-  min-width: 600px;
 }
 
 .data-table th,

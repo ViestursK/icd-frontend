@@ -1,4 +1,3 @@
-
 .data-table-container {
   border-radius: var(--radius-lg);
 }
@@ -132,7 +131,6 @@
   color: var(--color-error);
 }
 
-
 .sort-icon {
   display: flex;
   align-items: center;
@@ -177,12 +175,31 @@
   }
 }
 
-@media (max-width: 480px) {
+@media screen and (max-width: 768px) {
   .table-controls {
-    margin-bottom: 0.5rem;
+    width: 100%;
   }
 
-  .search-input {
-    padding: 0.5rem 1rem 0.5rem 2.5rem;
+  .search-input-wrapper {
+    width: 100%;
+  }
+
+  /* Reduce padding in table cells */
+  .data-table th,
+  .data-table td {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  /* Make asset cell more compact */
+  .asset-cell .asset-info {
+    gap: 5px;
+  }
+
+  .asset-logo,
+  .asset-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
   }
 }

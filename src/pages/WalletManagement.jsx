@@ -64,7 +64,7 @@ function WalletManagement() {
         </div>
       )}
 
-      <div className="container">
+      <div className="wallet-container">
         {/* Wallets List */}
         {isLoading || refreshing ? (
           <div className="wallet-loading">
