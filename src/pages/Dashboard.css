@@ -55,12 +55,27 @@
   }
 }
 
-/* Cards layout */
 .balance-stats-wrapper {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+/* Ensure card wrapper never collapses */
+.card-wrapper {
+  display: flex;
+  min-height: 180px;
+  width: 100%;
+  position: relative;
+}
+
+/* Prevent cards from disappearing */
+.card-wrapper > * {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
 }
 
 /* Holdings container */
@@ -86,7 +101,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   width: 100%;
 }
 
@@ -135,8 +150,9 @@
 /* Holdings actions */
 .holdings-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 1rem;
   align-items: center;
+  margin-top: 1rem;
 }
 
 /* Manage Wallets Button Styling */
@@ -279,4 +295,83 @@
 [data-theme="light"] .show-more-button:hover {
   background-color: rgba(var(--color-primary-rgb), 0.08);
   border-color: rgba(var(--color-primary-rgb), 0.2);
+}
+@media (min-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+@media (max-width: 992px) {
+  .balance-stats-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .balance-stats-wrapper {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .top-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Ensure cards maintain minimum height on mobile */
+  .card-wrapper {
+    min-height: 160px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-actions-container {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .holdings-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .holdings-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .manage-wallets-button,
+  .refresh-button {
+    flex: 1;
+  }
+
+  /* Further reduce minimum height for very small screens */
+  .card-wrapper {
+    min-height: 140px;
+  }
+}
+
+/* Ensure grid items don't collapse */
+.balance-stats-wrapper > * {
+  min-width: 0;
+  min-height: 180px;
+}
+
+@media (max-width: 768px) {
+  .balance-stats-wrapper > * {
+    min-height: 160px;
+  }
+}
+
+@media (max-width: 640px) {
+  .balance-stats-wrapper > * {
+    min-height: 140px;
+  }
 }
