@@ -150,7 +150,7 @@
 
 /* Light Mode */
 [data-theme="light"] .asset-allocation-chart-container {
-  background: white;
+  background: --color-card-bg;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(0, 0, 0, 0.08);
 }

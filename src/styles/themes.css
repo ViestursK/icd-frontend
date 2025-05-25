@@ -48,7 +48,7 @@
   --color-error-rgb: 255, 76, 76;
   --color-info-rgb: 63, 140, 255;
   --color-warning-rgb: 243, 186, 47;
-  
+
   /* Colors */
   --color-primary: #7d67ff;
   --color-primary-light: #9381ff;
@@ -65,7 +65,7 @@
   --color-shadow: rgba(0, 0, 0, 0.25);
 
   /* Component-specific colors */
-  --color-card-bg: rgb(28, 24, 51);
+  --color-card-bg: rgba(33, 24, 68, 0.824);
   --color-input-bg: rgba(15, 12, 29, 0.624);
   --color-hover-overlay: rgba(255, 255, 255, 0.05);
   --color-active-overlay: rgba(125, 103, 255, 0.15);
@@ -92,15 +92,15 @@
   --color-error-rgb: 220, 53, 53;
   --color-info-rgb: 44, 123, 229;
   --color-warning-rgb: 224, 168, 0;
-  
+
   /* Colors */
   --color-primary: #6a57d9;
   --color-primary-light: #7d67ff;
   --color-primary-dark: #5647b0;
   --color-text: #1a1825;
   --color-text-secondary: #5d5b6c;
-  --color-background: #efefef;
-  --color-card-background: #ffffff8c;
+  --color-background: rgb(220, 223, 228);
+  --color-card-background: #ffffffdf;
   --color-error: #dc3545;
   --color-success: #269f5b;
   --color-warning: #e0a800;
@@ -109,7 +109,7 @@
   --color-shadow: rgba(0, 0, 0, 0.08);
 
   /* Component-specific colors */
-  --color-card-bg: rgb(255, 255, 255);
+  --color-card-bg: rgb(247, 248, 249);
   --color-input-bg: rgba(0, 0, 0, 0.04);
   --color-hover-overlay: rgba(0, 0, 0, 0.04);
   --color-active-overlay: rgba(106, 87, 217, 0.12);
@@ -214,4 +214,3 @@
   background-color: rgba(39, 117, 202, 0.15);
   color: #2775ca;
 }
-
