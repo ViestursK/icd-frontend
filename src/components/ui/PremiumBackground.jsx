@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useTheme } from "../../context/ThemeContext";
+import { useEffect, useState } from "react";
 import "./PremiumBackground.css";
 
 const PremiumBackground = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const { isDark } = useTheme();
 
   // Track mouse position for subtle parallax effect
   useEffect(() => {

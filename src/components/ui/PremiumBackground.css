@@ -38,19 +38,18 @@
   animation-delay: 2s;
 }
 
-/* Enhanced background colors for light mode */
 [data-theme="light"] .orb-purple {
-  background-color: rgba(139, 92, 246, 0.25);
+  background-color: rgba(78, 20, 215, 0.674);
 }
 
 [data-theme="light"] .orb-blue {
-  background-color: rgba(59, 130, 246, 0.2);
+  background-color: rgba(21, 99, 224, 0.594);
 }
 
 [data-theme="light"] .orb-indigo {
-  background-color: rgba(79, 70, 229, 0.2);
+  background-color: rgba(22, 12, 226, 0.613);
 }
 
 [data-theme="light"] .orb-rose {
-  background-color: rgba(244, 63, 94, 0.2);
+  background-color: rgba(244, 63, 93, 0.641);
 }

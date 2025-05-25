@@ -90,7 +90,6 @@ const LoadingScreen = ({ message = "Loading..." }) => {
             width="60"
             height="50"
           />
-          <h2 className="loading-brand-name">Portfolio Tracker</h2>
         </div>
         <p className="loading-message">{message}</p>
       </div>

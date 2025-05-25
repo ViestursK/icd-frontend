@@ -99,8 +99,8 @@
   --color-primary-dark: #5647b0;
   --color-text: #1a1825;
   --color-text-secondary: #5d5b6c;
-  --color-background: rgb(220, 223, 228);
-  --color-card-background: #ffffffdf;
+  --color-background: rgba(220, 223, 228, 0.516);
+  --color-card-background: #ffffff;
   --color-error: #dc3545;
   --color-success: #269f5b;
   --color-warning: #e0a800;
@@ -109,7 +109,7 @@
   --color-shadow: rgba(0, 0, 0, 0.08);
 
   /* Component-specific colors */
-  --color-card-bg: rgb(247, 248, 249);
+  --color-card-bg: rgb(242, 242, 242);
   --color-input-bg: rgba(0, 0, 0, 0.04);
   --color-hover-overlay: rgba(0, 0, 0, 0.04);
   --color-active-overlay: rgba(106, 87, 217, 0.12);

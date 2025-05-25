@@ -86,7 +86,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,6 +117,15 @@
   }
 }
 
+.modal-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-card-bg)
+}
+
 .modal-close {
   position: absolute;
   top: 1.25rem;
@@ -139,14 +148,14 @@
 }
 
 .modal-body {
-  padding: 1.5rem;
+  padding: 2.5rem;
   text-align: center;
+  background-color: var(--color-card-bg);
 }
 
 .modal-body p {
   color: var(--color-text);
   font-size: 1rem;
-  margin-bottom: 1.5rem;
 }
 
 .wallet-info {

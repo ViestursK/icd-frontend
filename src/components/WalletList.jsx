@@ -10,7 +10,6 @@ import {
   FaSearch,
   FaTimes,
   FaPencilAlt,
-  FaCheck,
   FaSave,
   FaUndo,
   FaTrashAlt,

@@ -1,10 +1,7 @@
-
-
 .wallet-list-container {
   width: 100%;
   overflow: hidden;
   min-height: 300px;
-  
 }
 
 .wallet-cards-grid {
@@ -19,7 +16,7 @@
 }
 
 .wallet-card {
-  background: var(--color-card-bg);
+  background-color: var(--color-card-bg);
   border-radius: var(--radius-lg);
   min-width: 300px;
   width: 100%;
@@ -29,7 +26,6 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
- 
 }
 
 .wallet-card:hover {
@@ -44,7 +40,7 @@
   justify-content: space-between;
   padding: 1.25rem;
   border-bottom: 1px solid var(--color-border);
-  background-color: rgba(var(--color-primary-rgb), 0.05);
+  background-color: var(--color-card-bg);
 }
 
 .wallet-card-body {
@@ -53,15 +49,15 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  background-color: var(--color-card-bg);
 }
 
 .wallet-card-footer {
-  padding: 1.25rem;
+  padding: 1rem;
   border-top: 1px solid var(--color-border);
   display: flex;
   gap: 0.75rem;
 }
-
 
 /* Wallet name display and editing */
 .wallet-name-display {
@@ -125,7 +121,6 @@
 .wallet-name-input:focus {
   outline: none;
   border-color: var(--color-primary);
-  /* box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.15); */
 }
 
 .name-edit-actions {
@@ -322,12 +317,12 @@
 }
 
 [data-theme="light"] .wallet-card-header {
-  background-color: rgba(var(--color-primary-rgb), 0.03);
+  background-color: var(--color-card-bg);
   border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="light"] .wallet-card-footer {
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: var(--color-card-bg);
   border-top-color: rgba(0, 0, 0, 0.08);
 }
 

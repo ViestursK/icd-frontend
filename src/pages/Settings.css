@@ -26,7 +26,7 @@
   align-items: center;
   padding: 1.25rem 1.5rem;
   border-bottom: 1px solid var(--color-border);
-  background-color: rgba(var(--color-primary-rgb), 0.05);
+  background-color: var(--color-card-bg);
 }
 
 .settings-icon {
@@ -49,6 +49,7 @@
   padding: 1.5rem;
   flex-wrap: wrap;
   justify-content: center;
+  background-color: var(--color-card-bg);
 }
 
 .theme-option {
@@ -57,7 +58,7 @@
   align-items: center;
   cursor: pointer;
   transition: all var(--transition-fast);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-l);
   padding: 1rem;
   width: 100px;
   border: 2px solid transparent;
@@ -70,6 +71,7 @@
 .theme-option.active {
   background-color: var(--color-active-overlay);
   border-color: var(--color-primary);
+  border-radius: 1rem;
 }
 
 .theme-preview {
@@ -138,7 +140,7 @@
 }
 
 [data-theme="light"] .settings-header {
-  background-color: rgba(var(--color-primary-rgb), 0.03);
+  background-color: var(--color-card-bg);
   border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 

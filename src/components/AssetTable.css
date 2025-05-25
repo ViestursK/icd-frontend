@@ -1,12 +1,8 @@
-/* AssetTable specific styles */
-@import "../styles/tableUtils.css";
 
-/* Update all classes to use the data-table prefix */
 .data-table-container {
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
 }
 
-/* Asset specific styling */
 .asset-logo {
   width: 32px;
   height: 32px;
@@ -93,13 +89,6 @@
   text-overflow: ellipsis;
 }
 
-.asset-details {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 1px;
-}
-
 .asset-symbol {
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
@@ -143,26 +132,14 @@
   color: var(--color-error);
 }
 
-/* Table headers with consistent width */
-.sortable-column {
-  cursor: pointer;
-  user-select: none;
-}
-
-.column-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
 
 .sort-icon {
   display: flex;
   align-items: center;
 }
 
-/* Fixed widths for columns to prevent layout shifts */
 .data-table thead th:nth-child(1) {
-  width: 40%;
+  width: 25%;
 }
 
 .data-table thead th:nth-child(2) {
