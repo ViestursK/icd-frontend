@@ -1,4 +1,4 @@
-// BalanceCard.jsx
+// BalanceCard.jsx - Simple shimmer when loading
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
@@ -14,9 +14,9 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
 
     // Parse as float and use standard number formatting with exactly 2 decimal places
     const num = parseFloat(balance);
-    return num.toLocaleString('en-US', {
+    return num.toLocaleString("en-US", {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     });
   };
 
@@ -48,7 +48,7 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
   // Get dynamic font size class based on balance length
   const balanceFontClass = useMemo(() => {
     const formattedBalance = formatBalance(balance);
-    
+
     if (formattedBalance.length > 14) {
       return "balance-value-small";
     } else if (formattedBalance.length > 10) {
@@ -58,56 +58,49 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
     }
   }, [balance]);
 
+  // Show shimmer effect when loading
+  if (isLoading) {
+    return <div className="balance-card shimmer-loading"></div>;
+  }
+
   return (
     <div className="balance-card" aria-busy={isLoading}>
       <div className="balance-card-content">
         <div className="balance-info-container">
           <div className="balance-info">
             <span className="balance-label">TOTAL BALANCE</span>
-            {isLoading ? (
-              <div className="skeleton skeleton-text large"></div>
-            ) : (
-              <div className="balance-amount">
-                <span className="currency-symbol">$</span>
-                <span 
-                  className={`balance-value ${balanceFontClass}`} 
-                  title={`${formatBalance(balance)}`}
-                >
-                  {formatBalance(balance)}
-                </span>
-              </div>
-            )}
+            <div className="balance-amount">
+              <span className="currency-symbol">$</span>
+              <span
+                className={`balance-value ${balanceFontClass}`}
+                title={`${formatBalance(balance)}`}
+              >
+                {formatBalance(balance)}
+              </span>
+            </div>
 
             <div className="balance-change">
-              {isLoading ? (
-                <div className="skeleton skeleton-text small"></div>
-              ) : (
-                <>
-                  <span className="change-label">24h</span>
-                  <span
-                    className="change-value"
-                    style={{ color: getChangeColor() }}
-                    aria-label={`${formatChangePercent(changePercent)} change in the last 24 hours`}
-                  >
-                    {getChangeIcon()}
-                    {formatChangePercent(changePercent)}
-                  </span>
-                </>
-              )}
+              <span className="change-label">24h</span>
+              <span
+                className="change-value"
+                style={{ color: getChangeColor() }}
+                aria-label={`${formatChangePercent(
+                  changePercent
+                )} change in the last 24 hours`}
+              >
+                {getChangeIcon()}
+                {formatChangePercent(changePercent)}
+              </span>
             </div>
           </div>
         </div>
 
         <div className="chart-container">
-          {isLoading ? (
-            <div className="skeleton skeleton-chart"></div>
-          ) : (
-            <BalanceChart
-              balance={balance}
-              changePercent={changePercent}
-              className="balance-chart-svg"
-            />
-          )}
+          <BalanceChart
+            balance={balance}
+            changePercent={changePercent}
+            className="balance-chart-svg"
+          />
         </div>
       </div>
     </div>
@@ -117,25 +110,13 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
 BalanceCard.propTypes = {
   balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   changePercent: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
 };
 
 BalanceCard.defaultProps = {
   balance: "0.00",
   changePercent: "0.00",
-  isLoading: false
-};
-
-BalanceCard.propTypes = {
-  balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  changePercent: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  isLoading: PropTypes.bool
-};
-
-BalanceCard.defaultProps = {
-  balance: "0.00",
-  changePercent: "0.00",
-  isLoading: false
+  isLoading: false,
 };
 
 export default BalanceCard;

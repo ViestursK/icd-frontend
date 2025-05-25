@@ -82,15 +82,15 @@ const LoadingScreen = ({ message = "Loading..." }) => {
       data-theme={currentTheme}
     >
       <div className="loading-container">
-        <img
-          src={logo}
-          alt="Portfolio Tracker Logo"
-          className="loading-logo pulse"
-          width="60"
-          height="50"
-        />
-        <div className="spinner">
-          <div className="spinner-inner"></div>
+        <div className="loading-brand">
+          <img
+            src={logo}
+            alt="Portfolio Tracker Logo"
+            className="loading-logo pulse"
+            width="60"
+            height="50"
+          />
+          <h2 className="loading-brand-name">Portfolio Tracker</h2>
         </div>
         <p className="loading-message">{message}</p>
       </div>

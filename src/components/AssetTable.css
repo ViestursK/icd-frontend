@@ -160,7 +160,6 @@
   align-items: center;
 }
 
-
 /* Fixed widths for columns to prevent layout shifts */
 .data-table thead th:nth-child(1) {
   width: 40%;

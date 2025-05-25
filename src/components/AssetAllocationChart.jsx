@@ -45,65 +45,62 @@ const getExtendedColorArray = (len) => {
   return ext;
 };
 
-const renderActiveShape = (props) => {
-  const {
-    cx,
-    cy,
-    innerRadius,
-    outerRadius,
-    startAngle,
-    endAngle,
-    fill,
-    payload,
-    value,
-    percent,
-  } = props;
-  return (
-    <g>
-      <text
-        x={cx}
-        y={cy}
-        dy={-24}
-        textAnchor="middle"
-        className="donut-center-label"
-      >
-        {payload.name}
-      </text>
-      <text
-        x={cx}
-        y={cy}
-        dy={0}
-        textAnchor="middle"
-        className="donut-center-value"
-      >
-        {value.toLocaleString("en-US", {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        })}
-      </text>
-      <text
-        x={cx}
-        y={cy}
-        dy={24}
-        textAnchor="middle"
-        className="donut-center-percent"
-      >
-        {(percent * 100).toFixed(1)}%
-      </text>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius}
-        outerRadius={outerRadius + 10}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={fill}
-      />
-    </g>
-  );
-};
+const renderActiveShape = ({
+  cx,
+  cy,
+  innerRadius,
+  outerRadius,
+  startAngle,
+  endAngle,
+  fill,
+  payload,
+  value,
+  percent,
+}) => (
+  <g>
+    <text
+      x={cx}
+      y={cy}
+      dy={-24}
+      textAnchor="middle"
+      className="donut-center-label"
+    >
+      {payload.name}
+    </text>
+    <text
+      x={cx}
+      y={cy}
+      dy={0}
+      textAnchor="middle"
+      className="donut-center-value"
+    >
+      {value.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      })}
+    </text>
+    <text
+      x={cx}
+      y={cy}
+      dy={24}
+      textAnchor="middle"
+      className="donut-center-percent"
+    >
+      {(percent * 100).toFixed(1)}%
+    </text>
+    <Sector
+      cx={cx}
+      cy={cy}
+      innerRadius={innerRadius}
+      outerRadius={outerRadius + 10}
+      startAngle={startAngle}
+      endAngle={endAngle}
+      fill={fill}
+    />
+  </g>
+);
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload?.length) {
@@ -175,19 +172,22 @@ const AssetAllocationChart = ({
     sorted.forEach((item) =>
       item.percent * 100 >= othersThreshold ? main.push(item) : small.push(item)
     );
-    if (small.length)
+    if (small.length) {
+      const othersValue = small.reduce((s, i) => s + i.value, 0);
       main.push({
         name: "Others",
-        value: small.reduce((s, i) => s + i.value, 0),
-        percent: small.reduce((s, i) => s + i.value, 0) / total,
+        value: othersValue,
+        percent: othersValue / total,
       });
+    }
     return main;
   }, [data, nameKey, valueKey, othersThreshold]);
 
   const colors = useMemo(
-    () => getExtendedColorArray(processedData.length),
+    () => getExtendedColorArray(processedData.length || 4),
     [processedData.length]
   );
+
   const onPieEnter = (_, idx) => setActiveIndex(idx);
   const onLegendClick = (name) => {
     const i = processedData.findIndex((item) => item.name === name);
@@ -196,26 +196,25 @@ const AssetAllocationChart = ({
 
   if (loading) {
     return (
-      <div className="chart-loading-wrapper" style={{ minHeight }}>
-        <div className="chart-loading-spinner" />
-        <p>Loading...</p>
-      </div>
+      <div
+        className="asset-allocation-chart-container shimmer-loading"
+      />
     );
   }
+
   if (!processedData.length) {
     return (
-      <div className="chart-empty-wrapper" style={{ minHeight }}>
-        <div className="chart-empty-icon">📊</div>
-        <p>No data</p>
+      <div className="asset-allocation-chart-container" style={{ minHeight }}>
+        <div className="chart-empty-wrapper" style={{ minHeight }}>
+          <div className="chart-empty-icon">📊</div>
+          <p>No data</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div
-      className="asset-allocation-chart-container compact"
-      style={{ minHeight }}
-    >
+    <div className="asset-allocation-chart-container" style={{ minHeight }}>
       <ResponsiveContainer width="100%" height={220}>
         <PieChart>
           <Pie

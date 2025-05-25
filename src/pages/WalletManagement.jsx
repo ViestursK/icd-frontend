@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaWallet, FaTimes, FaSync, FaTrashAlt } from "react-icons/fa";
+import { FaWallet, FaTimes, FaTrashAlt } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import WalletForm from "../components/WalletForm";
 import WalletList from "../components/WalletList";
@@ -68,7 +68,13 @@ function WalletManagement() {
         {/* Wallets List */}
         {isLoading || refreshing ? (
           <div className="wallet-loading">
-            <div className="loading-spinner"></div>
+            <img
+              src="/assets/logo.svg"
+              alt="Loading"
+              className="loading-logo pulse"
+              width="50"
+              height="42"
+            />
             <p>Loading wallets...</p>
           </div>
         ) : wallets.length > 0 ? (
@@ -130,7 +136,15 @@ function WalletManagement() {
               >
                 {refreshing ? (
                   <>
-                    <FaSync className="spin" /> Removing...
+                    <img
+                      src="/assets/logo.svg"
+                      alt="Loading"
+                      className="pulse"
+                      width="16"
+                      height="14"
+                      style={{ marginRight: "0.5rem" }}
+                    />
+                    Removing...
                   </>
                 ) : (
                   <>

@@ -32,7 +32,6 @@
 }
 
 .stat-badge:hover {
-  background-color: var(--color-hover-overlay);
   transform: translateY(-2px);
 }
 
@@ -53,6 +52,7 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
 
 /* Badge color variations */
 .stat-badge.blue {

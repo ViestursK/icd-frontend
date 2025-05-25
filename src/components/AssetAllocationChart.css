@@ -19,13 +19,6 @@
   border-color: rgba(var(--color-primary-rgb), 0.2);
 }
 
-.chart-content {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
 .donut-center-label,
 .donut-center-value,
 .donut-center-percent {
@@ -46,7 +39,7 @@
   font-size: 0.75rem;
 }
 
-/* Custom legend styles */
+/* Legend */
 .custom-legend {
   display: flex;
   flex-wrap: wrap;
@@ -109,8 +102,7 @@
   margin-top: 0.25rem;
 }
 
-/* Loading & Empty states */
-.chart-loading-wrapper,
+/* Empty State */
 .chart-empty-wrapper {
   display: flex;
   flex-direction: column;
@@ -118,34 +110,54 @@
   justify-content: center;
   height: 100%;
   width: 100%;
-}
-
-.chart-loading-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid rgba(var(--color-primary-rgb), 0.3);
-  border-top: 3px solid var(--color-primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .chart-empty-icon {
-  font-size: 2rem;
   color: var(--color-text-secondary);
-  margin-bottom: 1rem;
-  opacity: 0.6;
+  opacity: 0.4;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 2px 4px rgba(var(--color-primary-rgb), 0.1));
 }
 
-.chart-loading-wrapper p,
 .chart-empty-wrapper p {
   color: var(--color-text-secondary);
   font-size: 0.875rem;
 }
 
-/* Light mode specific adjustments */
-[data-theme="light"] .asset-allocation-chart-container recharts-layer {
-  fill: var(--color-text) !important;
+
+
+.shimmer-loading {
+  background: linear-gradient(
+    90deg,
+    var(--color-card-bg) 25%,
+    rgba(var(--color-primary-rgb), 0.08) 50%,
+    var(--color-card-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 12px;
+  min-height: inherit;
+  overflow: hidden;
+}
+
+.shimmer-loading * {
+  opacity: 0 !important;
+  color: transparent !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+/* Light Mode */
+[data-theme="light"] .asset-allocation-chart-container {
+  background: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .asset-allocation-chart-container:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
 }
 
 [data-theme="light"] .recharts-tooltip-cursor {
@@ -155,27 +167,32 @@
 [data-theme="light"] .custom-tooltip {
   background: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* Responsive adjustments */
+[data-theme="light"] .chart-empty-icon {
+  opacity: 0.3;
+}
+
+[data-theme="light"] .legend-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .balance-value-large {
-    font-size: 2rem;
+  .asset-allocation-chart-container {
+    padding: 1rem;
   }
 
-  .balance-value-medium {
-    font-size: 1.75rem;
+  .chart-empty-icon {
+    margin-bottom: 1rem;
   }
 
-  .balance-value-small {
-    font-size: 1.5rem;
+  .legend-text {
+    font-size: 0.6875rem;
   }
 
-  .stats-card {
-    padding: 1rem 0.5rem;
-  }
-
-  .stat-badge-value {
-    font-size: 1rem;
+  .custom-legend {
+    gap: 0.25rem 0.5rem;
   }
 }

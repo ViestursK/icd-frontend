@@ -12,7 +12,7 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
-  background-color: var(--color-hover-overlay);
+  background-color: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text);
@@ -22,7 +22,6 @@
   transition: all 0.2s ease;
   height: 2.56rem;
   min-width: 200px;
-  
 }
 
 .wallet-selector-toggle:hover {
@@ -49,14 +48,21 @@
   right: 0;
   max-height: 400px;
   overflow-y: auto;
-  background: rgba(28, 24, 51, 0.95);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(125, 103, 255, 0.2);
+  background: var(--color-card-bg);
+  box-shadow: 0 4px 30px var(--color-shadow);
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
   z-index: 100;
   width: 100%;
   scrollbar-width: thin;
   animation: dropdownSlideIn 0.3s ease;
+}
+
+/* Light mode dropdown */
+[data-theme="light"] .wallet-selector-dropdown {
+  background: white;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 /* dropdown animation */
@@ -73,16 +79,21 @@
 
 .wallet-selector-header {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--color-border);
   position: sticky;
   top: 0;
-  background-color: rgba(28, 24, 51, 0.95);
+  background-color: var(--color-card-bg);
+}
+
+[data-theme="light"] .wallet-selector-header {
+  background-color: white;
+  border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 
 .wallet-selector-header h4 {
   margin: 0;
   font-size: 0.9rem;
-  color: #9e9ea0;
+  color: var(--color-text-secondary);
 }
 
 .wallet-selector-item {
@@ -96,12 +107,21 @@
 }
 
 .wallet-selector-item:hover {
-  background-color: rgba(125, 103, 255, 0.1);
+  background-color: var(--color-hover-overlay);
+}
+
+[data-theme="light"] .wallet-selector-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
 .wallet-selector-item.active {
-  background-color: rgba(125, 103, 255, 0.15);
-  border-left-color: #7d67ff;
+  background-color: var(--color-active-overlay);
+  border-left-color: var(--color-primary);
+}
+
+[data-theme="light"] .wallet-selector-item.active {
+  background-color: rgba(var(--color-primary-rgb), 0.08);
+  border-left-color: var(--color-primary);
 }
 
 .wallet-selector-item-icon {
@@ -116,6 +136,11 @@
 
 .wallet-selector-item-name {
   font-family: monospace;
+  color: var(--color-text);
+}
+
+[data-theme="light"] .wallet-selector-item-name {
+  color: var(--color-text);
 }
 
 .wallet-selector-item-meta {
@@ -127,13 +152,21 @@
 
 .wallet-selector-item-chain {
   font-size: 0.75rem;
-  color: #9e9ea0;
+  color: var(--color-text-secondary);
+}
+
+[data-theme="light"] .wallet-selector-item-chain {
+  color: var(--color-text-secondary);
 }
 
 .wallet-selector-item-balance {
   font-size: 0.75rem;
-  color: #9e9ea0;
+  color: var(--color-text-secondary);
   margin-left: auto;
+}
+
+[data-theme="light"] .wallet-selector-item-balance {
+  color: var(--color-text-secondary);
 }
 
 .wallet-selector-add-button {
@@ -141,16 +174,27 @@
   width: 100%;
   padding: 0.5rem;
   text-align: center;
-  background-color: rgba(125, 103, 255, 0.15);
+  background-color: rgba(var(--color-primary-rgb), 0.15);
   border-radius: 0.25rem;
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.2s ease;
+  color: var(--color-text);
 }
 
 .wallet-selector-add-button:hover {
-  background-color: rgba(125, 103, 255, 0.25);
-  color: #9381ff;
+  background-color: rgba(var(--color-primary-rgb), 0.25);
+  color: var(--color-primary-light);
+}
+
+[data-theme="light"] .wallet-selector-add-button {
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  color: var(--color-text);
+}
+
+[data-theme="light"] .wallet-selector-add-button:hover {
+  background-color: rgba(var(--color-primary-rgb), 0.15);
+  color: var(--color-primary);
 }
 
 /* Mini chain badge for the toggle button */
@@ -168,8 +212,8 @@
   width: 100%;
   padding: 0.75rem;
   text-align: center;
-  background-color: rgba(125, 103, 255, 0.15);
-  color: #f2f2fa;
+  background-color: rgba(var(--color-primary-rgb), 0.15);
+  color: var(--color-text);
   border: none;
   border-radius: 0.375rem;
   font-size: 0.875rem;
@@ -179,8 +223,18 @@
 }
 
 .wallet-selector-add-button:hover {
-  background-color: rgba(125, 103, 255, 0.25);
-  color: #ffffff;
+  background-color: rgba(var(--color-primary-rgb), 0.25);
+  color: var(--color-primary-light);
+}
+
+[data-theme="light"] .wallet-selector-add-button {
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  color: var(--color-text);
+}
+
+[data-theme="light"] .wallet-selector-add-button:hover {
+  background-color: rgba(var(--color-primary-rgb), 0.15);
+  color: var(--color-primary);
 }
 
 .add-wallet-icon {
