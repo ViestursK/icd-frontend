@@ -1,4 +1,4 @@
-// Updated walletService.js to support wallet naming
+// src/services/walletService.js
 import api from "../api/api";
 import { getUserIdFromToken } from "../utils/auth";
 

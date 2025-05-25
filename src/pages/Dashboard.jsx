@@ -1,7 +1,7 @@
 // Import existing components and hooks
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaCoins, FaTrashAlt, FaTimes, FaSync, FaWallet } from "react-icons/fa";
+import { FaCoins, FaWallet } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
 import WalletForm from "../components/WalletForm";
@@ -245,12 +245,6 @@ function Dashboard() {
           }
         />
 
-        {/* Move WalletForm outside the Header for mobile layout */}
-        {wallets.length === 0 && (
-          <div className="mobile-add-wallet-container">
-            <WalletForm />
-          </div>
-        )}
       </div>
 
       {error && (

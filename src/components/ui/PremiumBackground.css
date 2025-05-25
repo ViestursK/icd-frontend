@@ -1,5 +1,4 @@
 /* PremiumBackground.css */
-
 .premium-background {
   position: fixed;
   top: 0;
@@ -7,7 +6,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: linear-gradient(135deg, #1e1647, #32103f);
+  background: var(--background-gradient);
   z-index: -100;
 }
 
@@ -21,7 +20,7 @@
 .orb-purple {
   width: 400px;
   height: 400px;
-  background-color: rgba(139, 92, 246, 0.3); /* Purple */
+  background-color: var(--orb-purple-color);
   animation: moveSlowly 4s infinite alternate ease-in-out;
   z-index: 1;
 }
@@ -29,7 +28,7 @@
 .orb-blue {
   width: 400px;
   height: 400px;
-  background-color: rgba(59, 130, 246, 0.2); /* Blue */
+  background-color: var(--orb-blue-color);
   animation: moveSlowly 7s infinite alternate-reverse ease-in-out;
   z-index: 1;
 }
@@ -37,7 +36,7 @@
 .orb-indigo {
   width: 350px;
   height: 350px;
-  background-color: rgba(79, 70, 229, 0.2); /* Indigo */
+  background-color: var(--orb-indigo-color);
   animation: moveSlowly 5s infinite alternate ease-in-out;
   z-index: 1;
 }
@@ -45,7 +44,7 @@
 .orb-rose {
   width: 300px;
   height: 300px;
-  background-color: rgba(244, 63, 94, 0.2); /* Rose */
+  background-color: var(--orb-rose-color);
   animation: moveSlowly 3s infinite alternate-reverse ease-in-out;
   z-index: 1;
 }
@@ -76,11 +75,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.03) 1px,
-      transparent 1px
-    ),
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px);
   background-size: 50px 50px;
   opacity: 0.1;
   pointer-events: none;
@@ -92,6 +88,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, var(--backdrop-opacity));
   pointer-events: none;
 }

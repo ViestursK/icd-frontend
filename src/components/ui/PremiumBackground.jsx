@@ -1,9 +1,10 @@
-// PremiumBackground.js
 import React, { useEffect, useState } from "react";
-import "./PremiumBackground.css"; // Optional: import specific styles for the background
+import { useTheme } from "../../context/ThemeContext";
+import "./PremiumBackground.css";
 
 const PremiumBackground = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const { theme } = useTheme();
 
   useEffect(() => {
     const handleMouseMove = (e) => {

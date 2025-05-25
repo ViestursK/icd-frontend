@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import WalletForm from "../components/WalletForm";
+import WalletList from "../components/WalletList";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import "./WalletManagement.css";
@@ -143,8 +144,6 @@ function WalletManagement() {
       )}
 
       <div className="container">
-        
-
         {/* Wallets List */}
         {isLoading || refreshing ? (
           <div className="wallet-loading">
@@ -152,116 +151,11 @@ function WalletManagement() {
             <p>Loading wallets...</p>
           </div>
         ) : wallets.length > 0 ? (
-          <div className="wallet-list">
-            {wallets.map((wallet) => {
-              const walletId = `${wallet.chain}-${wallet.address}`;
-              const isEditing = editWalletId === walletId;
-
-              return (
-                <div
-                  key={walletId}
-                  className="wallet-item"
-                  onClick={() => !isEditing && handleViewWallet(wallet)}
-                >
-                  <div className="wallet-item-header">
-                    <div className="wallet-chain-badge">
-                      {wallet.chain.toUpperCase()}
-                    </div>
-
-                    {isEditing ? (
-                      <div className="wallet-name-edit">
-                        <input
-                          type="text"
-                          value={editName}
-                          onChange={(e) => setEditName(e.target.value)}
-                          placeholder="Enter wallet name"
-                          onClick={(e) => e.stopPropagation()}
-                          autoFocus
-                        />
-                        <div className="edit-actions">
-                          <button
-                            className="edit-action save"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleSaveName(wallet);
-                            }}
-                            disabled={refreshing}
-                          >
-                            <FaCheck />
-                          </button>
-                          <button
-                            className="edit-action cancel"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setEditWalletId(null);
-                            }}
-                            disabled={refreshing}
-                          >
-                            <FaTimes />
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="wallet-name">
-                        <span>
-                          {wallet.name ||
-                            `${wallet.chain.toUpperCase()} Wallet`}
-                        </span>
-                        <button
-                          className="edit-name-button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleEditNameClick(wallet);
-                          }}
-                        >
-                          <FaPencilAlt />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="wallet-item-content">
-                    <div className="wallet-address">
-                      <span>Address: {formatAddress(wallet.address)}</span>
-                    </div>
-                    <div className="wallet-balance">
-                      <span>
-                        Balance: $
-                        {parseFloat(wallet.balance_usd).toLocaleString(
-                          "en-US",
-                          {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          }
-                        )}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="wallet-item-actions">
-                    <button
-                      className="wallet-action-button view"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleViewWallet(wallet);
-                      }}
-                    >
-                      View Assets
-                    </button>
-                    <button
-                      className="wallet-action-button delete"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteClick(wallet);
-                      }}
-                    >
-                      <FaTrashAlt />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <WalletList
+            wallets={wallets}
+            isLoading={isLoading}
+            onDeleteClick={handleDeleteClick}
+          />
         ) : (
           <div className="empty-state">
             <FaWallet className="empty-icon" />

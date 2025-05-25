@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { FaCaretUp, FaCaretDown, FaSearch, FaTimes } from "react-icons/fa";
-import "./WalletTable.css";
-import "./AssetTable.css";
+import "../styles/tableUtils.css"; 
+import "./AssetTable.css"; 
 import "./skeleton.css";
 
 const AssetTable = ({
@@ -177,11 +177,11 @@ const AssetTable = ({
   if (isLoading) {
     return (
       <div
-        className="wallet-table-container"
+        className="data-table-container"
         role="region"
         aria-label="Asset holdings"
       >
-        <table className="wallet-table">
+        <table className="data-table">
           <thead>
             <tr>
               <th>
@@ -203,7 +203,7 @@ const AssetTable = ({
           </thead>
           <tbody>
             {[...Array(8)].map((_, index) => (
-              <tr key={index} className="wallet-row skeleton-row">
+              <tr key={index} className="data-row skeleton-row">
                 <td>
                   <div className="skeleton skeleton-text medium"></div>
                 </td>
@@ -229,7 +229,7 @@ const AssetTable = ({
 
   return (
     <div
-      className="wallet-table-container"
+      className="data-table-container"
       role="region"
       aria-label="Asset holdings"
     >
@@ -280,7 +280,7 @@ const AssetTable = ({
         </div>
       </div>
 
-      <table className="wallet-table">
+      <table className="data-table">
         <thead>
           <tr>
             <th onClick={() => toggleSort("name")} className="sortable-column">
@@ -347,7 +347,7 @@ const AssetTable = ({
         <tbody>
           {visibleAssets.length > 0 ? (
             visibleAssets.map((asset, index) => (
-              <tr key={index} className="wallet-row">
+              <tr key={index} className="data-row">
                 <td className="asset-cell">
                   <div className="asset-info">
                     {renderAssetIcon(asset)}
