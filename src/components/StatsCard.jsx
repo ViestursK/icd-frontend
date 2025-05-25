@@ -1,12 +1,11 @@
 // StatsCard.jsx - Simple shimmer when loading
-import React from "react";
 import PropTypes from "prop-types";
 import { FaWallet, FaCoins, FaStar, FaChartLine } from "react-icons/fa";
 import "./StatsCard.css";
 
 const StatsCard = ({ stats, isLoading }) => {
   if (isLoading) {
-    return <div className="stats-card shimmer-loading"></div>;
+    return <div className="shimmer-loading"></div>;
   }
 
   if (!stats) {

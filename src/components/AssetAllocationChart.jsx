@@ -197,7 +197,7 @@ const AssetAllocationChart = ({
   if (loading) {
     return (
       <div
-        className="asset-allocation-chart-container shimmer-loading"
+        className="shimmer-loading"
       />
     );
   }

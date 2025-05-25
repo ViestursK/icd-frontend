@@ -1,4 +1,3 @@
-/* Base shimmer animation */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -9,33 +8,28 @@
 }
 
 /* Shimmer effect for loading cards */
-.shimmer-loading {
+/* Dark mode shimmer */
+[data-theme="dark"] .shimmer-loading {
   background: linear-gradient(
     90deg,
-    var(--color-card-bg) 25%,
-    rgba(var(--color-primary-rgb), 0.28) 50%,
+    var(--color-card-bg) 15%,
+    rgba(var(--color-primary-rgb), 0.2) 50%,
     var(--color-card-bg) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 3.5s infinite linear;
-  color: transparent !important;
-  pointer-events: none;
-  user-select: none;
-  height: 18rem;
+  height: 17rem;
 }
 
 /* Light mode shimmer */
 [data-theme="light"] .shimmer-loading {
   background: linear-gradient(
     90deg,
-    var(--color-card-bg) 25%,
-    rgba(var(--color-primary-rgb), 0.28) 50%,
+    var(--color-card-bg) 15%,
+    rgba(var(--color-primary-rgb), 0.2) 50%,
     var(--color-card-bg) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 3.5s infinite linear;
-  color: transparent !important;
-  pointer-events: none;
-  user-select: none;
-  height: 18rem;
+  height: 17rem;
 }
