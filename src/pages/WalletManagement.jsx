@@ -1,13 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  FaWallet,
-  FaTimes,
-  FaSync,
-  FaTrashAlt,
-  FaPencilAlt,
-  FaCheck,
-} from "react-icons/fa";
+import { useState } from "react";
+import { FaWallet, FaTimes, FaSync, FaTrashAlt } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import WalletForm from "../components/WalletForm";
 import WalletList from "../components/WalletList";
@@ -16,49 +8,13 @@ import { useToast } from "../context/ToastContext";
 import "./WalletManagement.css";
 
 function WalletManagement() {
-  const {
-    wallets,
-    isLoading,
-    error,
-    refreshData,
-    removeWallet,
-    updateWalletName,
-    clearError,
-  } = useWallet();
-  const navigate = useNavigate();
+  const { wallets, isLoading, error, removeWallet, clearError } = useWallet();
   const toast = useToast();
 
   // State
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [editWalletId, setEditWalletId] = useState(null);
-  const [editName, setEditName] = useState("");
   const [refreshing, setRefreshing] = useState(false);
-
-  // Format wallet address
-  const formatAddress = (address) => {
-    if (!address) return "";
-    return `${address.substring(0, 6)}...${address.substring(
-      address.length - 4
-    )}`;
-  };
-
-  // Handle refresh
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    try {
-      const result = await refreshData();
-      if (result.success) {
-        toast.success("Wallet data refreshed");
-      } else if (result.error) {
-        toast.error(result.error);
-      }
-    } catch (error) {
-      toast.error("Failed to refresh data");
-    } finally {
-      setRefreshing(false);
-    }
-  };
 
   // Handle delete click
   const handleDeleteClick = (wallet) => {
@@ -84,41 +40,6 @@ function WalletManagement() {
     } finally {
       setRefreshing(false);
     }
-  };
-
-  // Handle edit name click
-  const handleEditNameClick = (wallet) => {
-    setEditWalletId(`${wallet.chain}-${wallet.address}`);
-    setEditName(wallet.name || "");
-  };
-
-  // Handle save name
-  const handleSaveName = async (wallet) => {
-    setRefreshing(true);
-    try {
-      const result = await updateWalletName({
-        address: wallet.address,
-        chain: wallet.chain,
-        name: editName.trim(),
-      });
-
-      if (result.success) {
-        toast.success("Wallet name updated");
-        setEditWalletId(null);
-        setEditName("");
-      } else {
-        toast.error(result.error || "Failed to update name");
-      }
-    } catch (error) {
-      toast.error("Failed to update wallet name");
-    } finally {
-      setRefreshing(false);
-    }
-  };
-
-  // Handle view wallet
-  const handleViewWallet = (wallet) => {
-    navigate(`/dashboard/wallet/${wallet.chain}/${wallet.address}`);
   };
 
   return (

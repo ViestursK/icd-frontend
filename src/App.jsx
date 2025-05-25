@@ -3,33 +3,42 @@ import { Suspense, lazy } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { WalletProvider } from "./context/WalletContext";
 import { ToastProvider } from "./context/ToastContext";
-import { ThemeProvider } from "./context/ThemeContext"; // Import ThemeProvider
+import { ThemeProvider } from "./context/ThemeContext";
 import LoadingScreen from "./components/ui/LoadingScreen";
 import ErrorBoundary from "./components/ui/ErrorBoundary";
 import PremiumBackground from "./components/ui/PremiumBackground";
+import { Helmet } from "react-helmet";
 import "./styles/globals.css";
 
-// Lazy load the router for better performance
 const AppRouter = lazy(() => import("./routes/AppRouter"));
 
 function App() {
   return (
-    <ErrorBoundary>
-      <ThemeProvider>
-        <Router>
-          <AuthProvider>
-            <ToastProvider>
-              <WalletProvider>
-                <PremiumBackground />
-                <Suspense fallback={<LoadingScreen />}>
-                  <AppRouter />
-                </Suspense>
-              </WalletProvider>
-            </ToastProvider>
-          </AuthProvider>
-        </Router>
-      </ThemeProvider>
-    </ErrorBoundary>
+    <>
+      <Helmet>
+        <title>Crypto Dashboard</title>
+        <meta name="description" content="Your all-in-one crypto dashboard" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Helmet>
+
+      <ErrorBoundary>
+        <ThemeProvider>
+          <Router>
+            <AuthProvider>
+              <ToastProvider>
+                <WalletProvider>
+                  <PremiumBackground />
+                  <Suspense fallback={<LoadingScreen />}>
+                    <AppRouter />
+                  </Suspense>
+                </WalletProvider>
+              </ToastProvider>
+            </AuthProvider>
+          </Router>
+        </ThemeProvider>
+      </ErrorBoundary>
+    </>
   );
 }
 

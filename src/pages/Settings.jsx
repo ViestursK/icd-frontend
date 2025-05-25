@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
-  FaCog,
-  FaBell,
-  FaShieldAlt,
   FaPalette,
   FaMoon,
   FaSun,
@@ -46,25 +43,6 @@ const Settings = () => {
     localStorage.setItem("userPreferences", JSON.stringify(preferences));
   }, [preferences]);
 
-  // Handle preference toggle
-  const handlePreferenceToggle = (category, setting) => {
-    setPreferences((prev) => {
-      const newPreferences = {
-        ...prev,
-        [category]: {
-          ...prev[category],
-          [setting]: !prev[category][setting],
-        },
-      };
-
-      // Show toast notification
-      const status = newPreferences[category][setting] ? "enabled" : "disabled";
-      toast.success(`${setting} ${status}`);
-
-      return newPreferences;
-    });
-  };
-
   // Handle theme change
   const handleThemeChange = (selectedTheme) => {
     setTheme(selectedTheme);
@@ -73,20 +51,6 @@ const Settings = () => {
         selectedTheme === "system" ? "system preference" : selectedTheme
       }`
     );
-  };
-
-  // Get theme icon
-  const getThemeIcon = (themeType) => {
-    switch (themeType) {
-      case "light":
-        return <FaSun className="theme-icon" />;
-      case "dark":
-        return <FaMoon className="theme-icon" />;
-      case "system":
-        return <FaDesktop className="theme-icon" />;
-      default:
-        return null;
-    }
   };
 
   return (
@@ -133,96 +97,9 @@ const Settings = () => {
             </div>
           </div>
         </section>
-
-        {/* Notifications */}
-        <section className="settings-section">
-          <div className="settings-header">
-            <FaBell className="settings-icon" />
-            <h2>Notifications</h2>
-          </div>
-
-          <div className="settings-options">
-            {Object.entries(preferences.notifications).map(([key, value]) => (
-              <div key={key} className="settings-option">
-                <div className="option-details">
-                  <span className="option-label">
-                    {key
-                      .replace(/([A-Z])/g, " $1")
-                      .replace(/^./, (str) => str.toUpperCase())}
-                  </span>
-                  <span className="option-description">
-                    {getNotificationDescription(key)}
-                  </span>
-                </div>
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={value}
-                    onChange={() =>
-                      handlePreferenceToggle("notifications", key)
-                    }
-                  />
-                  <span className="slider"></span>
-                </label>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Security */}
-        <section className="settings-section">
-          <div className="settings-header">
-            <FaShieldAlt className="settings-icon" />
-            <h2>Security</h2>
-          </div>
-
-          <div className="settings-options">
-            {Object.entries(preferences.security).map(([key, value]) => (
-              <div key={key} className="settings-option">
-                <div className="option-details">
-                  <span className="option-label">
-                    {key
-                      .replace(/([A-Z])/g, " $1")
-                      .replace(/^./, (str) => str.toUpperCase())}
-                  </span>
-                  <span className="option-description">
-                    {getSecurityDescription(key)}
-                  </span>
-                </div>
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={value}
-                    onChange={() => handlePreferenceToggle("security", key)}
-                  />
-                  <span className="slider"></span>
-                </label>
-              </div>
-            ))}
-          </div>
-        </section>
       </div>
     </div>
   );
 };
-
-// Helper function to get notification descriptions
-function getNotificationDescription(key) {
-  const descriptions = {
-    priceAlerts: "Receive alerts when prices change significantly",
-    portfolioChanges: "Get notified about major changes to your portfolio",
-    securityUpdates: "Important security-related notifications",
-  };
-  return descriptions[key] || "";
-}
-
-// Helper function to get security descriptions
-function getSecurityDescription(key) {
-  const descriptions = {
-    twoFactorAuth: "Require a second form of authentication when logging in",
-    loginNotifications: "Get notified about new logins to your account",
-  };
-  return descriptions[key] || "";
-}
 
 export default Settings;

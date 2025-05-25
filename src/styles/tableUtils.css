@@ -1,4 +1,3 @@
-/* tableUtils.css - Common table styling for AssetTable, WalletTable, etc. */
 .data-table-container {
   width: 100%;
   overflow-x: auto;
@@ -33,6 +32,8 @@
   min-width: 600px;
 }
 
+
+
 .data-table th,
 .data-table td {
   padding: 0.75rem 1rem;
@@ -45,7 +46,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: var(--color-card-background);
+  /* background-color: var(--color-card-background); */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: var(--color-text);
@@ -57,9 +58,7 @@
   vertical-align: middle;
 }
 
-.data-row {
-  transition: background-color var(--transition-fast);
-}
+
 
 .data-row:hover {
   background-color: var(--color-hover-overlay);

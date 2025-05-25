@@ -1,4 +1,4 @@
-/* Auth.css - Login and Register Pages */
+/* Auth.css - Fixed Login and Register Pages */
 .auth-container {
   display: flex;
   flex-direction: column;
@@ -216,15 +216,35 @@
   text-decoration: underline;
 }
 
-/* Light mode adjustments */
+/* Light mode specific adjustments */
 [data-theme="light"] .auth-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .brand-name {
+  color: var(--color-text);
+  text-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.3);
+}
+
+[data-theme="light"] .auth-header h1 {
+  color: var(--color-text);
+}
+
+[data-theme="light"] .auth-header p {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="light"] .form-label {
+  color: var(--color-text);
+  font-weight: 600;
 }
 
 [data-theme="light"] .form-input {
   background-color: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.15);
+  color: var(--color-text);
 }
 
 [data-theme="light"] .form-input:focus {
@@ -234,6 +254,33 @@
 
 [data-theme="light"] .form-input::placeholder {
   color: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .input-icon {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="light"] .auth-footer {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="light"] .auth-link {
+  color: var(--color-primary-dark);
+}
+
+[data-theme="light"] .auth-link:hover {
+  color: var(--color-primary);
+}
+
+/* Enhanced error styling for light mode */
+[data-theme="light"] .form-input.error {
+  border-color: var(--color-error);
+  background-color: rgba(var(--color-error-rgb), 0.02);
+}
+
+[data-theme="light"] .error-text {
+  color: var(--color-error);
+  font-weight: 500;
 }
 
 /* Animation for auth card */

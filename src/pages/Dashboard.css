@@ -1,11 +1,11 @@
-/* Updated Dashboard.css */
+/* src/pages/Dashboard.css - Fixed version */
+
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 1rem;
+  width: 100%;
+  height: max-content;
 }
 
 .top-container {
@@ -16,6 +16,7 @@
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  margin-top: 0;
 }
 
 .header-actions-container {
@@ -36,6 +37,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  /* flex: 1; */
+  height: max-content;
 }
 
 /* Cards layout */

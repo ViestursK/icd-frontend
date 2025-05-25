@@ -1,3 +1,4 @@
+/* src/styles/globals.css - Fixed version */
 @import "./themes.css";
 
 /* Reset and base styles */
@@ -22,6 +23,15 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Ensure no extra margin/padding that could create empty space */
+  overflow-x: hidden;
+}
+
+/* Ensure the root div takes full height */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 h1,

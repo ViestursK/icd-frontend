@@ -4,12 +4,12 @@
   align-self: center;
   z-index: 100;
   scrollbar-color: rgba(125, 103, 255, 0.2) transparent;
-  scrollbar-width: thin;
 }
 
 .wallet-selector-toggle {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
   background-color: var(--color-hover-overlay);
@@ -20,8 +20,9 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  height: 38px;
-  min-width: 150px;
+  height: 2.56rem;
+  min-width: 200px;
+  
 }
 
 .wallet-selector-toggle:hover {
@@ -44,18 +45,30 @@
 /* Dropdown styles */
 .wallet-selector-dropdown {
   position: absolute;
-  top: calc(100% + 0.5rem);
+  top: calc(100%);
   right: 0;
   max-height: 400px;
   overflow-y: auto;
   background: rgba(28, 24, 51, 0.95);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(125, 103, 255, 0.2);
   border-radius: 0.5rem;
   z-index: 100;
-  width: min-content;
+  width: 100%;
+  scrollbar-width: thin;
+  animation: dropdownSlideIn 0.3s ease;
+}
+
+/* dropdown animation */
+@keyframes dropdownSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .wallet-selector-header {
@@ -142,10 +155,9 @@
 
 /* Mini chain badge for the toggle button */
 .chain-badge.mini {
-  padding: 0.2rem 0.4rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  border-radius: 4px;
+  height: min-content;
+  margin: 0;
+  align-self: center;
 }
 
 .wallet-selector-add-button {
@@ -191,7 +203,6 @@
     left: 0;
     border-radius: 1rem;
     max-height: calc(100vh - 4rem);
-    top: calc(100% + 1rem);
     padding-bottom: 1rem;
   }
 }

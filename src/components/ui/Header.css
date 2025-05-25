@@ -14,7 +14,7 @@
   margin: 0;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #f2f2fa;
+  color: --color-text;
   letter-spacing: 0.05em;
 }
 

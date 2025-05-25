@@ -3,40 +3,58 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 // Create theme context
 const ThemeContext = createContext(null);
 
+// Initialize theme immediately before React renders
+const getInitialTheme = () => {
+  // First check if already set on document
+  const documentTheme = document.documentElement.getAttribute("data-theme");
+  if (documentTheme) {
+    return documentTheme;
+  }
+
+  // Check localStorage
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme && savedTheme !== "system") {
+    // Apply immediately to prevent flash
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    return savedTheme;
+  }
+
+  // Check system preference
+  const prefersDark =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const systemTheme = prefersDark ? "dark" : "light";
+
+  // Apply immediately to prevent flash
+  document.documentElement.setAttribute("data-theme", systemTheme);
+  return systemTheme;
+};
+
 // Theme provider component
 export const ThemeProvider = ({ children }) => {
-  // Initialize theme from localStorage or system preference
-  const [theme, setTheme] = useState(() => {
-    // First try to get from localStorage
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) return savedTheme;
-
-    // Then check system preference
-    if (
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: light)").matches
-    ) {
-      return "light";
-    }
-
-    // Default to dark theme
-    return "dark";
-  });
+  // Initialize theme with immediate application
+  const [theme, setTheme] = useState(() => getInitialTheme());
 
   // Apply theme to document when theme changes
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
+
+    // Only save to localStorage if it's not system preference
+    if (theme !== "system") {
+      localStorage.setItem("theme", theme);
+    }
   }, [theme]);
 
   // Listen for system preference changes
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: light)");
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     const handleChange = (e) => {
       // Only update if user hasn't explicitly set a preference
-      if (!localStorage.getItem("theme")) {
-        setTheme(e.matches ? "light" : "dark");
+      const savedTheme = localStorage.getItem("theme");
+      if (!savedTheme || savedTheme === "system") {
+        const newTheme = e.matches ? "dark" : "light";
+        setTheme(newTheme);
       }
     };
 
@@ -66,17 +84,16 @@ export const ThemeProvider = ({ children }) => {
 
   // Set specific theme
   const setThemeMode = (mode) => {
-    if (mode === "light" || mode === "dark" || mode === "system") {
-      if (mode === "system") {
-        // Remove from localStorage and use system preference
-        localStorage.removeItem("theme");
-        const isLight =
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: light)").matches;
-        setTheme(isLight ? "light" : "dark");
-      } else {
-        setTheme(mode);
-      }
+    if (mode === "light" || mode === "dark") {
+      setTheme(mode);
+    } else if (mode === "system") {
+      // Remove from localStorage and use system preference
+      localStorage.removeItem("theme");
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const systemTheme = prefersDark ? "dark" : "light";
+      setTheme(systemTheme);
     }
   };
 
