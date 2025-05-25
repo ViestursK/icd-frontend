@@ -40,7 +40,7 @@
 .loading-screen.light .loading-logo,
 .loading-screen[data-theme="light"] .loading-logo {
   filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.6));
-  width: 10rem;
+  width: 8rem;
 }
 
 [data-theme="light"] .loading-brand-name,
@@ -54,7 +54,7 @@
 .loading-screen.light .loading-message,
 .loading-screen[data-theme="light"] .loading-message {
   color: var(--color-text-secondary);
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 
 [data-theme="light"] .pulse,
@@ -68,7 +68,7 @@
 .loading-screen.light .loading-logo,
 .loading-screen[data-theme="dark"] .loading-logo {
   filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.6));
-  width: 10rem;
+  width: 8rem;
 }
 
 [data-theme="dark"] .loading-brand-name,
@@ -82,7 +82,7 @@
 .loading-screen.light .loading-message,
 .loading-screen[data-theme="dark"] .loading-message {
   color: var(--color-text-secondary);
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 
 [data-theme="dark"] .pulse,

@@ -1,5 +1,5 @@
 // BalanceCard.jsx - Fixed version that always calculates font size correctly
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import "./BalanceCard.css";
@@ -8,7 +8,6 @@ import BalanceChart from "./BalanceChart";
 const BalanceCard = ({ balance, changePercent, isLoading }) => {
   // State to force re-render when balance changes
   const [currentBalance, setCurrentBalance] = useState(balance);
-  const [fontClass, setFontClass] = useState("balance-value-large");
 
   // Format balance with proper thousands separators and 2 decimal places
   const formatBalance = (balance) => {
@@ -27,48 +26,6 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
       maximumFractionDigits: 2,
     });
   };
-
-  // Calculate font size class based on formatted balance length
-  const calculateFontClass = (balance) => {
-    const formattedBalance = formatBalance(balance);
-    const balanceLength = formattedBalance.length;
-
-    if (balanceLength > 14) {
-      return "balance-value-small";
-    } else if (balanceLength > 10) {
-      return "balance-value-medium";
-    } else {
-      return "balance-value-large";
-    }
-  };
-
-  // Update font class whenever balance changes
-  useEffect(() => {
-    if (balance !== currentBalance) {
-      const newFontClass = calculateFontClass(balance);
-      console.log("BalanceCard balance changed:", {
-        oldBalance: currentBalance,
-        newBalance: balance,
-        formattedBalance: formatBalance(balance),
-        newFontClass,
-        timestamp: new Date().toISOString(),
-      });
-
-      setCurrentBalance(balance);
-      setFontClass(newFontClass);
-    }
-  }, [balance, currentBalance]);
-
-  // Also calculate on initial render
-  useEffect(() => {
-    const initialFontClass = calculateFontClass(balance);
-    setFontClass(initialFontClass);
-    console.log("BalanceCard initial render:", {
-      balance,
-      formattedBalance: formatBalance(balance),
-      fontClass: initialFontClass,
-    });
-  }, []); // Only run once on mount
 
   // Format change percent with sign
   const formatChangePercent = (percent) => {
@@ -107,9 +64,7 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
       <div className="balance-card">
         <div className="balance-card-shimmer shimmer-loading">
           <div className="shimmer-content">
-            <div className="shimmer-line balance-label-shimmer"></div>
-            <div className="shimmer-line balance-value-shimmer"></div>
-            <div className="shimmer-line balance-change-shimmer"></div>
+           
           </div>
         </div>
       </div>
@@ -129,10 +84,8 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
             <div className="balance-amount">
               <span className="currency-symbol">$</span>
               <span
-                className={`balance-value ${fontClass}`}
+                className="balance-value"
                 title={`$${formatBalance(safeBalance)}`}
-                data-balance={safeBalance}
-                data-font-class={fontClass}
               >
                 {formatBalance(safeBalance)}
               </span>
