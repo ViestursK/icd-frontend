@@ -1,41 +1,26 @@
-// Modified WalletForm.jsx to include name field
-import React, { useState, useRef, useEffect } from "react";
-import {
-  FaWallet,
-  FaTimes,
-  FaPlus,
-  FaExchangeAlt,
-  FaEdit,
-  FaEthereum,
-  FaCoins,
-  FaChevronRight,
-  FaTag,
-} from "react-icons/fa";
-import { SiBinance, SiCoinbase } from "react-icons/si";
+// Optimized WalletForm.jsx - Manual form only with improved styling
+import { useState, useRef, useEffect } from "react";
+import { FaWallet, FaTimes, FaPlus, FaTag } from "react-icons/fa";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
+import ChainSelector from "./ui/ChainSelector";
 import "./WalletForm.css";
 
 export default function WalletForm() {
   // State for modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // State for active tab
-  const [activeTab, setActiveTab] = useState("wallet-connect");
-  // Form states for manual wallet addition
+
+  // Form states
   const [walletAddress, setWalletAddress] = useState("");
   const [selectedChain, setSelectedChain] = useState("");
-  const [walletName, setWalletName] = useState(""); // New state for wallet name
-  // Loading states
-  const [connectingWallet, setConnectingWallet] = useState(false);
+  const [walletName, setWalletName] = useState("");
+
+  // Loading state
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Get wallet context and toast
-  const {
-    supportedChains,
-    loadingChains,
-    addWallet,
-    fetchSupportedChains,
-    isLoading,
-  } = useWallet();
+  const { supportedChains, loadingChains, addWallet, fetchSupportedChains } =
+    useWallet();
 
   const toast = useToast();
   const modalRef = useRef(null);
@@ -44,16 +29,19 @@ export default function WalletForm() {
   useEffect(() => {
     function handleClickOutside(event) {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setIsModalOpen(false);
+        closeModal();
       }
     }
 
     if (isModalOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = "hidden";
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "unset";
     };
   }, [isModalOpen]);
 
@@ -79,44 +67,17 @@ export default function WalletForm() {
     setIsModalOpen(false);
     setWalletAddress("");
     setSelectedChain("");
-    setWalletName(""); // Reset wallet name
-    setActiveTab("wallet-connect");
-  };
-
-  // Handle tab change
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
-  // Simulate wallet connection
-  const handleConnectWallet = async (type) => {
-    setConnectingWallet(true);
-
-    // Simulate connection delay
-    setTimeout(() => {
-      setConnectingWallet(false);
-      toast.info(`${type} connection not implemented in this demo.`);
-    }, 1500);
-  };
-
-  // Handle exchange connection
-  const handleConnectExchange = async (exchange) => {
-    setConnectingWallet(true);
-
-    // Simulate connection delay
-    setTimeout(() => {
-      setConnectingWallet(false);
-      toast.info(`${exchange} connection not implemented in this demo.`);
-    }, 1500);
+    setWalletName("");
   };
 
   // Generate a default wallet name based on chain and address
   const generateDefaultWalletName = () => {
     if (selectedChain && walletAddress) {
       const chainName = selectedChain.toUpperCase();
-      const addressShort = `${walletAddress.substring(0, 4)}...${walletAddress.substring(
-        walletAddress.length - 4
-      )}`;
+      const addressShort = `${walletAddress.substring(
+        0,
+        4
+      )}...${walletAddress.substring(walletAddress.length - 4)}`;
       return `${chainName} ${addressShort}`;
     }
     return "";
@@ -129,8 +90,8 @@ export default function WalletForm() {
     }
   }, [selectedChain, walletAddress, walletName]);
 
-  // Handle manual form submission
-  const handleSubmitManual = async (e) => {
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate input
@@ -147,10 +108,9 @@ export default function WalletForm() {
     // Use default name if none provided
     const nameToUse = walletName.trim() || generateDefaultWalletName();
 
-    setConnectingWallet(true);
+    setIsSubmitting(true);
 
     try {
-      // Call the addWallet function from context with the new name parameter
       const result = await addWallet({
         address: walletAddress.trim(),
         chain: selectedChain,
@@ -170,13 +130,25 @@ export default function WalletForm() {
     } catch (error) {
       toast.error("Failed to add wallet. Please try again.");
     } finally {
-      setConnectingWallet(false);
+      setIsSubmitting(false);
     }
   };
 
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape" && isModalOpen) {
+        closeModal();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isModalOpen]);
+
   return (
     <>
-      {/* Add Wallet Button - Compact for mobile */}
+      {/* Add Wallet Button */}
       <button
         className="add-wallet-button"
         onClick={openModal}
@@ -190,116 +162,100 @@ export default function WalletForm() {
       {isModalOpen && (
         <div className="wallet-modal-overlay">
           <div className="wallet-modal-container" ref={modalRef}>
+            {/* Modal Header */}
             <div className="wallet-modal-header">
-              <div className="wallet-modal-handle"></div>
-              <h3>Add Wallet</h3>
+              <h3>Add New Wallet</h3>
               <button
                 className="wallet-modal-close-button"
                 onClick={closeModal}
                 aria-label="Close modal"
+                disabled={isSubmitting}
               >
                 <FaTimes />
               </button>
             </div>
 
+            {/* Modal Content - Manual Form Only */}
             <div className="wallet-modal-content">
-              {/* Manual Input Tab */}
-              {activeTab === "manual" && (
-                <form
-                  className="wallet-manual-form"
-                  onSubmit={handleSubmitManual}
-                >
-                  <div className="form-group">
-                    <label htmlFor="manual-chain-select">Blockchain</label>
-                    <select
-                      id="manual-chain-select"
-                      value={selectedChain}
-                      onChange={(e) => setSelectedChain(e.target.value)}
-                      className="form-select"
-                      disabled={loadingChains || connectingWallet}
-                      aria-busy={loadingChains}
-                    >
-                      <option value="">Select Chain</option>
-                      {supportedChains.map((chain) => (
-                        <option key={chain.id} value={chain.id}>
-                          {chain.name.toUpperCase()}
-                        </option>
-                      ))}
-                    </select>
-                    {loadingChains && (
-                      <div className="loading-indicator" aria-hidden="true">
-                        <span className="loader"></span>
-                      </div>
-                    )}
-                  </div>
+              <form className="wallet-manual-form" onSubmit={handleSubmit}>
+                {/* Blockchain Selection */}
+                <div className="form-group">
+                  <label htmlFor="chain-select">Blockchain Network</label>
+                  <ChainSelector
+                    chains={supportedChains}
+                    selectedChain={selectedChain}
+                    onChainSelect={setSelectedChain}
+                    isLoading={loadingChains}
+                    disabled={isSubmitting}
+                    placeholder="Select Network"
+                  />
+                </div>
 
-                  <div className="form-group">
-                    <label htmlFor="manual-wallet-input">Wallet Address</label>
+                {/* Wallet Address */}
+                <div className="form-group">
+                  <label htmlFor="wallet-address">Wallet Address</label>
+                  <div className="input-wrapper">
+                    <FaWallet className="input-icon" />
                     <input
                       type="text"
-                      id="manual-wallet-input"
+                      id="wallet-address"
                       value={walletAddress}
                       onChange={(e) => setWalletAddress(e.target.value)}
-                      placeholder="Enter wallet address"
-                      className="form-input"
-                      disabled={connectingWallet}
+                      placeholder="Enter wallet address (0x...)"
+                      className="form-input with-icon"
+                      disabled={isSubmitting}
+                      required
                     />
                   </div>
-
-                  {/* New wallet name field */}
-                  <div className="form-group">
-                    <label htmlFor="wallet-name-input">
-                      Wallet Name (optional)
-                    </label>
-                    <div className="input-wrapper">
-                      <FaTag className="input-icon" />
-                      <input
-                        type="text"
-                        id="wallet-name-input"
-                        value={walletName}
-                        onChange={(e) => setWalletName(e.target.value)}
-                        placeholder="Enter a name for this wallet"
-                        className="form-input with-icon"
-                        disabled={connectingWallet}
-                      />
-                    </div>
-                    <p className="form-hint">
-                      A name helps you identify this wallet more easily.
-                    </p>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="wallet-submit-button"
-                    disabled={
-                      connectingWallet ||
-                      !selectedChain ||
-                      !walletAddress.trim()
-                    }
-                  >
-                    {connectingWallet ? (
-                      <>
-                        <span className="button-spinner">
-                          <FaWallet className="spinning-icon" />
-                        </span>
-                        Adding...
-                      </>
-                    ) : (
-                      "Add Wallet"
-                    )}
-                  </button>
-                </form>
-              )}
-            </div>
-
-            {connectingWallet && (
-              <div className="connecting-overlay">
-                <div className="connecting-spinner">
-                  <FaWallet className="spinning-icon" />
                 </div>
-                <p>Connecting...</p>
-              </div>
-            )}
+
+                {/* Wallet Name */}
+                <div className="form-group">
+                  <label htmlFor="wallet-name">
+                    Wallet Name <span className="optional">(optional)</span>
+                  </label>
+                  <div className="input-wrapper">
+                    <FaTag className="input-icon" />
+                    <input
+                      type="text"
+                      id="wallet-name"
+                      value={walletName}
+                      onChange={(e) => setWalletName(e.target.value)}
+                      placeholder="Enter a custom name"
+                      className="form-input with-icon"
+                      disabled={isSubmitting}
+                      maxLength={30}
+                    />
+                  </div>
+                  <p className="form-hint">
+                    A custom name helps you identify this wallet easily.
+                  </p>
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  className="wallet-submit-button"
+                  disabled={
+                    isSubmitting || !selectedChain || !walletAddress.trim()
+                  }
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="button-spinner">
+                        <FaWallet className="spinning-icon" />
+                      </span>
+                      Adding Wallet...
+                    </>
+                  ) : (
+                    <>
+                      <FaPlus />
+                      Add Wallet
+                    </>
+                  )}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       )}

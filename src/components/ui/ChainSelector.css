@@ -1,0 +1,313 @@
+/* ChainSelector.css - Simplified and clean */
+
+.chain-selector {
+  position: relative;
+  width: 100%;
+  z-index: 50;
+}
+
+/* Toggle Button */
+.chain-selector-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  gap: 0.75rem;
+}
+
+.chain-selector-toggle:hover:not(.disabled) {
+  background-color: var(--color-hover-overlay);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+}
+
+.chain-selector-toggle:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.15);
+}
+
+.chain-selector-toggle.open {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.15);
+}
+
+.chain-selector-toggle.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.chain-name {
+  font-weight: 500;
+  flex: 1;
+}
+
+.chain-placeholder {
+  color: var(--color-text-secondary);
+  flex: 1;
+}
+
+.chain-loading-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(var(--color-primary-rgb), 0.3);
+  border-top: 2px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Dropdown */
+.chain-dropdown {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  background: var(--color-card-bg);
+  box-shadow: 0 8px 25px var(--color-shadow);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  z-index: 100;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--color-primary-rgb), 0.2) transparent;
+  animation: dropdownSlideIn 0.2s ease;
+}
+
+.chain-dropdown::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chain-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chain-dropdown::-webkit-scrollbar-thumb {
+  background-color: rgba(var(--color-primary-rgb), 0.2);
+  border-radius: 4px;
+}
+
+@keyframes dropdownSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dropdown Header */
+.chain-dropdown-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: rgba(var(--color-primary-rgb), 0.05);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Chain Options */
+.chain-option {
+  align-items: center;
+  display: flex;
+  padding: 1rem;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chain-option:hover {
+  background-color: var(--color-hover-overlay);
+}
+
+.chain-option.active {
+  background-color: var(--color-active-overlay);
+  border-left-color: var(--color-primary);
+}
+
+.chain-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.chain-option-name {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--color-text);
+}
+
+.chain-option-desc {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.125rem;
+}
+
+.chain-check {
+  color: var(--color-primary);
+  font-size: 0.875rem;
+}
+
+.chain-empty {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+/* Chain Badges */
+.chain-badge {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.25rem 0.5rem;
+  justify-content: center;
+  height: 1.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: rgba(var(--color-primary-rgb), 0.2);
+  color: var(--color-primary);
+}
+
+/* Chain-specific colors */
+.chain-badge.ethereum,
+.chain-badge.eth {
+  background-color: rgba(98, 126, 234, 0.15);
+  color: #627eea;
+}
+
+.chain-badge.bitcoin,
+.chain-badge.btc {
+  background-color: rgba(247, 147, 26, 0.15);
+  color: #f7931a;
+}
+
+.chain-badge.binance,
+.chain-badge.bnb,
+.chain-badge.bsc {
+  background-color: rgba(243, 186, 47, 0.15);
+  color: #f3ba2f;
+}
+
+.chain-badge.polygon,
+.chain-badge.matic {
+  background-color: rgba(130, 71, 229, 0.15);
+  color: #8247e5;
+}
+
+.chain-badge.solana,
+.chain-badge.sol {
+  background-color: rgba(0, 128, 255, 0.15);
+  color: #0080ff;
+}
+
+.chain-badge.avalanche,
+.chain-badge.avax {
+  background-color: rgba(232, 65, 66, 0.15);
+  color: #e84142;
+}
+
+.chain-badge.fantom,
+.chain-badge.ftm {
+  background-color: rgba(19, 181, 236, 0.15);
+  color: #13b5ec;
+}
+
+.chain-badge.arbitrum,
+.chain-badge.arb {
+  background-color: rgba(33, 114, 229, 0.15);
+  color: #2172e5;
+}
+
+.chain-badge.optimism,
+.chain-badge.op {
+  background-color: rgba(255, 4, 32, 0.15);
+  color: #ff0420;
+}
+
+/* Light Theme Support */
+[data-theme="light"] .chain-selector-toggle {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .chain-selector-toggle:hover:not(.disabled) {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+}
+
+[data-theme="light"] .chain-selector-toggle:focus,
+[data-theme="light"] .chain-selector-toggle.open {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.1);
+}
+
+[data-theme="light"] .chain-dropdown {
+  background: white;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .chain-dropdown-header {
+  background-color: rgba(var(--color-primary-rgb), 0.03);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .chain-option:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .chain-option.active {
+  background-color: rgba(var(--color-primary-rgb), 0.08);
+}
+
+[data-theme="light"] .chain-placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+/* Animations */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .chain-dropdown {
+    max-height: 250px;
+  }
+
+  .chain-option {
+    padding: 0.625rem 0.875rem;
+  }
+
+  .chain-option-name {
+    font-size: 0.8125rem;
+  }
+
+  .chain-option-desc {
+    font-size: 0.6875rem;
+  }
+
+  .chain-dropdown-header {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+}

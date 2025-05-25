@@ -232,4 +232,5 @@
   font-weight: 600;
   background-color: rgba(var(--color-primary-rgb), 0.2);
   color: var(--color-primary);
+  width: fit-content;
 }

@@ -56,7 +56,7 @@
   --color-text: #f2f2fa;
   --color-text-secondary: #9e9ea0;
   --color-background: #0d0a1f;
-  --color-card-background: #1612318d;
+  --color-card-background: #161231;
   --color-error: #ff4c4c;
   --color-success: #32c376;
   --color-warning: #f3ba2f;
@@ -65,8 +65,8 @@
   --color-shadow: rgba(0, 0, 0, 0.25);
 
   /* Component-specific colors */
-  --color-card-bg: rgba(28, 24, 51, 0.465);
-  --color-input-bg: rgba(15, 12, 29, 0.333);
+  --color-card-bg: rgb(28, 24, 51);
+  --color-input-bg: rgba(15, 12, 29, 0.624);
   --color-hover-overlay: rgba(255, 255, 255, 0.05);
   --color-active-overlay: rgba(125, 103, 255, 0.15);
   --color-shadow-color: rgba(0, 0, 0, 0.3);
