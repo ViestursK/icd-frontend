@@ -261,7 +261,6 @@ function Dashboard() {
       )}
 
       <div className="container">
-        {/* Balance and Stats - Left side */}
         <div className="dashboard-column main-column">
           <div className="balance-stats-wrapper">
             <div className="card-wrapper">

@@ -1,9 +1,9 @@
-// BalanceCard.jsx - Fixed version with consistent font sizing
 import { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import "./BalanceCard.css";
 import BalanceChart from "./BalanceChart";
+import "./Skeleton.css";
 
 const BalanceCard = ({ balance, changePercent, isLoading }) => {
   // Format balance with proper thousands separators and 2 decimal places
@@ -57,11 +57,7 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
 
   // Show shimmer effect when loading
   if (isLoading) {
-    return (
-      <div className="balance-card">
-        <div className="balance-card-shimmer"></div>
-      </div>
-    );
+    return <div className="balance-card shimmer-loading"></div>;
   }
 
   // Ensure we always have valid values
