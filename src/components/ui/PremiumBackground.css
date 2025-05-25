@@ -1,93 +1,56 @@
-/* PremiumBackground.css */
-.premium-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: var(--background-gradient);
-  z-index: -100;
-}
-
 .orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(20px) opacity(0.5);
-  z-index: -100;
+  filter: blur(70px);
+  z-index: -98;
+  opacity: 0.7;
+  transition: background-color 0.5s ease;
 }
 
 .orb-purple {
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   background-color: var(--orb-purple-color);
-  animation: moveSlowly 4s infinite alternate ease-in-out;
-  z-index: 1;
+  animation: moveSlowly 25s infinite alternate ease-in-out;
 }
 
 .orb-blue {
-  width: 400px;
-  height: 400px;
+  width: 450px;
+  height: 450px;
   background-color: var(--orb-blue-color);
-  animation: moveSlowly 7s infinite alternate-reverse ease-in-out;
-  z-index: 1;
+  animation: moveSlowly 28s infinite alternate-reverse ease-in-out;
+  animation-delay: 3s;
 }
 
 .orb-indigo {
-  width: 350px;
-  height: 350px;
+  width: 400px;
+  height: 400px;
   background-color: var(--orb-indigo-color);
-  animation: moveSlowly 5s infinite alternate ease-in-out;
-  z-index: 1;
+  animation: moveSlowly 22s infinite alternate ease-in-out;
+  animation-delay: 1s;
 }
 
 .orb-rose {
-  width: 300px;
-  height: 300px;
+  width: 350px;
+  height: 350px;
   background-color: var(--orb-rose-color);
-  animation: moveSlowly 3s infinite alternate-reverse ease-in-out;
-  z-index: 1;
+  animation: moveSlowly 20s infinite alternate-reverse ease-in-out;
+  animation-delay: 2s;
 }
 
-@keyframes moveSlowly {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(40px, 40px);
-  }
+/* Enhanced background colors for light mode */
+[data-theme="light"] .orb-purple {
+  background-color: rgba(139, 92, 246, 0.25);
 }
 
-.noise-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.02);
-  opacity: 0.05;
-  pointer-events: none;
+[data-theme="light"] .orb-blue {
+  background-color: rgba(59, 130, 246, 0.2);
 }
 
-.grid-pattern {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(to right, var(--grid-color) 1px, transparent 1px);
-  background-size: 50px 50px;
-  opacity: 0.1;
-  pointer-events: none;
+[data-theme="light"] .orb-indigo {
+  background-color: rgba(79, 70, 229, 0.2);
 }
 
-.dark-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, var(--backdrop-opacity));
-  pointer-events: none;
+[data-theme="light"] .orb-rose {
+  background-color: rgba(244, 63, 94, 0.2);
 }

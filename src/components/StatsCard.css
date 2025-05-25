@@ -1,49 +1,57 @@
 .stats-card {
   display: flex;
-  flex-direction: row;
-  background: rgba(28, 24, 51, 0.6);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.2s ease;
-  overflow: hidden;
+  justify-content: space-around;
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px var(--color-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-normal);
+  padding: 1.25rem 1rem;
   width: 100%;
-  justify-content: space-evenly;
+  height: 100%;
+  min-height: 180px;
 }
 
 .stats-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(125, 103, 255, 0.3);
-  border-color: rgba(125, 103, 255, 0.2);
+  box-shadow: 0 6px 25px rgba(var(--color-primary-rgb), 0.25);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
 }
 
 .stat-badge {
-  border-radius: 8px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding-top: 0.5rem;
-  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.5rem;
+  text-align: center;
+  transition: all var(--transition-fast);
+  border-radius: var(--radius-md);
+}
+
+.stat-badge:hover {
+  background-color: var(--color-hover-overlay);
+  transform: translateY(-2px);
 }
 
 .stat-badge-icon {
-  font-size: 1rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .stat-badge-value {
-  font-size: 1rem;
-  
-  /* font-weight: 700; */
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
 }
 
 .stat-badge-label {
-  font-size: 0.8rem;
-  opacity: 0.7;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
-  /* margin-top: 0.1rem; */
+  letter-spacing: 0.05em;
 }
 
 /* Badge color variations */
@@ -52,7 +60,7 @@
 }
 
 .stat-badge.purple {
-  color: #7d67ff;
+  color: var(--color-primary);
 }
 
 .stat-badge.gold {
@@ -60,73 +68,9 @@
 }
 
 .stat-badge.green {
-  color: #32c376;
+  color: var(--color-success);
 }
 
 .stat-badge.red {
-  color: #ff4c4c;
-}
-
-/* Skeleton loading states */
-.skeleton {
-  background-color: rgba(199, 199, 199, 0.1);
-  border-radius: 4px;
-  position: relative;
-  overflow: hidden;
-}
-
-.skeleton::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(
-    90deg,
-    rgba(199, 199, 199, 0) 0%,
-    rgba(199, 199, 199, 0.15) 50%,
-    rgba(199, 199, 199, 0) 100%
-  );
-  animation: shimmer 1.5s infinite linear;
-}
-
-@keyframes shimmer {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-.skeleton-badge {
-  width: 90px;
-  height: 80px;
-  border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* for tablet */
-@media (max-width: 768px) {
-  .stats-card {
-    flex-direction: row;
-    max-width: 100%;
-    width: 100%;
-  }
-  .stat-badge {
-    margin: 0.5rem;
-  }
-}
-
-/* for mobile */
-@media (max-width: 640px) {
-  .stats-card {
-    flex-direction: row;
-    max-width: 100%;
-    width: 100%;
-  }
-  .stat-badge {
-    margin-bottom: 1rem;
-  }
+  color: var(--color-error);
 }

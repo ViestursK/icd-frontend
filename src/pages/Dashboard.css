@@ -1,7 +1,11 @@
+/* Updated Dashboard.css */
 .dashboard-container {
   display: flex;
   flex-direction: column;
   flex: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .top-container {
@@ -11,74 +15,79 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .header-actions-container {
   display: flex;
-  flex-direction: row-reverse;
   align-items: center;
   gap: 0.75rem;
 }
 
 .section-title {
-  margin: 0.5rem 0 1rem;
-  color: rgb(147, 129, 255);
-  font-size: 1.5rem;
+  margin: 1rem 0;
+  color: var(--color-primary);
+  font-size: 1.25rem;
   font-weight: 600;
 }
 
+/* Main content container */
 .container {
   display: flex;
-  justify-content: space-around;
-}
-
-.balance-stats-wrapper .card-wrapper {
-  flex: 1; /* each card takes equal width */
-  display: flex;
-  justify-content: center;
   flex-direction: column;
+  width: 100%;
 }
 
-/* If you want inner content (e.g. the chart) to stretch as well: */
-.balance-stats-wrapper .card-wrapper > * {
-  flex: 1;
+/* Cards layout */
+.balance-stats-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Holdings container */
 .holdings-container {
-  background: rgba(28, 24, 51, 0.6);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px var(--color-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
   padding: 1.5rem;
-  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
   width: 100%;
+  transition: all var(--transition-normal);
+}
+
+.holdings-container:hover {
+  box-shadow: 0 6px 24px var(--color-shadow);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
 }
 
 .holdings-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   width: 100%;
 }
 
 .holdings-header h3 {
   margin: 0;
   font-size: 1.2rem;
-  color: #f2f2fa;
+  color: var(--color-text);
+  font-weight: 600;
 }
 
 /* Error alert styling */
 .error-alert {
-  background-color: rgba(255, 76, 76, 0.15);
-  border: 1px solid rgba(255, 76, 76, 0.3);
-  color: #ff4c4c;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
+  background-color: rgba(var(--color-error-rgb), 0.1);
+  border: 1px solid rgba(var(--color-error-rgb), 0.2);
+  color: var(--color-error);
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -91,277 +100,26 @@
 .dismiss-error {
   background: none;
   border: none;
-  color: #ff4c4c;
+  color: var(--color-error);
   cursor: pointer;
   font-size: 1rem;
   padding: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  transition: all var(--transition-fast);
 }
 
-/* Delete modal styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
-  animation: fade-in 0.3s ease;
+.dismiss-error:hover {
+  background-color: rgba(var(--color-error-rgb), 0.1);
 }
 
-.modal-container {
-  background: rgba(24, 18, 48, 0.95);
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  max-width: 500px;
-  padding: 0;
-  overflow: hidden;
-  animation: slide-up 0.3s ease;
-}
-
-@keyframes slide-up {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(1);
-  }
-}
-
+/* Holdings actions */
 .holdings-actions {
   display: flex;
-  justify-content: space-between;
+  gap: 0.75rem;
   align-items: center;
-  margin-top: 1rem;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.modal-header h3 {
-  margin: 0;
-  color: #f2f2fa;
-  font-size: 1.25rem;
-}
-
-.modal-close-button {
-  background: none;
-  border: none;
-  color: #9e9ea0;
-  cursor: pointer;
-  font-size: 1.25rem;
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-}
-
-.modal-close-button:hover {
-  color: #f2f2fa;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.modal-content {
-  padding: 1.5rem;
-}
-
-.modal-content p {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: #f2f2fa;
-}
-
-.wallet-preview {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.wallet-chain {
-  display: flex;
-  align-items: center;
-}
-
-.wallet-address {
-  font-family: monospace;
-  word-break: break-all;
-  font-size: 0.9rem;
-  color: #9e9ea0;
-}
-
-.modal-actions {
-  padding: 1.25rem 1.5rem;
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.modal-cancel-button {
-  padding: 0.75rem 1.25rem;
-  background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #f2f2fa;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.modal-cancel-button:hover:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.modal-delete-button {
-  padding: 0.75rem 1.25rem;
-  background: linear-gradient(135deg, #ff4c4c, #ff6b6b);
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.modal-delete-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #e04646, #e56161);
-  box-shadow: 0 2px 10px rgba(255, 76, 76, 0.3);
-}
-
-.modal-delete-button:disabled,
-.modal-cancel-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.button-spinner {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Improved mobile responsiveness */
-@media (max-width: 768px) {
-  .balance-stats-wrapper {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .top-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .modal-container {
-    max-width: 90%;
-  }
-
-  .balance-section {
-    margin-bottom: 0.5rem;
-  }
-
-  .top-container .wallet-form-container {
-    width: 100%;
-  }
-}
-
-@media (max-width: 640px) {
-  .header-actions-container {
-    gap: 0.5rem;
-    flex-direction: row-reverse;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .refresh-button {
-    width: 100%;
-  }
-
-  .add-wallet-button {
-    width: 100%;
-  }
-
-  .top-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-@media (max-width: 480px) {
-  .holdings-container {
-    padding: 1rem;
-    margin-top: 0.5rem;
-  }
-
-  .modal-actions {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .modal-cancel-button,
-  .modal-delete-button {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .header-actions {
-    width: 100%;
-  }
-
-  /* Adjust ViewIndicator on mobile */
-  .view-indicator {
-    flex-wrap: wrap;
-    row-gap: 0.25rem;
-  }
-}
-
-/* Show more button styles */
-.show-more-button {
-  padding: 0.6rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #f2f2fa;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-  width: 100%;
-  margin-top: 0.75rem;
-}
-
-.show-more-button:hover {
-  background-color: rgba(125, 103, 255, 0.1);
-  border-color: rgba(125, 103, 255, 0.3);
 }
 
 /* Manage Wallets Button Styling */
@@ -371,20 +129,43 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #f2f2fa;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
+  background-color: var(--color-hover-overlay);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
 }
 
 .manage-wallets-button:hover {
-  background-color: rgba(125, 103, 255, 0.1);
-  border-color: rgba(125, 103, 255, 0.3);
+  background-color: var(--color-active-overlay);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+  color: var(--color-primary);
 }
 
+/* Show more button styles */
+.show-more-button {
+  padding: 0.75rem;
+  background-color: var(--color-hover-overlay);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.show-more-button:hover {
+  background-color: var(--color-active-overlay);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+}
+
+/* Dashboard grid layout */
 .dashboard-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -402,46 +183,41 @@
   flex: 1;
 }
 
-.side-column {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  min-width: 0; /* Ensures the column can shrink below content size */
-}
-
-/* Responsive layout */
+/* Responsive layout adjustments */
 @media (min-width: 1200px) {
   .dashboard-grid {
     grid-template-columns: 2fr 1fr;
   }
 }
 
-/* Balance stats wrapper */
-.balance-stats-wrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 1.5rem;
-  width: 100%;
+@media (max-width: 992px) {
+  .balance-stats-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
   .balance-stats-wrapper {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
-}
 
-/* Holdings actions container */
-.holdings-actions {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
+  .top-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 640px) {
+  .header-actions-container {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .holdings-header {
     flex-direction: column;
     align-items: flex-start;
@@ -452,47 +228,26 @@
     width: 100%;
     justify-content: space-between;
   }
-}
 
-/* Create more space for ViewIndicator */
-.view-indicator-wrapper {
-  margin: 0.5rem 0 1rem;
-  width: 100%;
-}
-
-/* Ensure components don't overflow on small screens */
-.holdings-container,
-.wallet-table-container,
-.asset-allocation-chart-container {
-  min-width: 0;
-  max-width: 100%;
-}
-
-/* Make sure the manage wallets button is properly aligned */
-.manage-wallets-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #f2f2fa;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.manage-wallets-button:hover {
-  background-color: rgba(125, 103, 255, 0.1);
-  border-color: rgba(125, 103, 255, 0.3);
-}
-
-@media (max-width: 640px) {
   .manage-wallets-button,
   .refresh-button {
-    width: 48%; /* Make buttons fill half the width on small screens */
+    flex: 1;
   }
+}
+
+/* Light mode specific adjustments */
+[data-theme="light"] .holdings-container {
+  background: var(--color-card-bg);
+}
+
+[data-theme="light"] .manage-wallets-button,
+[data-theme="light"] .show-more-button {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .manage-wallets-button:hover,
+[data-theme="light"] .show-more-button:hover {
+  background-color: rgba(var(--color-primary-rgb), 0.08);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
 }

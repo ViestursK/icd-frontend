@@ -1,3 +1,5 @@
+/* Updated themes.css with improved light mode styling */
+
 :root {
   /* Typography */
   --font-family: "ClashGrotesk", system-ui, -apple-system, BlinkMacSystemFont,
@@ -25,12 +27,6 @@
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
 
-  /* Box shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 15px 25px rgba(0, 0, 0, 0.1);
-
   /* Transitions */
   --transition-fast: 0.15s ease;
   --transition-normal: 0.3s ease;
@@ -40,7 +36,10 @@
   --animation-spin: spin 1s linear infinite;
   --animation-shimmer: shimmer 1.5s infinite linear;
   --animation-pulse: pulse 1.5s infinite;
+}
 
+/* Dark Theme (Default) */
+:root {
   /* Color RGB values for opacity adjustments */
   --color-primary-rgb: 125, 103, 255;
   --color-primary-light-rgb: 147, 129, 255;
@@ -49,30 +48,28 @@
   --color-error-rgb: 255, 76, 76;
   --color-info-rgb: 63, 140, 255;
   --color-warning-rgb: 243, 186, 47;
-}
 
-/* Dark Theme (Default) */
-:root {
   /* Colors */
   --color-primary: #7d67ff;
   --color-primary-light: #9381ff;
   --color-primary-dark: #6a57d9;
-  --color-text: #e1dfec;
+  --color-text: #f2f2fa;
   --color-text-secondary: #9e9ea0;
-  --color-background: #0b091a;
-  --color-card-background: #110e22;
+  --color-background: #0d0a1f;
+  --color-card-background: #161231;
   --color-error: #ff4c4c;
   --color-success: #32c376;
   --color-warning: #f3ba2f;
   --color-info: #3f8cff;
   --color-border: rgba(255, 255, 255, 0.1);
+  --color-shadow: rgba(0, 0, 0, 0.25);
 
   /* Component-specific colors */
-  --color-card-bg: rgba(28, 24, 51, 0.6);
-  --color-input-bg: rgba(0, 0, 0, 0.2);
+  --color-card-bg: rgba(28, 24, 51, 0.8);
+  --color-input-bg: rgba(15, 12, 29, 0.6);
   --color-hover-overlay: rgba(255, 255, 255, 0.05);
-  --color-active-overlay: rgba(125, 103, 255, 0.1);
-  --color-shadow-color: rgba(0, 0, 0, 0.25);
+  --color-active-overlay: rgba(125, 103, 255, 0.15);
+  --color-shadow-color: rgba(0, 0, 0, 0.3);
   --color-gradient-overlay: rgba(0, 0, 0, 0.7);
 
   /* Background orbs for dark theme */
@@ -85,38 +82,48 @@
   --backdrop-opacity: 0.7;
 }
 
-/* Light Theme */
+/* Light Theme - Improved with better contrast */
 [data-theme="light"] {
+  /* Color RGB values for opacity adjustments */
+  --color-primary-rgb: 106, 87, 217;
+  --color-primary-light-rgb: 125, 103, 255;
+  --color-primary-dark-rgb: 86, 71, 176;
+  --color-success-rgb: 38, 159, 91;
+  --color-error-rgb: 220, 53, 53;
+  --color-info-rgb: 44, 123, 229;
+  --color-warning-rgb: 224, 168, 0;
+
   /* Colors */
-  --color-primary: #6a57d9; /* Slightly darker purple for contrast */
+  --color-primary: #6a57d9;
   --color-primary-light: #7d67ff;
-  --color-primary-dark: #5745c7;
+  --color-primary-dark: #5647b0;
   --color-text: #1a1825;
-  --color-text-secondary: #5f5f60;
-  --color-background: #f5f5fa;
+  --color-text-secondary: #5d5b6c;
+  --color-background: #f5f7fa;
   --color-card-background: #ffffff;
-  --color-error: #e93a3a;
-  --color-success: #28a745;
-  --color-warning: #f1b30f;
+  --color-error: #dc3545;
+  --color-success: #269f5b;
+  --color-warning: #e0a800;
   --color-info: #2c7be5;
-  --color-border: rgba(0, 0, 0, 0.1);
+  --color-border: rgba(0, 0, 0, 0.12);
+  --color-shadow: rgba(0, 0, 0, 0.08);
 
   /* Component-specific colors */
-  --color-card-bg: rgba(255, 255, 255, 0.8);
-  --color-input-bg: rgba(0, 0, 0, 0.05);
-  --color-hover-overlay: rgba(0, 0, 0, 0.03);
-  --color-active-overlay: rgba(106, 87, 217, 0.08);
+  --color-card-bg: rgba(255, 255, 255, 0.95);
+  --color-input-bg: rgba(0, 0, 0, 0.04);
+  --color-hover-overlay: rgba(0, 0, 0, 0.04);
+  --color-active-overlay: rgba(106, 87, 217, 0.12);
   --color-shadow-color: rgba(0, 0, 0, 0.1);
   --color-gradient-overlay: rgba(255, 255, 255, 0.7);
 
   /* Background orbs for light theme */
-  --orb-purple-color: rgba(139, 92, 246, 0.15);
-  --orb-blue-color: rgba(59, 130, 246, 0.1);
-  --orb-indigo-color: rgba(79, 70, 229, 0.1);
-  --orb-rose-color: rgba(244, 63, 94, 0.1);
-  --background-gradient: linear-gradient(135deg, #f0f0ff, #e6e6ff);
-  --grid-color: rgba(0, 0, 0, 0.03);
-  --backdrop-opacity: 0.3;
+  --orb-purple-color: rgba(139, 92, 246, 0.1);
+  --orb-blue-color: rgba(59, 130, 246, 0.08);
+  --orb-indigo-color: rgba(79, 70, 229, 0.08);
+  --orb-rose-color: rgba(244, 63, 94, 0.08);
+  --background-gradient: linear-gradient(135deg, #f0f5ff, #efe9ff);
+  --grid-color: rgba(0, 0, 0, 0.02);
+  --backdrop-opacity: 0.2;
 }
 
 /* Apply transition to all elements for smooth theme switching */
@@ -157,4 +164,82 @@
     opacity: 0.6;
     transform: scale(0.95);
   }
+}
+
+/* Chain-specific colors for consistency */
+.chain-badge.ethereum,
+.chain-badge.eth,
+.asset-icon.eth {
+  background-color: rgba(98, 126, 234, 0.15);
+  color: #627eea;
+}
+
+.chain-badge.bitcoin,
+.chain-badge.btc,
+.asset-icon.btc {
+  background-color: rgba(247, 147, 26, 0.15);
+  color: #f7931a;
+}
+
+.chain-badge.binance,
+.chain-badge.bnb,
+.chain-badge.bsc,
+.asset-icon.bnb {
+  background-color: rgba(243, 186, 47, 0.15);
+  color: #f3ba2f;
+}
+
+.chain-badge.polygon,
+.chain-badge.matic,
+.asset-icon.matic {
+  background-color: rgba(130, 71, 229, 0.15);
+  color: #8247e5;
+}
+
+.chain-badge.solana,
+.chain-badge.sol,
+.asset-icon.sol {
+  background-color: rgba(0, 128, 255, 0.15);
+  color: #0080ff;
+}
+
+.chain-badge.usdt,
+.asset-icon.usdt {
+  background-color: rgba(38, 161, 123, 0.15);
+  color: #26a17b;
+}
+
+.chain-badge.usdc,
+.asset-icon.usdc {
+  background-color: rgba(39, 117, 202, 0.15);
+  color: #2775ca;
+}
+
+/* Card styling improvements */
+[data-theme="light"] .holdings-container,
+[data-theme="light"] .balance-card,
+[data-theme="light"] .stats-card,
+[data-theme="light"] .asset-allocation-chart-container,
+[data-theme="light"] .wallet-card {
+  box-shadow: 0 2px 12px var(--color-shadow);
+  border: 1px solid var(--color-border);
+}
+
+/* Improved button styling for light mode */
+[data-theme="light"] .auth-button,
+[data-theme="light"] .wallet-action-button.view,
+[data-theme="light"] .add-wallet-button {
+  box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.25);
+}
+
+/* Improved form inputs for light mode */
+[data-theme="light"] .form-input,
+[data-theme="light"] .search-input {
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .form-input:focus,
+[data-theme="light"] .search-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.15);
 }

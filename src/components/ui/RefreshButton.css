@@ -4,39 +4,28 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #f2f2fa;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
+  background-color: var(--color-hover-overlay);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .refresh-button:hover:not(:disabled) {
-  background-color: rgba(125, 103, 255, 0.1);
-  border-color: rgba(125, 103, 255, 0.3);
+  background-color: var(--color-active-overlay);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
 }
 
-.refresh-button.loading .refresh-icon {
-  animation: spin 1s linear infinite;
+/* Light mode specific fixes for refresh button */
+[data-theme="light"] .refresh-button {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.15);
+  color: var(--color-text);
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.refresh-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.refresh-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(125, 103, 255, 0.3);
+[data-theme="light"] .refresh-button:hover:not(:disabled) {
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
 }
