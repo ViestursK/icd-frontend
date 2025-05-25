@@ -29,9 +29,8 @@
 }
 
 .wallet-card:hover {
-  border-color: rgba(var(--color-primary-rgb), 0.5);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
   box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.1);
-  transform: translateY(-2px);
 }
 
 /* Wallet card sections */
@@ -41,7 +40,7 @@
   justify-content: space-between;
   padding: 1.25rem;
   border-bottom: 1px solid var(--color-border);
-  background-color: var(--color-card-background);
+  background-color: var(--color-card-bg);
 }
 
 .wallet-card-body {
@@ -58,7 +57,6 @@
   border-top: 1px solid var(--color-border);
   display: flex;
   gap: 0.75rem;
-  background-color: var(--color-card-background);
 }
 
 /* Wallet name display and editing */
@@ -240,6 +238,7 @@
   color: var(--color-text-secondary);
   font-size: 0.875rem;
   font-weight: 500;
+  margin: 0;
 }
 
 .balance-value {

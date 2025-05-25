@@ -4,6 +4,10 @@
   align-self: center;
   z-index: 100;
   scrollbar-color: rgba(125, 103, 255, 0.2) transparent;
+  /* Ensure immediate visibility */
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
 }
 
 .wallet-selector-toggle {

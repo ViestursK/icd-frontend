@@ -1,4 +1,4 @@
-// Optimized WalletForm.jsx - Manual form only with improved styling
+// Optimized WalletForm.jsx - Fixed for immediate visibility
 import { useState, useRef, useEffect } from "react";
 import { FaWallet, FaTimes, FaPlus, FaTag } from "react-icons/fa";
 import { useWallet } from "../context/WalletContext";
@@ -148,11 +148,12 @@ export default function WalletForm() {
 
   return (
     <>
-      {/* Add Wallet Button */}
+      {/* Add Wallet Button - Always visible */}
       <button
         className="add-wallet-button"
         onClick={openModal}
         aria-label="Add wallet"
+        style={{ opacity: 1, visibility: "visible" }}
       >
         <FaPlus className="add-icon" />
         <span className="add-text">Add Wallet</span>

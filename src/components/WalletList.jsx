@@ -52,45 +52,7 @@ const WalletList = ({ wallets, isLoading, onDeleteClick }) => {
         role="region"
         aria-label="Wallet holdings"
       >
-        <div className="wallet-cards-grid shimmer-loading">
-          {[...Array(6)].map((_, index) => (
-            <div key={index} className="wallet-card">
-              <div className="wallet-card-header">
-                <span className="chain-badge eth">ETH</span>
-                <div className="wallet-name-display">
-                  <span className="wallet-name">ETH Wallet {index + 1}</span>
-                  <button className="edit-name-button">
-                    <FaPencilAlt />
-                  </button>
-                </div>
-              </div>
-
-              <div className="wallet-card-body">
-                <div className="address-container">
-                  <span className="address-label">Address:</span>
-                  <span className="address-text">0x1234...5678</span>
-                  <button className="copy-button">
-                    <FaCopy />
-                  </button>
-                </div>
-
-                <div className="balance-container">
-                  <span className="balance-label">Balance:</span>
-                  <span className="balance-value">$8,888.88</span>
-                </div>
-              </div>
-
-              <div className="wallet-card-footer">
-                <button className="wallet-action-button view">
-                  View Assets
-                </button>
-                <button className="wallet-action-button delete">
-                  <FaTrashAlt />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+        <div className="wallet-cards-grid shimmer-loading"></div>
       </div>
     );
   }

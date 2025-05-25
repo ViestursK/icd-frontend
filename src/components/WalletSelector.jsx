@@ -12,15 +12,9 @@ import "./WalletSelector.css";
 /**
  * WalletSelector component displays a dropdown for selecting a specific wallet
  * or viewing all wallets, with an option to add a new wallet.
- *
- * @param {Object} props
- * @param {Array} props.wallets - List of wallet objects
- * @param {Object|null} props.selectedWallet - Currently selected wallet or null if viewing all
- * @param {Function} props.onWalletSelect - Callback when a wallet is selected
- * @param {Function} props.onAddWalletClick - Callback to handle add wallet action
  */
 const WalletSelector = ({
-  wallets,
+  wallets = [],
   selectedWallet,
   onWalletSelect,
   onAddWalletClick,
@@ -74,14 +68,6 @@ const WalletSelector = ({
     }
   };
 
-  // Handle add wallet click
-  const handleAddWalletClick = () => {
-    setIsOpen(false);
-    if (onAddWalletClick) {
-      onAddWalletClick();
-    }
-  };
-
   // Toggle dropdown open/close
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -98,8 +84,18 @@ const WalletSelector = ({
     return formatAddress(selectedWallet.address);
   };
 
+  // Calculate total balance
+  const totalBalance = wallets.reduce(
+    (sum, wallet) => sum + parseFloat(wallet.balance_usd || 0),
+    0
+  );
+
   return (
-    <div className="wallet-selector" ref={dropdownRef}>
+    <div
+      className="wallet-selector"
+      ref={dropdownRef}
+      style={{ opacity: 1, visibility: "visible" }}
+    >
       <button
         className="wallet-selector-toggle"
         onClick={toggleDropdown}
@@ -145,13 +141,7 @@ const WalletSelector = ({
             <div className="wallet-selector-item-details">
               <span className="wallet-selector-item-name">All Wallets</span>
               <span className="wallet-selector-item-balance">
-                $
-                {formatBalance(
-                  wallets.reduce(
-                    (sum, wallet) => sum + parseFloat(wallet.balance_usd || 0),
-                    0
-                  )
-                )}
+                ${formatBalance(totalBalance)}
               </span>
             </div>
           </div>
@@ -189,7 +179,6 @@ const WalletSelector = ({
               </div>
             </div>
           ))}
-          <div className="wallet-selector-footer"></div>
         </div>
       )}
     </div>

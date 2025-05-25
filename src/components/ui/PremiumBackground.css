@@ -39,19 +39,19 @@
 }
 
 [data-theme="light"] .orb-purple {
-  background-color: rgba(78, 20, 215, 0.674);
+  background-color: rgba(78, 20, 215, 0.439);
 }
 
 [data-theme="light"] .orb-blue {
-  background-color: rgba(21, 99, 224, 0.594);
+  background-color: rgba(21, 99, 224, 0.434);
 }
 
 [data-theme="light"] .orb-indigo {
-  background-color: rgba(22, 12, 226, 0.613);
+  background-color: rgba(23, 12, 226, 0.429);
 }
 
 [data-theme="light"] .orb-rose {
-  background-color: rgba(244, 63, 93, 0.641);
+  background-color: rgba(244, 63, 93, 0.489);
 }
 
 @media screen and (max-width: 768px) {

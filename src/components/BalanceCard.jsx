@@ -1,14 +1,11 @@
-// BalanceCard.jsx - Fixed version that always calculates font size correctly
-import { useEffect, useState } from "react";
+// BalanceCard.jsx - Fixed version with consistent font sizing
+import { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import "./BalanceCard.css";
 import BalanceChart from "./BalanceChart";
 
 const BalanceCard = ({ balance, changePercent, isLoading }) => {
-  // State to force re-render when balance changes
-  const [currentBalance, setCurrentBalance] = useState(balance);
-
   // Format balance with proper thousands separators and 2 decimal places
   const formatBalance = (balance) => {
     if (balance === null || balance === undefined || balance === "") {
@@ -53,20 +50,16 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
   // Get color for the change value
   const getChangeColor = () => {
     const numericChange = parseFloat(changePercent || 0);
-    if (numericChange < 0) return "#FF4C4C";
-    if (numericChange > 0) return "#32C376";
-    return "#F2F2FA";
+    if (numericChange < 0) return "var(--color-error)";
+    if (numericChange > 0) return "var(--color-success)";
+    return "var(--color-text-secondary)";
   };
 
   // Show shimmer effect when loading
   if (isLoading) {
     return (
       <div className="balance-card">
-        <div className="balance-card-shimmer shimmer-loading">
-          <div className="shimmer-content">
-           
-          </div>
-        </div>
+        <div className="balance-card-shimmer"></div>
       </div>
     );
   }
@@ -74,6 +67,7 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
   // Ensure we always have valid values
   const safeBalance = balance || "0.00";
   const safeChangePercent = changePercent || "0.00";
+  const formattedBalance = formatBalance(safeBalance);
 
   return (
     <div className="balance-card" aria-busy={isLoading}>
@@ -82,13 +76,7 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
           <div className="balance-info">
             <span className="balance-label">TOTAL BALANCE</span>
             <div className="balance-amount">
-              <span className="currency-symbol">$</span>
-              <span
-                className="balance-value"
-                title={`$${formatBalance(safeBalance)}`}
-              >
-                {formatBalance(safeBalance)}
-              </span>
+              <span className="currency-symbol">$ {`${formattedBalance}`}</span>
             </div>
 
             <div className="balance-change">
@@ -109,7 +97,6 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
 
         <div className="chart-container">
           <BalanceChart
-            balance={safeBalance}
             changePercent={safeChangePercent}
             className="balance-chart-svg"
           />
