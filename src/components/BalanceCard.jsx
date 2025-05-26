@@ -1,9 +1,8 @@
-import { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import "./BalanceCard.css";
 import BalanceChart from "./BalanceChart";
-import "./Skeleton.css";
+import "./skeleton.css";
 
 const BalanceCard = ({ balance, changePercent, isLoading }) => {
   // Format balance with proper thousands separators and 2 decimal places
