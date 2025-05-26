@@ -1,0 +1,216 @@
+/* Updated themes.css with improved light mode styling */
+
+:root {
+  /* Typography */
+  --font-family: "ClashGrotesk", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Animation */
+  --animation-spin: spin 1s linear infinite;
+  --animation-shimmer: shimmer 1.5s infinite linear;
+  --animation-pulse: pulse 1.5s infinite;
+}
+
+/* Dark Theme (Default) */
+:root {
+  /* Color RGB values for opacity adjustments */
+  --color-primary-rgb: 125, 103, 255;
+  --color-primary-light-rgb: 147, 129, 255;
+  --color-primary-dark-rgb: 106, 87, 217;
+  --color-success-rgb: 50, 195, 118;
+  --color-error-rgb: 255, 76, 76;
+  --color-info-rgb: 63, 140, 255;
+  --color-warning-rgb: 243, 186, 47;
+
+  /* Colors */
+  --color-primary: #7d67ff;
+  --color-primary-light: #9381ff;
+  --color-primary-dark: #6a57d9;
+  --color-text: #f2f2fa;
+  --color-text-secondary: #9e9ea0;
+  --color-background: #0d0a1f;
+  --color-card-background: #161231;
+  --color-error: #ff4c4c;
+  --color-success: #32c376;
+  --color-warning: #f3ba2f;
+  --color-info: #3f8cff;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-shadow: rgba(0, 0, 0, 0.25);
+
+  /* Component-specific colors */
+  --color-card-bg: rgba(33, 24, 68, 0.824);
+  --color-input-bg: rgba(15, 12, 29, 0.624);
+  --color-hover-overlay: rgba(255, 255, 255, 0.05);
+  --color-active-overlay: rgba(125, 103, 255, 0.15);
+  --color-shadow-color: rgba(0, 0, 0, 0.3);
+  --color-gradient-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Background orbs for dark theme */
+  --orb-purple-color: rgba(139, 92, 246, 0.3);
+  --orb-blue-color: rgba(59, 130, 246, 0.2);
+  --orb-indigo-color: rgba(79, 70, 229, 0.2);
+  --orb-rose-color: rgba(244, 63, 94, 0.2);
+  --background-gradient: linear-gradient(135deg, #1e1647, #32103f);
+  --grid-color: rgba(255, 255, 255, 0.03);
+  --backdrop-opacity: 0.7;
+}
+
+/* Light Theme - Improved with better contrast */
+[data-theme="light"] {
+  /* Color RGB values for opacity adjustments */
+  --color-primary-rgb: 106, 87, 217;
+  --color-primary-light-rgb: 125, 103, 255;
+  --color-primary-dark-rgb: 86, 71, 176;
+  --color-success-rgb: 38, 159, 91;
+  --color-error-rgb: 220, 53, 53;
+  --color-info-rgb: 44, 123, 229;
+  --color-warning-rgb: 224, 168, 0;
+
+  /* Colors */
+  --color-primary: #6a57d9;
+  --color-primary-light: #7d67ff;
+  --color-primary-dark: #5647b0;
+  --color-text: #1a1825;
+  --color-text-secondary: #5d5b6c;
+  --color-background: rgba(176, 176, 176, 0.516);
+  --color-card-background: #ffffff;
+  --color-error: #dc3545;
+  --color-success: #269f5b;
+  --color-warning: #e0a800;
+  --color-info: #2c7be5;
+  --color-border: rgba(0, 0, 0, 0.12);
+  --color-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Component-specific colors */
+  --color-card-bg: rgb(242, 242, 242);
+  --color-input-bg: rgba(0, 0, 0, 0.04);
+  --color-hover-overlay: rgba(0, 0, 0, 0.04);
+  --color-active-overlay: rgba(106, 87, 217, 0.12);
+  --color-shadow-color: rgba(0, 0, 0, 0.1);
+  --color-gradient-overlay: rgba(255, 255, 255, 0.7);
+
+  /* Background orbs for light theme */
+  --orb-purple-color: rgba(139, 92, 246, 0.1);
+  --orb-blue-color: rgba(59, 130, 246, 0.08);
+  --orb-indigo-color: rgba(79, 70, 229, 0.08);
+  --orb-rose-color: rgba(244, 63, 94, 0.08);
+  --background-gradient: linear-gradient(135deg, #f0f5ff, #efe9ff);
+  --grid-color: rgba(0, 0, 0, 0.02);
+  --backdrop-opacity: 0.2;
+}
+
+/* Apply transition to all elements for smooth theme switching */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* Define common animations once */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(0.95);
+  }
+}
+
+/* Chain-specific colors for consistency */
+.chain-badge.ethereum,
+.chain-badge.eth,
+.asset-icon.eth {
+  background-color: rgba(98, 126, 234, 0.15);
+  color: #627eea;
+}
+
+.chain-badge.bitcoin,
+.chain-badge.btc,
+.asset-icon.btc {
+  background-color: rgba(247, 147, 26, 0.15);
+  color: #f7931a;
+}
+
+.chain-badge.binance,
+.chain-badge.bnb,
+.chain-badge.bsc,
+.asset-icon.bnb {
+  background-color: rgba(243, 186, 47, 0.15);
+  color: #f3ba2f;
+}
+
+.chain-badge.polygon,
+.chain-badge.matic,
+.asset-icon.matic {
+  background-color: rgba(130, 71, 229, 0.15);
+  color: #8247e5;
+}
+
+.chain-badge.solana,
+.chain-badge.sol,
+.asset-icon.sol {
+  background-color: rgba(0, 128, 255, 0.15);
+  color: #0080ff;
+}
+
+.chain-badge.usdt,
+.asset-icon.usdt {
+  background-color: rgba(38, 161, 123, 0.15);
+  color: #26a17b;
+}
+
+.chain-badge.usdc,
+.asset-icon.usdc {
+  background-color: rgba(39, 117, 202, 0.15);
+  color: #2775ca;
+}

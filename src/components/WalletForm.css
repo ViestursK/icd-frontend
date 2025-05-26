@@ -1,118 +1,275 @@
-.wallet-form-container {
-  position: relative;
-  display: inline-block;
-  background-color: #7d67ff;
-  padding: 1px;
-  border-radius: 0.375rem;
-  font-family: var(--font-family);
-  transition: box-shadow 0.3s ease;
-  max-width: 100%;
-}
+/* Optimized WalletForm.css - Clean, minimal, with light theme support */
 
-/* Add a subtle glow to make the form more noticeable */
-.wallet-form-container:hover {
-  box-shadow: 0 0 10px rgba(125, 103, 255, 0.5);
-}
-
-.sliding-form {
+/* Add wallet button */
+.add-wallet-button {
   display: flex;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  border-radius: 0.375rem;
-  cursor: pointer; /* Show pointer cursor to indicate interactivity */
-  width: 100%;
-}
-
-.inputs-container {
-  display: flex;
-  flex-direction: row;
-  width: 0;
-  overflow: hidden;
-  transition: width 0.3s ease;
-  gap: 1px;
-  flex: 1;
-}
-
-.expanded .inputs-container {
-  width: 20rem;
-}
-
-/* Hide labels visually but keep them for screen readers */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-.select-wrapper {
-  position: relative;
-}
-
-.chain-select,
-.wallet-input {
-  width: 100%;
-  padding: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-light)
+  );
+  color: white;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: var(--radius-md);
+  padding: 0.6rem 1rem;
   font-size: 0.875rem;
-  outline: none;
-  transition: all 0.2s ease;
-  background-color: #1c1833;
-  color: #f2f2fa;
-}
-
-.chain-select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%237d67ff'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem top 50%;
-  background-size: 0.9375rem auto;
-  padding-right: 1.5625rem;
-  width: max-content;
-}
-
-.chain-select option {
-  color: #f2f2fa;
-  background-color: #1c1833;
   font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(var(--color-primary-rgb), 0.3);
+  min-height: 2.56rem;
 }
 
-.chain-select:focus,
-.wallet-input:focus {
-  box-shadow: 0 0 0 2px rgba(125, 103, 255, 0.4);
+.add-wallet-button:hover {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-dark),
+    var(--color-primary)
+  );
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.4);
+  transform: translateY(-1px);
 }
 
-.chain-select:disabled,
-.wallet-input:disabled {
-  opacity: 0.7;
+.add-wallet-button:active {
+  transform: translateY(0);
+}
+
+.add-icon {
+  font-size: 0.875rem;
+}
+
+/* Modal Overlay */
+.wallet-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.wallet-modal-container {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 25px var(--color-shadow);
+  width: 100%;
+  max-width: 450px;
+  overflow: hidden;
+  position: relative;
+  animation: modalSlideIn 0.3s ease;
+  z-index: 1001;
+  border: 1px solid var(--color-border);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Modal Header */
+.wallet-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: rgba(var(--color-primary-rgb), 0.05);
+}
+
+.wallet-modal-header h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.wallet-modal-close-button {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.wallet-modal-close-button:hover:not(:disabled) {
+  color: var(--color-text);
+  background-color: var(--color-hover-overlay);
+}
+
+.wallet-modal-close-button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.loading-indicator {
+/* Modal Content */
+.wallet-modal-content {
+  padding: 1.5rem;
+}
+
+/* Form Styles */
+.wallet-manual-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  z-index: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.optional {
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  font-size: 0.8125rem;
+}
+
+/* Input Wrapper */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
   position: absolute;
-  right: 1.875rem;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 1rem;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.loader {
-  width: 0.75rem;
-  height: 0.75rem;
-  border: 2px solid rgba(242, 242, 250, 0.3);
-  border-top: 2px solid #f2f2fa;
-  border-radius: 50%;
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-input-bg);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  font-family: var(--font-family);
+}
+
+.form-input.with-icon {
+  padding-left: 2.5rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.15);
+}
+
+.form-input:focus + .input-icon,
+.input-wrapper:focus-within .input-icon {
+  color: var(--color-primary);
+}
+
+.form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+
+/* Form Hint */
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Submit Button */
+.wallet-submit-button {
+  padding: 0.875rem 1rem;
+  width: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-light)
+  );
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 10px rgba(var(--color-primary-rgb), 0.3);
+}
+
+.wallet-submit-button:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-dark),
+    var(--color-primary)
+  );
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.4);
+  transform: translateY(-1px);
+}
+
+.wallet-submit-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.wallet-submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.button-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinning-icon {
   animation: spin 1s linear infinite;
-  display: inline-block;
 }
 
+/* Animations */
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -122,83 +279,127 @@
   }
 }
 
-.submit-button {
-  background: linear-gradient(135deg, #7d67ff, #7d67ff);
-  color: #ffffff;
-  border: none;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  min-width: 7rem;
-  font-family: var(--font-family);
-  text-transform: uppercase;
-  font-size: 0.875rem;
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+/* Light Theme Support */
+[data-theme="light"] .wallet-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Only make the button appear disabled when it's actually disabled */
-.submit-button:not(:disabled) {
-  cursor: pointer;
-  background: linear-gradient(135deg, #7d67ff, #9381ff);
+[data-theme="light"] .wallet-modal-container {
+  background: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.submit-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #8d77ff, #a391ff);
-  box-shadow: 0 0 10px rgba(125, 103, 255, 0.5);
+[data-theme="light"] .wallet-modal-header {
+  background-color: rgba(var(--color-primary-rgb), 0.03);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 
-.submit-button:active:not(:disabled) {
-  transform: translateY(1px);
+[data-theme="light"] .wallet-modal-header h3 {
+  color: var(--color-text);
 }
 
-.submit-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+[data-theme="light"] .wallet-modal-close-button {
+  color: var(--color-text-secondary);
 }
 
-.button-spinner {
-  animation: rotate 1s linear infinite;
+[data-theme="light"] .wallet-modal-close-button:hover:not(:disabled) {
+  color: var(--color-text);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+[data-theme="light"] .form-group label {
+  color: var(--color-text);
 }
 
-/* Responsive adjustments */
-@media (max-width: 640px) {
-  .wallet-form-container {
-    position: relative;
-    display: block;
-  }
+[data-theme="light"] .form-input {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.15);
+  color: var(--color-text);
+}
 
- 
+[data-theme="light"] .form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.1);
+}
 
-  .submit-button {
-    width: auto;
-    min-width: 7rem;
-    flex-grow: 0;
-  }
+[data-theme="light"] .form-input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
 
-  .wallet-input {
-    min-width: 0;
-    flex: 1;
+[data-theme="light"] .input-icon {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="light"] .form-input:focus + .input-icon,
+[data-theme="light"] .input-wrapper:focus-within .input-icon {
+  color: var(--color-primary);
+}
+
+[data-theme="light"] .form-hint {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="light"] .optional {
+  color: var(--color-text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .wallet-modal-container {
+    max-width: calc(100vw - 2rem);
+    margin: 1rem;
   }
 
-  .chain-select {
-    min-width: 0;
-    flex-shrink: 1;
-    width: auto;
+  .wallet-modal-header,
+  .wallet-modal-content {
+    padding: 1.25rem;
+  }
+
+  .add-wallet-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .wallet-modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .wallet-modal-container {
+    max-width: 100%;
+    margin: 0.5rem;
+  }
+
+  .wallet-modal-header {
+    padding: 1rem;
+  }
+
+  .wallet-modal-content {
+    padding: 1rem;
+  }
+
+  .wallet-manual-form {
+    gap: 1.25rem;
+  }
+
+  .form-group label {
+    font-size: 0.8125rem;
+  }
+
+  .form-select,
+  .form-input {
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .form-input.with-icon {
+    padding-left: 2.25rem;
+  }
+
+  .wallet-submit-button {
+    padding: 0.75rem;
+    font-size: 0.875rem;
   }
 }

@@ -8,6 +8,7 @@ import {
   FaBars,
   FaTimes,
   FaSpinner,
+  FaWallet,
 } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import "./Sidebar.css";
@@ -47,6 +48,7 @@ function Sidebar() {
   // Navigation links data
   const navLinks = [
     { path: "/dashboard", icon: <FaHome />, label: "Dashboard" },
+    { path: "/dashboard/wallets", icon: <FaWallet />, label: "Wallets" },
     { path: "/dashboard/settings", icon: <FaCogs />, label: "Settings" },
     { path: "/dashboard/profile", icon: <FaUser />, label: "Profile" },
   ];

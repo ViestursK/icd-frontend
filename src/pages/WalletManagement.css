@@ -1,0 +1,279 @@
+.wallet-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.wallet-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+  min-height: 400px;
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+  color: rgba(var(--color-primary-rgb), 0.3);
+  margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+  color: var(--color-text);
+}
+
+.empty-state p {
+  color: var(--color-text-secondary);
+  max-width: 400px;
+  font-size: 1.1rem;
+}
+
+/* Loading state */
+.wallet-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  min-height: 400px;
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.loading-logo {
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.8));
+}
+
+.pulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.8));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(var(--color-primary-rgb), 1));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.8));
+  }
+}
+
+.wallet-loading p {
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.modal-container {
+  background: var(--color-card-background);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 450px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-card-bg);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  color: var(--color-text);
+  background-color: var(--color-hover-overlay);
+}
+
+.modal-body {
+  padding: 2.5rem;
+  text-align: center;
+  background-color: var(--color-card-bg);
+}
+
+.modal-body p {
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+.wallet-info {
+  background-color: var(--color-hover-overlay);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin: 1rem 0;
+  text-align: left;
+  border: 1px solid var(--color-border);
+}
+
+.wallet-info-chain {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  background-color: rgba(var(--color-primary-rgb), 0.2);
+  color: var(--color-primary);
+}
+
+.wallet-info-address {
+  font-family: monospace;
+  word-break: break-all;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.wallet-info-name {
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.modal-footer {
+  display: flex;
+  padding: 1.25rem;
+  gap: 1rem;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-hover-overlay);
+}
+
+.modal-button {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.modal-button.cancel {
+  background-color: var(--color-hover-overlay);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.modal-button.cancel:hover:not(:disabled) {
+  background-color: var(--color-active-overlay);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
+}
+
+.modal-button.delete {
+  background: linear-gradient(135deg, var(--color-error), #ff6b6b);
+  color: white;
+  border: none;
+  box-shadow: 0 2px 10px rgba(var(--color-error-rgb), 0.3);
+}
+
+.modal-button.delete:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e04646, #e56161);
+  box-shadow: 0 4px 12px rgba(var(--color-error-rgb), 0.4);
+}
+
+.modal-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+.chain-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: rgba(var(--color-primary-rgb), 0.2);
+  color: var(--color-primary);
+  width: fit-content;
+}

@@ -1,97 +1,69 @@
-/* PremiumBackground.css */
-
-.premium-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: linear-gradient(135deg, #1e1647, #32103f);
-  z-index: -100;
-}
-
 .orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(20px) opacity(0.5);
-  z-index: -100;
+  filter: blur(70px);
+  z-index: -1;
+  opacity: 0.7;
+  transition: background-color 0.5s ease;
 }
 
 .orb-purple {
-  width: 400px;
-  height: 400px;
-  background-color: rgba(139, 92, 246, 0.3); /* Purple */
-  animation: moveSlowly 4s infinite alternate ease-in-out;
-  z-index: 1;
+  width: 500px;
+  height: 500px;
+  background-color: var(--orb-purple-color);
+  animation: moveSlowly 25s infinite alternate ease-in-out;
 }
 
 .orb-blue {
-  width: 400px;
-  height: 400px;
-  background-color: rgba(59, 130, 246, 0.2); /* Blue */
-  animation: moveSlowly 7s infinite alternate-reverse ease-in-out;
-  z-index: 1;
+  width: 450px;
+  height: 450px;
+  background-color: var(--orb-blue-color);
+  animation: moveSlowly 28s infinite alternate-reverse ease-in-out;
+  animation-delay: 3s;
 }
 
 .orb-indigo {
-  width: 350px;
-  height: 350px;
-  background-color: rgba(79, 70, 229, 0.2); /* Indigo */
-  animation: moveSlowly 5s infinite alternate ease-in-out;
-  z-index: 1;
+  width: 400px;
+  height: 400px;
+  background-color: var(--orb-indigo-color);
+  animation: moveSlowly 22s infinite alternate ease-in-out;
+  animation-delay: 1s;
 }
 
 .orb-rose {
-  width: 300px;
-  height: 300px;
-  background-color: rgba(244, 63, 94, 0.2); /* Rose */
-  animation: moveSlowly 3s infinite alternate-reverse ease-in-out;
-  z-index: 1;
+  width: 350px;
+  height: 350px;
+  background-color: var(--orb-rose-color);
+  animation: moveSlowly 20s infinite alternate-reverse ease-in-out;
+  animation-delay: 2s;
 }
 
-@keyframes moveSlowly {
-  0% {
-    transform: translate(0, 0);
+[data-theme="light"] .orb-purple {
+  background-color: rgba(78, 20, 215, 0.439);
+}
+
+[data-theme="light"] .orb-blue {
+  background-color: rgba(21, 99, 224, 0.434);
+}
+
+[data-theme="light"] .orb-indigo {
+  background-color: rgba(23, 12, 226, 0.429);
+}
+
+[data-theme="light"] .orb-rose {
+  background-color: rgba(244, 63, 93, 0.489);
+}
+
+@media screen and (max-width: 768px) {
+  .premium-background {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: -1;
   }
-  100% {
-    transform: translate(40px, 40px);
+
+  .orb {
+    position: fixed;
   }
-}
-
-.noise-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.02);
-  opacity: 0.05;
-  pointer-events: none;
-}
-
-.grid-pattern {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.03) 1px,
-      transparent 1px
-    ),
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-  opacity: 0.1;
-  pointer-events: none;
-}
-
-.dark-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  pointer-events: none;
 }

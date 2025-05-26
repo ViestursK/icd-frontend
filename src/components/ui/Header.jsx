@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import "./Header.css";
 
@@ -10,7 +9,14 @@ const Header = ({ title, subtitle, actions }) => {
         {subtitle && <p className="header-subtitle">{subtitle}</p>}
       </div>
 
-      {actions && <div className="header-actions">{actions}</div>}
+      {actions && (
+        <div
+          className="header-actions"
+          style={{ minHeight: "40px", opacity: 1, visibility: "visible" }}
+        >
+          {actions}
+        </div>
+      )}
     </header>
   );
 };
@@ -18,7 +24,7 @@ const Header = ({ title, subtitle, actions }) => {
 Header.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
-  actions: PropTypes.node, // Actions can be any React node (buttons, etc.)
+  actions: PropTypes.node,
 };
 
 export default Header;

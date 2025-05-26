@@ -1,6 +1,3 @@
-/**
- * Enhanced authentication utilities
- */
 
 // Helper to safely decode JWT tokens
 export function decodeToken(token) {

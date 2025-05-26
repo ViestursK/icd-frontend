@@ -1,35 +1,40 @@
-/* AssetTable specific styles */
+.data-table-container {
+  border-radius: var(--radius-lg);
+}
+
 .asset-logo {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: contain;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--color-hover-overlay);
   padding: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
 }
 
 .asset-info {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .asset-icon {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 14px;
-  background-color: rgba(125, 103, 255, 0.1);
-  color: #7d67ff;
+  font-size: 12px;
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  color: var(--color-primary);
+  flex-shrink: 0;
 }
 
 /* Asset-specific icon colors */
@@ -71,56 +76,130 @@
 .asset-name-container {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .asset-name {
   font-weight: 500;
-  font-size: 0.9rem;
-  color: #f2f2fa;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .asset-symbol {
-  font-size: 0.75rem;
-  color: #9e9ea0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
   margin-top: 2px;
 }
 
-/* FIX: Improved 24h change column alignment */
+.asset-chain-badge {
+  background-color: rgba(var(--color-primary-rgb), 0.2);
+  color: var(--color-primary-light);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.6rem;
+  font-weight: 500;
+}
+
+/* Price change indicators */
 .price-change-container {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
+  white-space: nowrap;
 }
 
 .positive-change {
-  color: #32c376;
+  color: var(--color-success);
 }
 
 .negative-change {
-  color: #ff4c4c;
+  color: var(--color-error);
 }
 
 .change-icon {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .change-icon.up {
-  color: #32c376;
+  color: var(--color-success);
 }
 
 .change-icon.down {
-  color: #ff4c4c;
+  color: var(--color-error);
 }
 
-/* Responsive adjustments for all devices */
+.sort-icon {
+  display: flex;
+  align-items: center;
+}
+
+.data-table thead th:nth-child(1) {
+  width: 25%;
+}
+
+.data-table thead th:nth-child(2) {
+  width: 15%;
+}
+
+.data-table thead th:nth-child(3) {
+  width: 15%;
+}
+
+.data-table thead th:nth-child(4) {
+  width: 15%;
+}
+
+.data-table thead th:nth-child(5) {
+  width: 15%;
+}
+
+/* Balance cell styling */
+.balance-cell {
+  text-align: right;
+  font-family: monospace;
+  font-weight: 500;
+  font-size: var(--font-size-sm);
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .asset-name-container {
     max-width: 120px;
   }
 
-  .asset-name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .data-table {
+    min-width: 600px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .table-controls {
+    width: 100%;
+  }
+
+  .search-input-wrapper {
+    width: 100%;
+  }
+
+  /* Reduce padding in table cells */
+  .data-table th,
+  .data-table td {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  /* Make asset cell more compact */
+  .asset-cell .asset-info {
+    gap: 5px;
+  }
+
+  .asset-logo,
+  .asset-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
   }
 }

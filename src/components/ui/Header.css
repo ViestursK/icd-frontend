@@ -1,20 +1,22 @@
 .ui-header {
   display: flex;
+  width: 100%;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
 }
 
 .header-text {
   display: flex;
   flex-direction: column;
+  min-height: 45px;
 }
 
 .header-title {
   margin: 0;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #f2f2fa;
+  color: var(--color-text);
   letter-spacing: 0.05em;
 }
 
@@ -29,18 +31,22 @@
   display: flex;
   gap: 0.75rem;
   align-items: center;
+  /* Ensure immediate visibility */
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  min-height: 45px;
 }
 
 /* Responsive adjustments */
 @media (max-width: 640px) {
   .ui-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 1rem;
   }
 
-  .header-actions {
+  .header-actions-container {
     width: 100%;
-    justify-content: flex-start;
   }
 }

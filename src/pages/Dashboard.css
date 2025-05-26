@@ -1,7 +1,16 @@
 .dashboard-container {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .top-container {
@@ -9,40 +18,83 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 1rem;
+  flex-wrap: wrap;
   gap: 1rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+}
+
+.header-actions-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .section-title {
-  margin: 0.5rem 0 1rem;
-  color: rgb(147, 129, 255);
-  font-size: 1.5rem;
+  margin: 1rem 0;
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
+/* Main content container */
 .container {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: max-content;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.balance-stats-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
 }
 
-.stat-container {
+/* Ensure card wrapper never collapses */
+.card-wrapper {
   display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  flex-wrap: wrap;
+  min-height: 180px;
+  width: 100%;
+  position: relative;
 }
 
-.holdings-container {
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+/* Prevent cards from disappearing */
+.card-wrapper > * {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+}
 
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Holdings container */
+.holdings-container {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px var(--color-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  transition: all var(--transition-normal);
+}
+
+.holdings-container:hover {
+  box-shadow: 0 6px 24px var(--color-shadow);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
 }
 
 .holdings-header {
@@ -50,20 +102,24 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .holdings-header h3 {
   margin: 0;
   font-size: 1.2rem;
-  color: #f2f2fa;
+  color: var(--color-text);
+  font-weight: 600;
 }
 
+/* Error alert styling */
 .error-alert {
-  background-color: rgba(255, 76, 76, 0.1);
-  border: 1px solid rgba(255, 76, 76, 0.3);
-  border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
+  background-color: rgba(var(--color-error-rgb), 0.1);
+  border: 1px solid rgba(var(--color-error-rgb), 0.2);
+  color: var(--color-error);
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -71,174 +127,251 @@
 
 .error-alert p {
   margin: 0;
-  color: #ff4c4c;
 }
 
 .dismiss-error {
   background: none;
   border: none;
-  color: #ff4c4c;
+  color: var(--color-error);
   cursor: pointer;
   font-size: 1rem;
   padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all var(--transition-fast);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .top-container {
+.dismiss-error:hover {
+  background-color: rgba(var(--color-error-rgb), 0.1);
+}
+
+/* Holdings actions */
+.holdings-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+/* Manage Wallets Button Styling */
+.manage-wallets-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background-color: var(--color-hover-overlay);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.manage-wallets-button:hover {
+  background-color: var(--color-active-overlay);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+  color: var(--color-primary);
+}
+
+/* Show more button styles */
+.show-more-button {
+  padding: 0.75rem;
+  background-color: var(--color-hover-overlay);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.show-more-button:hover {
+  background-color: var(--color-active-overlay);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+}
+
+/* Dashboard grid layout */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.dashboard-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-column {
+  flex: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .balance-stats-wrapper {
     display: flex;
     flex-direction: column;
-  }
-
-  .stat-container {
+    gap: 1rem;
     width: 100%;
   }
 
-  .balance-card {
+  .wallet-cards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     width: 100%;
   }
-}
 
-@media (max-width: 480px) {
-  .holdings-header {
-    flex-direction: row;
-    /* align-items: flex-start; */
+  .wallet-card {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .balance-stats-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .wallet-cards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .data-table-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .data-table {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .header-actions-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
   }
-}
 
-/* Add these modal styles to your Dashboard.css file */
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(2px);
-}
-
-.modal-container {
-  background: rgba(20, 20, 20, 0.678);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
-}
-
-@keyframes modalFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  .wallet-selector {
+    width: 100%;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .wallet-selector-toggle {
+    width: 100%;
+  }
+
+  .add-wallet-button {
+    width: 100%;
   }
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 1.5rem 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+/* Light mode specific adjustments */
+[data-theme="light"] .holdings-container {
+  background: var(--color-card-bg);
 }
 
-.modal-header h3 {
-  margin: 0;
-  color: #f2f2fa;
-  font-size: 1.25rem;
+[data-theme="light"] .manage-wallets-button,
+[data-theme="light"] .show-more-button {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
-.modal-close-button {
-  background: none;
-  border: none;
-  color: #9e9ea0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
+[data-theme="light"] .manage-wallets-button:hover,
+[data-theme="light"] .show-more-button:hover {
+  background-color: rgba(var(--color-primary-rgb), 0.08);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
+}
+@media (min-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: 2fr 1fr;
+  }
 }
 
-.modal-close-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #f2f2fa;
+@media (max-width: 992px) {
+  .balance-stats-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
 }
 
-.modal-content {
-  padding: 1.5rem;
+@media (max-width: 768px) {
+  .balance-stats-wrapper {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .top-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Ensure cards maintain minimum height on mobile */
+  .card-wrapper {
+    min-height: 160px;
+  }
 }
 
-.wallet-preview {
-  background-color: rgba(171, 17, 243, 0.1);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin: 1rem 0;
-  border: 1px solid rgba(125, 103, 255, 0.2);
+@media (max-width: 640px) {
+  .header-actions-container {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .holdings-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .holdings-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .manage-wallets-button,
+  .refresh-button {
+    flex: 1;
+  }
+
+  /* Further reduce minimum height for very small screens */
+  .card-wrapper {
+    min-height: 140px;
+  }
 }
 
-.wallet-chain {
-  margin-bottom: 0.5rem;
+/* Ensure grid items don't collapse */
+.balance-stats-wrapper > * {
+  min-width: 0;
+  min-height: 180px;
 }
 
-.wallet-address {
-  font-family: monospace;
-  word-break: break-all;
-  font-size: 0.875rem;
-  color: #e1dfec;
+@media (max-width: 768px) {
+  .balance-stats-wrapper > * {
+    min-height: 160px;
+  }
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  padding: 0 1.5rem 1.5rem;
-}
-
-.modal-cancel-button {
-  background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #f2f2fa;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 500;
-  font-family: var(--font-family);
-}
-
-.modal-cancel-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.modal-delete-button {
-  background-color: rgba(255, 76, 76, 0.9);
-  border: none;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-family);
-}
-
-.modal-delete-button:hover {
-  background-color: rgba(255, 76, 76, 1);
-  box-shadow: 0 0 10px rgba(255, 76, 76, 0.5);
+@media (max-width: 640px) {
+  .balance-stats-wrapper > * {
+    min-height: 140px;
+  }
 }

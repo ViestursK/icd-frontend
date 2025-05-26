@@ -1,0 +1,75 @@
+.stats-card {
+  display: flex;
+  justify-content: space-around;
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px var(--color-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-normal);
+  padding: 1.25rem 1rem;
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+}
+
+.stats-card:hover {
+  box-shadow: 0 6px 25px rgba(var(--color-primary-rgb), 0.25);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+  background-color: var(--color-card-background);
+}
+
+.stat-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  text-align: center;
+  transition: all var(--transition-fast);
+  border-radius: var(--radius-md);
+}
+
+.stat-badge:hover {
+  transform: translateY(-2px);
+}
+
+.stat-badge-icon {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-badge-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.stat-badge-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Badge color variations */
+.stat-badge.blue {
+  color: #3f8cff;
+}
+
+.stat-badge.purple {
+  color: var(--color-primary);
+}
+
+.stat-badge.gold {
+  color: #f3ba2f;
+}
+
+.stat-badge.green {
+  color: var(--color-success);
+}
+
+.stat-badge.red {
+  color: var(--color-error);
+}

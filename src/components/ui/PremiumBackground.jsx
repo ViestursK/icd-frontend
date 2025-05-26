@@ -1,10 +1,10 @@
-// PremiumBackground.js
-import React, { useEffect, useState } from "react";
-import "./PremiumBackground.css"; // Optional: import specific styles for the background
+import { useEffect, useState } from "react";
+import "./PremiumBackground.css";
 
 const PremiumBackground = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
+  // Track mouse position for subtle parallax effect
   useEffect(() => {
     const handleMouseMove = (e) => {
       const x = (e.clientX / window.innerWidth) * 15;
@@ -21,6 +21,7 @@ const PremiumBackground = () => {
 
   return (
     <div className="premium-background">
+      {/* Color orbs with parallax effect */}
       <div
         className="orb orb-purple"
         style={{
@@ -49,6 +50,8 @@ const PremiumBackground = () => {
           left: `calc(20% + ${position.x * 0.3}px)`,
         }}
       />
+
+      {/* Background effects */}
       <div className="noise-overlay" />
       <div className="grid-pattern" />
       <div className="dark-overlay" />

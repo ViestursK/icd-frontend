@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { FaWallet, FaCoins, FaTrashAlt, FaTimes, FaSync } from "react-icons/fa";
+// Import existing components and hooks
+import React, { useState, useMemo, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { FaCoins, FaWallet } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
 import WalletForm from "../components/WalletForm";
-import WalletTable from "../components/WalletTable";
 import AssetTable from "../components/AssetTable";
+import WalletSelector from "../components/WalletSelector";
 import RefreshButton from "../components/ui/RefreshButton";
-import TabSelector from "../components/TabSelector";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
+import StatsCard from "../components/StatsCard";
+import AssetAllocationChart from "../components/AssetAllocationChart";
+import { walletService } from "../services/walletService";
 import "./Dashboard.css";
 
-// Define tab options
-const TABS = [
-  { id: "assets", label: "Assets", icon: <FaCoins /> },
-  { id: "wallets", label: "Wallets", icon: <FaWallet /> },
-];
+// Define tab options - removed wallets tab, now just assets
+const TABS = [{ id: "assets", label: "Assets", icon: <FaCoins /> }];
 
 function Dashboard() {
   const {
@@ -26,30 +27,144 @@ function Dashboard() {
     isLoading,
     error,
     refreshData,
-    removeWallet,
     clearError,
   } = useWallet();
 
   const toast = useToast();
+  const navigate = useNavigate();
+  const { chain, address } = useParams();
 
-  // State for active tab
+  // State for active tab - now defaults to assets since it's the only option
   const [activeTab, setActiveTab] = useState("assets");
-  // State for wallet being deleted
-  const [selectedWallet, setSelectedWallet] = useState(null);
-  // State for delete confirmation modal
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   // State for refresh operation
   const [refreshing, setRefreshing] = useState(false);
+  // State for visible assets count (default to 20 for better initial density)
+  const [visibleCount, setVisibleCount] = useState(20);
+  // State for single wallet view
+  const [currentWallet, setCurrentWallet] = useState(null);
+  const [walletAssets, setWalletAssets] = useState([]);
+  const [loadingWallet, setLoadingWallet] = useState(false);
+
+  // Load single wallet data if chain and address are provided
+  useEffect(() => {
+    const loadWalletData = async () => {
+      if (chain && address) {
+        setLoadingWallet(true);
+        try {
+          // Find the wallet in the wallets list
+          const wallet = wallets.find(
+            (w) =>
+              w.chain.toLowerCase() === chain.toLowerCase() &&
+              w.address.toLowerCase() === address.toLowerCase()
+          );
+
+          if (wallet) {
+            setCurrentWallet(wallet);
+
+            // Fetch wallet tokens
+            const walletData = await walletService.getWalletDetail(
+              address,
+              chain
+            );
+            const transformedAssets =
+              walletService.transformWalletTokensToAssets(walletData.tokens);
+            setWalletAssets(transformedAssets);
+          } else {
+            toast.error("Wallet not found");
+            navigate("/dashboard");
+          }
+        } catch (error) {
+          toast.error("Failed to load wallet data");
+          console.error("Error loading wallet data:", error);
+          navigate("/dashboard");
+        } finally {
+          setLoadingWallet(false);
+        }
+      } else {
+        // Reset to all wallets view
+        setCurrentWallet(null);
+        setWalletAssets([]);
+      }
+    };
+
+    if (wallets.length > 0) {
+      loadWalletData();
+    }
+  }, [chain, address, wallets, navigate, toast]);
+
+  // Calculate portfolio statistics for the stats badges
+  const portfolioStats = useMemo(() => {
+    // Determine which assets to use based on view
+    const activeAssets = currentWallet ? walletAssets : assets;
+
+    // Count of wallets and assets
+    const walletCount = currentWallet ? 1 : wallets.length;
+    const assetCount = activeAssets.length;
+
+    // Find the most valuable asset
+    const topAsset =
+      activeAssets.length > 0
+        ? activeAssets.sort(
+            (a, b) => parseFloat(b.total_value) - parseFloat(a.total_value)
+          )[0]
+        : null;
+
+    // Find the asset with the biggest price impact (positive or negative)
+    const biggestImpact =
+      activeAssets.length > 0
+        ? activeAssets.sort((a, b) => {
+            return (
+              Math.abs(parseFloat(b.price_24h_change_percent)) -
+              Math.abs(parseFloat(a.price_24h_change_percent))
+            );
+          })[0]
+        : null;
+
+    return {
+      walletCount,
+      assetCount,
+      topAsset: topAsset
+        ? { symbol: topAsset.symbol, value: topAsset.total_value }
+        : { symbol: "N/A", value: "0" },
+      biggestImpact: biggestImpact
+        ? {
+            symbol: biggestImpact.symbol,
+            value: biggestImpact.total_value,
+            change: biggestImpact.price_24h_change_percent,
+          }
+        : { symbol: "N/A", value: "0", change: "0" },
+    };
+  }, [wallets, assets, currentWallet, walletAssets]);
 
   // Handle refresh button click
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
-      const result = await refreshData();
-      if (result.success) {
-        toast.success("Portfolio data refreshed");
-      } else if (result.error) {
-        toast.error(result.error);
+      if (currentWallet) {
+        // Refresh single wallet
+        try {
+          const walletData = await walletService.getWalletDetail(
+            address,
+            chain
+          );
+          const transformedAssets = walletService.transformWalletTokensToAssets(
+            walletData.tokens
+          );
+          setWalletAssets(transformedAssets);
+          toast.success(
+            `Wallet ${currentWallet.address.substring(0, 6)}... refreshed`
+          );
+        } catch (error) {
+          toast.error("Failed to refresh wallet data");
+        }
+      } else {
+        // Refresh all wallets
+        const result = await refreshData();
+        if (result.success) {
+          toast.success("Portfolio data refreshed");
+        } else if (result.error) {
+          toast.error(result.error);
+        }
       }
     } catch (error) {
       toast.error("Failed to refresh data. Please try again.");
@@ -58,69 +173,78 @@ function Dashboard() {
     }
   };
 
-  // Handle wallet delete click
-  const handleDeleteClick = (wallet) => {
-    setSelectedWallet(wallet);
-    setShowDeleteModal(true);
-  };
-
-  // Handle confirm delete
-  const handleConfirmDelete = async () => {
-    if (!selectedWallet) return;
-
-    try {
-      setRefreshing(true);
-      const result = await removeWallet({
-        address: selectedWallet.address,
-        chain: selectedWallet.chain,
-      });
-
-      toast.success("Wallet removed successfully!");
-      setShowDeleteModal(false);
-      setSelectedWallet(null);
-    } catch (error) {
-      toast.error("Failed to remove wallet. Please try again.");
-    } finally {
-      setRefreshing(false);
+  // Handle wallet selection from dropdown
+  const handleWalletSelect = (wallet) => {
+    if (wallet) {
+      // Navigate to specific wallet view
+      navigate(`/dashboard/wallet/${wallet.chain}/${wallet.address}`);
+    } else {
+      // Navigate to all wallets view
+      navigate("/dashboard");
     }
   };
 
-  // Function to render the active table based on tab
-  const renderActiveTable = () => {
-    // Combined loading state - either global loading or local refreshing
-    const tableLoading = isLoading || refreshing;
-
-    switch (activeTab) {
-      case "assets":
-        return <AssetTable assets={assets} isLoading={tableLoading} />;
-      case "wallets":
-      default:
-        return (
-          <WalletTable
-            wallets={wallets}
-            isLoading={tableLoading}
-            onDeleteClick={handleDeleteClick}
-          />
-        );
+  // Get balance and change percent for current view
+  const getCurrentBalance = () => {
+    if (currentWallet) {
+      return currentWallet.balance_usd;
     }
+    return totalBalance;
   };
 
-  // Get the title based on active tab
-  const getTableTitle = () => {
-    switch (activeTab) {
-      case "assets":
-        return "Crypto Assets";
-      case "wallets":
-      default:
-        return "Crypto Wallets";
+  const getCurrentChangePercent = () => {
+    if (currentWallet) {
+      // Calculate change percent for wallet assets
+      const totalValue = walletAssets.reduce(
+        (sum, asset) => sum + parseFloat(asset.total_value || 0),
+        0
+      );
+
+      const totalChange = walletAssets.reduce(
+        (sum, asset) => sum + parseFloat(asset.total_value_24h_change || 0),
+        0
+      );
+
+      if (totalValue === 0) return "0.00";
+
+      // Calculate percentage change relative to current value
+      const percentChange = (totalChange / (totalValue - totalChange)) * 100;
+      return percentChange.toFixed(2);
     }
+    return changePercent;
   };
+
+  // Prepare data for asset allocation chart
+  const chartData = useMemo(() => {
+    const dataToUse = currentWallet ? walletAssets : assets;
+    return dataToUse.map((asset) => ({
+      name: asset.symbol,
+      value: parseFloat(asset.total_value || 0),
+    }));
+  }, [assets, walletAssets, currentWallet]);
+
+  // Determine which assets to display
+  const activeAssets = currentWallet ? walletAssets : assets;
 
   return (
     <div className="dashboard-container">
       <div className="top-container">
-        <Header title="DASHBOARD" />
-        <WalletForm />
+        <Header
+          title="DASHBOARD"
+          actions={
+            wallets.length > 0 ? (
+              <div className="header-actions-container">
+                <WalletSelector
+                  wallets={wallets}
+                  selectedWallet={currentWallet}
+                  onWalletSelect={handleWalletSelect}
+                />
+                <WalletForm />
+              </div>
+            ) : null
+          }
+        />
+
       </div>
 
       {error && (
@@ -136,92 +260,68 @@ function Dashboard() {
         </div>
       )}
 
-      <h2 className="section-title">Portfolio</h2>
-
       <div className="container">
-        <div className="stat-container">
-          <BalanceCard
-            balance={totalBalance}
-            changePercent={changePercent}
-            isLoading={isLoading || refreshing}
-          />
-        </div>
-
-        <div className="holdings-container">
-          <div className="holdings-header">
-            <h3>{getTableTitle()}</h3>
-            <RefreshButton
-              onRefresh={handleRefresh}
-              isLoading={isLoading || refreshing}
-              label={refreshing ? "Refreshing..." : "Refresh"}
-              aria-label="Refresh portfolio data"
-            />
+        <div className="dashboard-column main-column">
+          <div className="balance-stats-wrapper">
+            <div className="card-wrapper">
+              <BalanceCard
+                balance={getCurrentBalance()}
+                changePercent={getCurrentChangePercent()}
+                isLoading={isLoading || refreshing || loadingWallet}
+              />
+            </div>
+            <div className="card-wrapper">
+              <StatsCard
+                stats={portfolioStats}
+                isLoading={isLoading || refreshing || loadingWallet}
+              />
+            </div>
+            <div className="card-wrapper">
+              <AssetAllocationChart
+                data={chartData}
+                title="Asset Allocation"
+                valueKey="value"
+                nameKey="name"
+                loading={isLoading || refreshing || loadingWallet}
+                othersThreshold={2}
+              />
+            </div>
           </div>
 
-          <TabSelector
-            tabs={TABS}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-          />
-
-          {renderActiveTable()}
-        </div>
-      </div>
-
-      {/* Delete confirmation modal */}
-      {showDeleteModal && selectedWallet && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <div className="modal-header">
-              <h3>Remove Wallet</h3>
-              <button
-                className="modal-close-button"
-                onClick={() => setShowDeleteModal(false)}
-                aria-label="Close modal"
-                disabled={refreshing}
-              >
-                <FaTimes />
-              </button>
-            </div>
-
-            <div className="modal-content">
-              <p>Are you sure you want to remove this wallet?</p>
-              <div className="wallet-preview">
-                <div className="wallet-chain">
-                  <span
-                    className={`chain-badge ${selectedWallet.chain.toLowerCase()}`}
+          <div className="holdings-container">
+            <div className="holdings-header">
+              <h3>Crypto Assets</h3>
+              <div className="holdings-actions">
+                <RefreshButton
+                  onRefresh={handleRefresh}
+                  isLoading={isLoading || refreshing || loadingWallet}
+                  label={refreshing ? "Refreshing..." : "Refresh"}
+                  aria-label="Refresh portfolio data"
+                  variant="secondary"
+                  size="small"
+                  showLabel={true}
+                />
+                {wallets.length > 0 && (
+                  <button
+                    className="manage-wallets-button"
+                    onClick={() => navigate("/dashboard/wallets")}
                   >
-                    {selectedWallet.chain}
-                  </span>
-                </div>
-                <div className="wallet-address">{selectedWallet.address}</div>
+                    <FaWallet style={{ marginRight: "0.5rem" }} />
+                    Manage Wallets
+                  </button>
+                )}
               </div>
             </div>
 
-            <div className="modal-actions">
-              <button
-                className="modal-cancel-button"
-                onClick={() => setShowDeleteModal(false)}
-                disabled={refreshing}
-              >
-                Cancel
-              </button>
-              <button
-                className="modal-delete-button"
-                onClick={handleConfirmDelete}
-                disabled={refreshing}
-              >
-                {refreshing ? (
-                  <FaSync className="button-spinner" />
-                ) : (
-                  <FaTrashAlt />
-                )}
-                {refreshing ? " Removing..." : " Remove"}
-              </button>
-            </div>
+            <AssetTable
+              assets={activeAssets}
+              isLoading={isLoading || refreshing || loadingWallet}
+              visibleCount={visibleCount}
+              setVisibleCount={setVisibleCount}
+            />
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

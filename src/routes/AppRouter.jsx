@@ -1,11 +1,12 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 import { useAuth } from "../context/AuthContext";
 import LoadingScreen from "../components/ui/LoadingScreen";
 
 // Lazy load components for better performance
 const DashboardLayout = lazy(() => import("../layouts/DashboardLayout"));
 const Dashboard = lazy(() => import("../pages/Dashboard"));
+const WalletManagement = lazy(() => import("../pages/WalletManagement"));
 const Settings = lazy(() => import("../pages/Settings"));
 const Profile = lazy(() => import("../pages/Profile"));
 const Login = lazy(() => import("../pages/Login"));
@@ -78,7 +79,16 @@ function AppRouter() {
             </ProtectedRoute>
           }
         >
+          {/* Main dashboard (all wallets) */}
           <Route index element={<Dashboard />} />
+
+          {/* Wallet management page */}
+          <Route path="wallets" element={<WalletManagement />} />
+
+          {/* Single wallet view */}
+          <Route path="wallet/:chain/:address" element={<Dashboard />} />
+
+          {/* Other dashboard routes */}
           <Route path="settings" element={<Settings />} />
           <Route path="profile" element={<Profile />} />
         </Route>
