@@ -85,11 +85,11 @@ function WalletManagement() {
           />
         ) : (
           <div className="empty-state">
-            <FaWallet className="empty-icon" />
             <h3>No Wallets Found</h3>
-            <p>
-              You haven't added any wallets yet. Add a wallet to get started.
-            </p>
+            <div className="paragraps">
+              <p>You haven't added any wallets yet.</p>
+              <p>Add a wallet to get started.</p>
+            </div>
           </div>
         )}
       </div>

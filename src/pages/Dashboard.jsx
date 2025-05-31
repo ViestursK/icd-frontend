@@ -1,7 +1,7 @@
 // Import existing components and hooks
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaCoins, FaWallet } from "react-icons/fa";
+import { FaWallet } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import BalanceCard from "../components/BalanceCard";
 import WalletForm from "../components/WalletForm";
@@ -14,9 +14,6 @@ import StatsCard from "../components/StatsCard";
 import AssetAllocationChart from "../components/AssetAllocationChart";
 import { walletService } from "../services/walletService";
 import "./Dashboard.css";
-
-// Define tab options - removed wallets tab, now just assets
-const TABS = [{ id: "assets", label: "Assets", icon: <FaCoins /> }];
 
 function Dashboard() {
   const {
@@ -34,8 +31,6 @@ function Dashboard() {
   const navigate = useNavigate();
   const { chain, address } = useParams();
 
-  // State for active tab - now defaults to assets since it's the only option
-  const [activeTab, setActiveTab] = useState("assets");
   // State for refresh operation
   const [refreshing, setRefreshing] = useState(false);
   // State for visible assets count (default to 20 for better initial density)
@@ -241,10 +236,11 @@ function Dashboard() {
                 />
                 <WalletForm />
               </div>
-            ) : null
+            ) : (
+              <WalletForm />
+            )
           }
         />
-
       </div>
 
       {error && (

@@ -63,21 +63,6 @@
   width: 100%;
 }
 
-/* Ensure card wrapper never collapses */
-.card-wrapper {
-  display: flex;
-  min-height: 180px;
-  width: 100%;
-  position: relative;
-}
-
-/* Prevent cards from disappearing */
-.card-wrapper > * {
-  width: 100%;
-  min-width: 0;
-  flex: 1;
-}
-
 /* Holdings container */
 .holdings-container {
   background: var(--color-card-bg);
@@ -181,7 +166,7 @@
 /* Show more button styles */
 .show-more-button {
   padding: 0.75rem;
-  background-color: var(--color-hover-overlay);
+  /* background-color: var(--color-hover-overlay); */
   color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -249,17 +234,6 @@
     width: 100%;
   }
 
-  .data-table-container {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-  }
-
-  .data-table {
-    min-width: auto;
-    width: 100%;
-  }
-
   .header-actions-container {
     width: 100%;
     display: flex;
@@ -323,17 +297,12 @@
     flex-direction: column;
     align-items: flex-start;
   }
-
-  /* Ensure cards maintain minimum height on mobile */
-  .card-wrapper {
-    min-height: 160px;
-  }
 }
 
 @media (max-width: 640px) {
   .header-actions-container {
     width: 100%;
-    flex-direction: column;
+    flex-direction: row;
     align-items: stretch;
   }
 
@@ -350,28 +319,5 @@
   .manage-wallets-button,
   .refresh-button {
     flex: 1;
-  }
-
-  /* Further reduce minimum height for very small screens */
-  .card-wrapper {
-    min-height: 140px;
-  }
-}
-
-/* Ensure grid items don't collapse */
-.balance-stats-wrapper > * {
-  min-width: 0;
-  min-height: 180px;
-}
-
-@media (max-width: 768px) {
-  .balance-stats-wrapper > * {
-    min-height: 160px;
-  }
-}
-
-@media (max-width: 640px) {
-  .balance-stats-wrapper > * {
-    min-height: 140px;
   }
 }

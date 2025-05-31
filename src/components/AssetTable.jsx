@@ -1,6 +1,12 @@
 import React, { useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
-import { FaCaretUp, FaCaretDown, FaSearch, FaTimes } from "react-icons/fa";
+import {
+  FaCaretUp,
+  FaCaretDown,
+  FaSearch,
+  FaTimes,
+  FaWallet,
+} from "react-icons/fa";
 
 import "../styles/tableUtils.css";
 import "./AssetTable.css";
@@ -196,36 +202,38 @@ const AssetTable = ({
       </div>
 
       <table className="data-table">
-        <thead>
-          <tr>
-            {[
-              { label: "Asset", field: "name" },
-              { label: "Price (USD)", field: "price" },
-              { label: "24h Change", field: "price_24h_change_percent" },
-              { label: "Holdings", field: "total_amount" },
-              { label: "Value (USD)", field: "total_value" },
-            ].map(({ label, field }) => (
-              <th
-                key={field}
-                onClick={() => toggleSort(field)}
-                className="sortable-column"
-              >
-                <div className="column-header">
-                  {label}
-                  {sortField === field && (
-                    <span className="sort-icon">
-                      {sortDirection === "asc" ? (
-                        <FaCaretUp />
-                      ) : (
-                        <FaCaretDown />
-                      )}
-                    </span>
-                  )}
-                </div>
-              </th>
-            ))}
-          </tr>
-        </thead>
+        {filteredAssets.length > 0 && (
+          <thead>
+            <tr>
+              {[
+                { label: "Asset", field: "name" },
+                { label: "Price (USD)", field: "price" },
+                { label: "24h Change", field: "price_24h_change_percent" },
+                { label: "Holdings", field: "total_amount" },
+                { label: "Value (USD)", field: "total_value" },
+              ].map(({ label, field }) => (
+                <th
+                  key={field}
+                  onClick={() => toggleSort(field)}
+                  className="sortable-column"
+                >
+                  <div className="column-header">
+                    {label}
+                    {sortField === field && (
+                      <span className="sort-icon">
+                        {sortDirection === "asc" ? (
+                          <FaCaretUp />
+                        ) : (
+                          <FaCaretDown />
+                        )}
+                      </span>
+                    )}
+                  </div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+        )}
         <tbody>
           {visibleAssets.length > 0 ? (
             visibleAssets.map((asset, idx) => (
@@ -273,9 +281,17 @@ const AssetTable = ({
               <td colSpan={5} className="empty-state-cell">
                 <div className="empty-state-container">
                   <p>
-                    {searchQuery || selectedChain !== "all"
-                      ? "No assets match your filters."
-                      : "No assets found."}
+                    {searchQuery || selectedChain !== "all" ? (
+                      "No assets match your filters."
+                    ) : (
+                      <div className="empty-state">
+                        <h3>No Wallets Found</h3>
+                        <div className="paragraps">
+                          <p>You haven't added any wallets yet.</p>
+                          <p>Add a wallet to get started.</p>
+                        </div>
+                      </div>
+                    )}
                   </p>
                 </div>
               </td>

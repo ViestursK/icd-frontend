@@ -30,7 +30,6 @@
     var(--color-primary)
   );
   box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.4);
-  transform: translateY(-1px);
 }
 
 .add-wallet-button:active {

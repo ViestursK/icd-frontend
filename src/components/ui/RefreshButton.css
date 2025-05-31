@@ -8,14 +8,20 @@
   color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
+}
+
+.refresh-icon {
+  display: flex;
 }
 
 .refresh-button:hover:not(:disabled) {
   background-color: var(--color-active-overlay);
   border-color: rgba(var(--color-primary-rgb), 0.3);
+  color: var(--color-primary);
 }
 
 /* Light mode specific fixes for refresh button */

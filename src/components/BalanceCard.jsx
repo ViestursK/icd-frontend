@@ -56,7 +56,7 @@ const BalanceCard = ({ balance, changePercent, isLoading }) => {
 
   // Show shimmer effect when loading
   if (isLoading) {
-    return <div className="balance-card shimmer-loading"></div>;
+    return <div className="shimmer-loading"></div>;
   }
 
   // Ensure we always have valid values

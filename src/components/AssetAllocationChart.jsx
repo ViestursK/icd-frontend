@@ -195,11 +195,7 @@ const AssetAllocationChart = ({
   };
 
   if (loading) {
-    return (
-      <div
-        className="shimmer-loading"
-      />
-    );
+    return <div className="shimmer-loading" />;
   }
 
   if (!processedData.length) {

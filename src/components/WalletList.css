@@ -231,6 +231,7 @@
 .balance-container {
   display: flex;
   align-items: center;
+  /* justify-content: center; */
   gap: 0.5rem;
 }
 
@@ -238,12 +239,12 @@
   color: var(--color-text-secondary);
   font-size: 0.875rem;
   font-weight: 500;
-  margin: 0;
+  margin: 0 !important;
 }
 
 .balance-value {
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 0.875rem !important;
   color: var(--color-text);
 }
 
@@ -326,12 +327,6 @@
 [data-theme="light"] .wallet-info {
   background-color: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.08);
-}
-
-[data-theme="light"] .empty-state,
-[data-theme="light"] .wallet-loading {
-  background: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Responsive adjustments */
