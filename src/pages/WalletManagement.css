@@ -8,12 +8,31 @@
 .wallet-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1.5rem;
   background-color: var(--color-card-bg);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
   animation: fadeIn 0.5s ease;
+}
+
+.wallets-header {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.wallet-icon {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  margin-right: 0.75rem;
+}
+
+.wallets-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--color-text);
 }
 
 @keyframes fadeIn {
@@ -26,7 +45,7 @@
 }
 
 /* Empty state */
-.empty-state{
+.empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -22,7 +22,7 @@ function Sidebar() {
 
   // Handle logout with loading state
   const handleLogout = async () => {
-    if (loggingOut) return; // Prevent multiple clicks
+    if (loggingOut) return; 
 
     setLoggingOut(true);
 
@@ -50,12 +50,12 @@ function Sidebar() {
     { path: "/dashboard", icon: <FaHome />, label: "Dashboard" },
     { path: "/dashboard/wallets", icon: <FaWallet />, label: "Wallets" },
     { path: "/dashboard/settings", icon: <FaCogs />, label: "Settings" },
-    { path: "/dashboard/profile", icon: <FaUser />, label: "Profile" },
+    // { path: "/dashboard/profile", icon: <FaUser />, label: "Profile" },
   ];
 
   return (
     <>
-      {/* Mobile Hamburger Menu - Only visible on mobile */}
+      {/* Mobile Hamburger Menu */}
       <button
         className="mobile-menu-toggle"
         onClick={toggleSidebar}
@@ -115,7 +115,7 @@ function Sidebar() {
             ) : (
               <FaSignOutAlt className="logout-icon" />
             )}
-            <span>{loggingOut ? "Logging out..." : "Logout"}</span>
+            <span>{loggingOut ? "Logging out..." : "Sign Out"}</span>
           </button>
         </div>
       </aside>

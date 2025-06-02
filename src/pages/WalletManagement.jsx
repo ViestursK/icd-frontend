@@ -65,6 +65,10 @@ function WalletManagement() {
       )}
 
       <div className="wallet-container">
+        <div className="wallets-header">
+          <FaWallet className="wallet-icon" />
+          <h2>Wallets</h2>
+        </div>
         {/* Wallets List */}
         {isLoading || refreshing ? (
           <div className="wallet-loading">
@@ -84,11 +88,10 @@ function WalletManagement() {
             onDeleteClick={handleDeleteClick}
           />
         ) : (
-          <div className="empty-state">
-            <h3>No Wallets Found</h3>
-            <div className="paragraps">
-              <p>You haven't added any wallets yet.</p>
-              <p>Add a wallet to get started.</p>
+          <div className="empty-state-container">
+            <div className="empty-state">
+              <FaWallet className="empty-state-icon" size={48} />
+              <p className="empty-state-text">No wallets found</p>
             </div>
           </div>
         )}

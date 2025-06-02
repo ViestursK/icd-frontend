@@ -6,6 +6,7 @@ import {
   FaSearch,
   FaTimes,
   FaWallet,
+  FaCoins,
 } from "react-icons/fa";
 
 import "../styles/tableUtils.css";
@@ -155,51 +156,55 @@ const AssetTable = ({
 
   return (
     <div className="data-table-container">
-      <div className="table-controls">
-        <div className="search-container">
-          <div className="search-input-wrapper">
-            <FaSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search by name, symbol or chain..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="search-input"
-            />
-            {searchQuery && (
-              <button
-                onClick={clearSearch}
-                className="clear-search"
-                aria-label="Clear search"
-              >
-                <FaTimes />
-              </button>
+      {/* Only show controls if there are assets */}
+      {assets.length > 0 && (
+        <div className="table-controls">
+          <div className="search-container">
+            <div className="search-input-wrapper">
+              <FaSearch className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search by name, symbol or chain..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+              />
+              {searchQuery && (
+                <button
+                  onClick={clearSearch}
+                  className="clear-search"
+                  aria-label="Clear search"
+                >
+                  <FaTimes />
+                </button>
+              )}
+            </div>
+            {filteredAssets.length > 0 && (
+              <div className="search-results-count">
+                Showing {Math.min(visibleAssets.length, filteredAssets.length)}{" "}
+                of {filteredAssets.length} assets
+                {searchQuery && ` matching "${searchQuery}"`}
+                {selectedChain !== "all" &&
+                  ` on ${selectedChain.toUpperCase()}`}
+              </div>
             )}
           </div>
-          {filteredAssets.length > 0 && (
-            <div className="search-results-count">
-              Showing {Math.min(visibleAssets.length, filteredAssets.length)} of{" "}
-              {filteredAssets.length} assets
-              {searchQuery && ` matching "${searchQuery}"`}
-              {selectedChain !== "all" && ` on ${selectedChain.toUpperCase()}`}
-            </div>
-          )}
-        </div>
 
-        <div className="filter-buttons">
-          {uniqueChains.map((chain) => (
-            <button
-              key={chain}
-              className={`filter-button ${
-                selectedChain === chain ? "active" : ""
-              }`}
-              onClick={() => setSelectedChain(chain)}
-            >
-              {chain === "all" ? "All Chains" : chain.toUpperCase()}
-            </button>
-          ))}
+          <div className="filter-buttons">
+            {uniqueChains.map((chain) => (
+              <button
+                key={chain}
+                className={`filter-button ${
+                  selectedChain === chain ? "active" : ""
+                }`}
+                onClick={() => setSelectedChain(chain)}
+              >
+                {chain === "all" ? "All Chains" : chain.toUpperCase()}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <table className="data-table">
         {filteredAssets.length > 0 && (
@@ -280,19 +285,21 @@ const AssetTable = ({
             <tr>
               <td colSpan={5} className="empty-state-cell">
                 <div className="empty-state-container">
-                  <p>
-                    {searchQuery || selectedChain !== "all" ? (
-                      "No assets match your filters."
-                    ) : (
-                      <div className="empty-state">
-                        <h3>No Wallets Found</h3>
-                        <div className="paragraps">
-                          <p>You haven't added any wallets yet.</p>
-                          <p>Add a wallet to get started.</p>
-                        </div>
-                      </div>
-                    )}
-                  </p>
+                  {searchQuery || selectedChain !== "all" ? (
+                    <div className="empty-state">
+                      <FaSearch className="empty-state-icon" size={48} />
+                      <p className="empty-state-text">
+                        No assets match your filters
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="empty-state">
+                      <FaCoins className="empty-state-icon" size={48} />
+                      <p className="empty-state-text">
+                        No wallet data available
+                      </p>
+                    </div>
+                  )}
                 </div>
               </td>
             </tr>

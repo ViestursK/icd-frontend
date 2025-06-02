@@ -53,6 +53,10 @@
   border-bottom: none;
 }
 
+tr:hover {
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+}
+
 /* Table controls */
 .table-controls {
   display: flex;
@@ -194,10 +198,10 @@
   margin: 0;
 }
 
-/* Sortable columns */
 .sortable-column {
   cursor: pointer;
   user-select: none;
+  background-color: transparent !important;
 }
 
 .column-header {

@@ -8,6 +8,7 @@ import {
   Tooltip,
   Sector,
 } from "recharts";
+import { FaChartPie } from "react-icons/fa";
 import "./AssetAllocationChart.css";
 
 const COLORS = [
@@ -202,8 +203,8 @@ const AssetAllocationChart = ({
     return (
       <div className="asset-allocation-chart-container" style={{ minHeight }}>
         <div className="chart-empty-wrapper" style={{ minHeight }}>
-          <div className="chart-empty-icon">📊</div>
-          <p>No data</p>
+          <FaChartPie className="empty-state-icon" size={48} />
+          <p className="empty-state-text">No allocation data available</p>
         </div>
       </div>
     );

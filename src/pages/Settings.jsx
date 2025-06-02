@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  FaPalette,
-  FaMoon,
-  FaSun,
-  FaDesktop,
-} from "react-icons/fa";
+import { FaPalette, FaMoon, FaSun, FaDesktop } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import { useToast } from "../context/ToastContext";
 import { useAuth } from "../context/AuthContext";
@@ -56,7 +51,6 @@ const Settings = () => {
   return (
     <div className="dashboard-container">
       <Header title="SETTINGS" />
-
       <div className="settings-container">
         {/* Theme and Appearance */}
         <section className="settings-section">

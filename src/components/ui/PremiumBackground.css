@@ -1,3 +1,14 @@
+.premium-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+
 .orb {
   position: absolute;
   border-radius: 50%;
@@ -5,6 +16,8 @@
   z-index: -1;
   opacity: 0.7;
   transition: background-color 0.5s ease;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .orb-purple {
@@ -12,6 +25,8 @@
   height: 500px;
   background-color: var(--orb-purple-color);
   animation: moveSlowly 25s infinite alternate ease-in-out;
+  max-width: 40vw;
+  max-height: 40vh;
 }
 
 .orb-blue {
@@ -20,6 +35,8 @@
   background-color: var(--orb-blue-color);
   animation: moveSlowly 28s infinite alternate-reverse ease-in-out;
   animation-delay: 3s;
+  max-width: 35vw;
+  max-height: 35vh;
 }
 
 .orb-indigo {
@@ -28,6 +45,8 @@
   background-color: var(--orb-indigo-color);
   animation: moveSlowly 22s infinite alternate ease-in-out;
   animation-delay: 1s;
+  max-width: 30vw;
+  max-height: 30vh;
 }
 
 .orb-rose {
@@ -36,8 +55,42 @@
   background-color: var(--orb-rose-color);
   animation: moveSlowly 20s infinite alternate-reverse ease-in-out;
   animation-delay: 2s;
+  max-width: 28vw;
+  max-height: 28vh;
 }
 
+@keyframes moveSlowly {
+  0% {
+    transform: translate(0, 0) scale(0.8);
+  }
+  25% {
+    transform: translate(10vw, 5vh) scale(0.9);
+  }
+  50% {
+    transform: translate(-5vw, 10vh) scale(1);
+  }
+  75% {
+    transform: translate(5vw, -5vh) scale(0.9);
+  }
+  100% {
+    transform: translate(-10vw, 0) scale(0.8);
+  }
+}
+
+/* Background effects */
+.noise-overlay,
+.grid-pattern,
+.dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Light theme orb colors */
 [data-theme="light"] .orb-purple {
   background-color: rgba(78, 20, 215, 0.439);
 }
@@ -54,16 +107,51 @@
   background-color: rgba(244, 63, 93, 0.489);
 }
 
+/* Mobile optimizations */
 @media screen and (max-width: 768px) {
   .premium-background {
     overflow: hidden;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     position: fixed;
     z-index: -1;
   }
 
   .orb {
-    position: fixed;
+    position: absolute;
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .orb-purple {
+    width: 200px;
+    height: 200px;
+  }
+
+  .orb-blue {
+    width: 180px;
+    height: 180px;
+  }
+
+  .orb-indigo {
+    width: 160px;
+    height: 160px;
+  }
+
+  .orb-rose {
+    width: 140px;
+    height: 140px;
+  }
+
+  @keyframes moveSlowly {
+    0% {
+      transform: translate(0, 0) scale(0.8);
+    }
+    50% {
+      transform: translate(5vw, 5vh) scale(1);
+    }
+    100% {
+      transform: translate(-5vw, 0) scale(0.8);
+    }
   }
 }
