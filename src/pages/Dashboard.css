@@ -65,7 +65,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -83,7 +83,6 @@
   width: 100%;
   transition: all var(--transition-normal);
   box-sizing: border-box;
-  /* REMOVED: height constraints */
 }
 
 .holdings-container:hover {
@@ -285,20 +284,15 @@
 
   .holdings-header {
     flex-direction: row;
-    justify-content: space-between;
-    gap: 1rem;
+    justify-content: space-evenly;
   }
 
   .holdings-actions {
-    justify-content: space-between;
-    margin: 0;
+    width: inherit;
+    gap: 1rem;
   }
 
   .manage-wallets-button {
     flex: 1;
   }
-}
-
-@media (max-width: 37) {
-  
 }
