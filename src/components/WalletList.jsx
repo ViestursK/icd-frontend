@@ -18,6 +18,7 @@ import {
 } from "react-icons/fa";
 import "../styles/tableUtils.css";
 import "./WalletList.css";
+import "./skeleton.css";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 

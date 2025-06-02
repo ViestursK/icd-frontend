@@ -28,17 +28,23 @@ function WalletManagement() {
 
     setRefreshing(true);
     try {
-      await removeWallet({
+      const result = await removeWallet({
         address: selectedWallet.address,
         chain: selectedWallet.chain,
       });
-      toast.success("Wallet removed successfully");
-      setShowDeleteModal(false);
-      setSelectedWallet(null);
+
+      if (result.success) {
+        toast.success("Wallet removed successfully");
+      } else {
+        toast.error(result.error || "Failed to remove wallet");
+      }
     } catch (error) {
       toast.error("Failed to remove wallet");
     } finally {
       setRefreshing(false);
+      // Close modal after operation completes (success or failure)
+      setShowDeleteModal(false);
+      setSelectedWallet(null);
     }
   };
 
@@ -71,16 +77,7 @@ function WalletManagement() {
         </div>
         {/* Wallets List */}
         {isLoading || refreshing ? (
-          <div className="wallet-loading">
-            <img
-              src="/assets/logo.svg"
-              alt="Loading"
-              className="loading-logo pulse"
-              width="50"
-              height="42"
-            />
-            <p>Loading wallets...</p>
-          </div>
+          <div className="shimmer-loading"></div>
         ) : wallets.length > 0 ? (
           <WalletList
             wallets={wallets}

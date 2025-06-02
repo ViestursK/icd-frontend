@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaCogs,
-  FaUser,
   FaSignOutAlt,
   FaBars,
   FaTimes,
@@ -55,7 +54,6 @@ function Sidebar() {
 
   return (
     <>
-      {/* Mobile Hamburger Menu - Only show when sidebar is closed */}
       {!mobileOpen && (
         <button
           className="mobile-menu-toggle"
@@ -67,7 +65,6 @@ function Sidebar() {
         </button>
       )}
 
-      {/* Sidebar */}
       <aside className={`sidebar-container ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="sidebar-header">
           <Link
@@ -79,7 +76,6 @@ function Sidebar() {
             <h1 className="sidebar-title">Portfolio Tracker</h1>
           </Link>
 
-          {/* Mobile Close Button - Only visible when sidebar is open */}
           <button
             className="mobile-close-button"
             onClick={toggleSidebar}
@@ -131,7 +127,6 @@ function Sidebar() {
         </div>
       </aside>
 
-      {/* Backdrop for mobile */}
       {mobileOpen && (
         <div
           className="sidebar-backdrop"
