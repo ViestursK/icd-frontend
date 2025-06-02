@@ -14,66 +14,205 @@
   border-radius: 50%;
   filter: blur(70px);
   z-index: -1;
-  opacity: 0.7;
-  transition: background-color 0.5s ease;
-  will-change: transform;
+  transition: opacity 1s ease, transform 0.1s ease;
+  will-change: transform, opacity;
   backface-visibility: hidden;
+  --mouse-x: 0px;
+  --mouse-y: 0px;
 }
 
 .orb-purple {
+  top: 30%;
+  left: 30%;
   width: 500px;
   height: 500px;
   background-color: var(--orb-purple-color);
-  animation: moveSlowly 25s infinite alternate ease-in-out;
   max-width: 40vw;
   max-height: 40vh;
+  animation: moveSlowly1 25s infinite alternate ease-in-out;
+  transform: translate(
+    calc(-50% + var(--mouse-x) * -0.8),
+    calc(-50% + var(--mouse-y) * -0.8)
+  );
 }
 
 .orb-blue {
+  top: 60%;
+  left: 60%;
   width: 450px;
   height: 450px;
   background-color: var(--orb-blue-color);
-  animation: moveSlowly 28s infinite alternate-reverse ease-in-out;
-  animation-delay: 3s;
   max-width: 35vw;
   max-height: 35vh;
+  animation: moveSlowly2 28s infinite alternate-reverse ease-in-out;
+  animation-delay: 3s;
+  transform: translate(
+    calc(-50% + var(--mouse-x) * 0.6),
+    calc(-50% + var(--mouse-y) * 0.6)
+  );
 }
 
 .orb-indigo {
+  top: 40%;
+  left: 70%;
   width: 400px;
   height: 400px;
   background-color: var(--orb-indigo-color);
-  animation: moveSlowly 22s infinite alternate ease-in-out;
-  animation-delay: 1s;
   max-width: 30vw;
   max-height: 30vh;
+  animation: moveSlowly3 22s infinite alternate ease-in-out;
+  animation-delay: 1s;
+  transform: translate(
+    calc(-50% + var(--mouse-x) * -0.4),
+    calc(-50% + var(--mouse-y) * -0.3)
+  );
 }
 
 .orb-rose {
+  top: 70%;
+  left: 20%;
   width: 350px;
   height: 350px;
   background-color: var(--orb-rose-color);
-  animation: moveSlowly 20s infinite alternate-reverse ease-in-out;
-  animation-delay: 2s;
   max-width: 28vw;
   max-height: 28vh;
+  animation: moveSlowly4 20s infinite alternate-reverse ease-in-out;
+  animation-delay: 2s;
+  transform: translate(
+    calc(-50% + var(--mouse-x) * 0.3),
+    calc(-50% + var(--mouse-y) * 0.2)
+  );
 }
 
-@keyframes moveSlowly {
+/* Separate animations for each orb to create more organic movement */
+@keyframes moveSlowly1 {
   0% {
-    transform: translate(0, 0) scale(0.8);
+    transform: translate(
+        calc(-50% + var(--mouse-x) * -0.8 + 0px),
+        calc(-50% + var(--mouse-y) * -0.8 + 0px)
+      )
+      scale(0.8);
   }
   25% {
-    transform: translate(10vw, 5vh) scale(0.9);
+    transform: translate(
+        calc(-50% + var(--mouse-x) * -0.8 + 10vw),
+        calc(-50% + var(--mouse-y) * -0.8 + 5vh)
+      )
+      scale(0.9);
   }
   50% {
-    transform: translate(-5vw, 10vh) scale(1);
+    transform: translate(
+        calc(-50% + var(--mouse-x) * -0.8 + -5vw),
+        calc(-50% + var(--mouse-y) * -0.8 + 10vh)
+      )
+      scale(1);
   }
   75% {
-    transform: translate(5vw, -5vh) scale(0.9);
+    transform: translate(
+        calc(-50% + var(--mouse-x) * -0.8 + 5vw),
+        calc(-50% + var(--mouse-y) * -0.8 + -5vh)
+      )
+      scale(0.9);
   }
   100% {
-    transform: translate(-10vw, 0) scale(0.8);
+    transform: translate(
+        calc(-50% + var(--mouse-x) * -0.8 + -10vw),
+        calc(-50% + var(--mouse-y) * -0.8 + 0px)
+      )
+      scale(0.8);
+  }
+}
+
+@keyframes moveSlowly2 {
+  0% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * 0.6 + 0px),
+        calc(-50% + var(--mouse-y) * 0.6 + 0px)
+      )
+      scale(0.9);
+  }
+  33% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * 0.6 + 8vw),
+        calc(-50% + var(--mouse-y) * 0.6 + -3vh)
+      )
+      scale(1);
+  }
+  66% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * 0.6 + -6vw),
+        calc(-50% + var(--mouse-y) * 0.6 + 8vh)
+      )
+      scale(0.8);
+  }
+  100% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * 0.6 + 4vw),
+        calc(-50% + var(--mouse-y) * 0.6 + -2vh)
+      )
+      scale(0.9);
+  }
+}
+
+@keyframes moveSlowly3 {
+  0% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * -0.4 + 0px),
+        calc(-50% + var(--mouse-y) * -0.3 + 0px)
+      )
+      scale(0.7);
+  }
+  40% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * -0.4 + -7vw),
+        calc(-50% + var(--mouse-y) * -0.3 + 6vh)
+      )
+      scale(1);
+  }
+  80% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * -0.4 + 9vw),
+        calc(-50% + var(--mouse-y) * -0.3 + -4vh)
+      )
+      scale(0.8);
+  }
+  100% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * -0.4 + -3vw),
+        calc(-50% + var(--mouse-y) * -0.3 + 2vh)
+      )
+      scale(0.7);
+  }
+}
+
+@keyframes moveSlowly4 {
+  0% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * 0.3 + 0px),
+        calc(-50% + var(--mouse-y) * 0.2 + 0px)
+      )
+      scale(0.8);
+  }
+  30% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * 0.3 + 6vw),
+        calc(-50% + var(--mouse-y) * 0.2 + 4vh)
+      )
+      scale(0.9);
+  }
+  70% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * 0.3 + -8vw),
+        calc(-50% + var(--mouse-y) * 0.2 + -3vh)
+      )
+      scale(1);
+  }
+  100% {
+    transform: translate(
+        calc(-50% + var(--mouse-x) * 0.3 + 2vw),
+        calc(-50% + var(--mouse-y) * 0.2 + 1vh)
+      )
+      scale(0.8);
   }
 }
 
@@ -143,15 +282,100 @@
     height: 140px;
   }
 
-  @keyframes moveSlowly {
+  /* Simplified mobile animations */
+  @keyframes moveSlowly1 {
     0% {
-      transform: translate(0, 0) scale(0.8);
+      transform: translate(
+          calc(-50% + var(--mouse-x) * -0.4 + 0px),
+          calc(-50% + var(--mouse-y) * -0.4 + 0px)
+        )
+        scale(0.8);
     }
     50% {
-      transform: translate(5vw, 5vh) scale(1);
+      transform: translate(
+          calc(-50% + var(--mouse-x) * -0.4 + 5vw),
+          calc(-50% + var(--mouse-y) * -0.4 + 5vh)
+        )
+        scale(1);
     }
     100% {
-      transform: translate(-5vw, 0) scale(0.8);
+      transform: translate(
+          calc(-50% + var(--mouse-x) * -0.4 + -5vw),
+          calc(-50% + var(--mouse-y) * -0.4 + 0px)
+        )
+        scale(0.8);
+    }
+  }
+
+  @keyframes moveSlowly2 {
+    0% {
+      transform: translate(
+          calc(-50% + var(--mouse-x) * 0.3 + 0px),
+          calc(-50% + var(--mouse-y) * 0.3 + 0px)
+        )
+        scale(0.8);
+    }
+    50% {
+      transform: translate(
+          calc(-50% + var(--mouse-x) * 0.3 + 3vw),
+          calc(-50% + var(--mouse-y) * 0.3 + 3vh)
+        )
+        scale(1);
+    }
+    100% {
+      transform: translate(
+          calc(-50% + var(--mouse-x) * 0.3 + -3vw),
+          calc(-50% + var(--mouse-y) * 0.3 + 0px)
+        )
+        scale(0.8);
+    }
+  }
+
+  @keyframes moveSlowly3 {
+    0% {
+      transform: translate(
+          calc(-50% + var(--mouse-x) * -0.2 + 0px),
+          calc(-50% + var(--mouse-y) * -0.2 + 0px)
+        )
+        scale(0.8);
+    }
+    50% {
+      transform: translate(
+          calc(-50% + var(--mouse-x) * -0.2 + 4vw),
+          calc(-50% + var(--mouse-y) * -0.2 + 4vh)
+        )
+        scale(1);
+    }
+    100% {
+      transform: translate(
+          calc(-50% + var(--mouse-x) * -0.2 + -4vw),
+          calc(-50% + var(--mouse-y) * -0.2 + 0px)
+        )
+        scale(0.8);
+    }
+  }
+
+  @keyframes moveSlowly4 {
+    0% {
+      transform: translate(
+          calc(-50% + var(--mouse-x) * 0.15 + 0px),
+          calc(-50% + var(--mouse-y) * 0.15 + 0px)
+        )
+        scale(0.8);
+    }
+    50% {
+      transform: translate(
+          calc(-50% + var(--mouse-x) * 0.15 + 2vw),
+          calc(-50% + var(--mouse-y) * 0.15 + 2vh)
+        )
+        scale(1);
+    }
+    100% {
+      transform: translate(
+          calc(-50% + var(--mouse-x) * 0.15 + -2vw),
+          calc(-50% + var(--mouse-y) * 0.15 + 0px)
+        )
+        scale(0.8);
     }
   }
 }

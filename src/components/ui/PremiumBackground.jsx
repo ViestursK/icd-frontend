@@ -2,22 +2,31 @@ import { useEffect, useState } from "react";
 import "./PremiumBackground.css";
 
 const PremiumBackground = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Track mouse position for subtle parallax effect
   useEffect(() => {
     const handleMouseMove = (e) => {
-      const x = (e.clientX / window.innerWidth) * 15;
-      const y = (e.clientY / window.innerHeight) * 15;
-      setPosition({ x, y });
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      setMousePosition({ x, y });
+
+      if (!isInitialized) {
+        setIsInitialized(true);
+      }
     };
+
+    // Initialize with center position
+    setMousePosition({ x: 0, y: 0 });
+    setIsInitialized(true);
 
     window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [isInitialized]);
 
   return (
     <div className="premium-background">
@@ -25,29 +34,33 @@ const PremiumBackground = () => {
       <div
         className="orb orb-purple"
         style={{
-          top: `calc(30% - ${position.y}px)`,
-          left: `calc(30% - ${position.x}px)`,
+          "--mouse-x": `${mousePosition.x}px`,
+          "--mouse-y": `${mousePosition.y}px`,
+          opacity: isInitialized ? 0.7 : 0,
         }}
       />
       <div
         className="orb orb-blue"
         style={{
-          top: `calc(60% + ${position.y}px)`,
-          left: `calc(60% + ${position.x}px)`,
+          "--mouse-x": `${mousePosition.x}px`,
+          "--mouse-y": `${mousePosition.y}px`,
+          opacity: isInitialized ? 0.7 : 0,
         }}
       />
       <div
         className="orb orb-indigo"
         style={{
-          top: `calc(40% - ${position.y * 0.5}px)`,
-          left: `calc(70% - ${position.x * 0.5}px)`,
+          "--mouse-x": `${mousePosition.x}px`,
+          "--mouse-y": `${mousePosition.y}px`,
+          opacity: isInitialized ? 0.7 : 0,
         }}
       />
       <div
         className="orb orb-rose"
         style={{
-          top: `calc(70% + ${position.y * 0.3}px)`,
-          left: `calc(20% + ${position.x * 0.3}px)`,
+          "--mouse-x": `${mousePosition.x}px`,
+          "--mouse-y": `${mousePosition.y}px`,
+          opacity: isInitialized ? 0.7 : 0,
         }}
       />
 

@@ -22,7 +22,7 @@ function Sidebar() {
 
   // Handle logout with loading state
   const handleLogout = async () => {
-    if (loggingOut) return; 
+    if (loggingOut) return;
 
     setLoggingOut(true);
 
@@ -55,15 +55,17 @@ function Sidebar() {
 
   return (
     <>
-      {/* Mobile Hamburger Menu */}
-      <button
-        className="mobile-menu-toggle"
-        onClick={toggleSidebar}
-        aria-label={mobileOpen ? "Close menu" : "Open menu"}
-        aria-expanded={mobileOpen}
-      >
-        {mobileOpen ? <FaTimes /> : <FaBars />}
-      </button>
+      {/* Mobile Hamburger Menu - Only show when sidebar is closed */}
+      {!mobileOpen && (
+        <button
+          className="mobile-menu-toggle"
+          onClick={toggleSidebar}
+          aria-label="Open menu"
+          aria-expanded={false}
+        >
+          <FaBars />
+        </button>
+      )}
 
       {/* Sidebar */}
       <aside className={`sidebar-container ${mobileOpen ? "mobile-open" : ""}`}>
@@ -76,6 +78,15 @@ function Sidebar() {
             <img className="sidebar-logo" src="/assets/logo.svg" alt="logo" />
             <h1 className="sidebar-title">Portfolio Tracker</h1>
           </Link>
+
+          {/* Mobile Close Button - Only visible when sidebar is open */}
+          <button
+            className="mobile-close-button"
+            onClick={toggleSidebar}
+            aria-label="Close menu"
+          >
+            <FaTimes />
+          </button>
         </div>
 
         <nav className="sidebar-nav" aria-label="Main navigation">
