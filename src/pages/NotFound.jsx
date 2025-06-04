@@ -21,9 +21,14 @@ const NotFound = () => {
               Return to Dashboard
             </Link>
           ) : (
-            <Link to="/login" className="primary-button">
-              Go to Login
-            </Link>
+            <div className="not-found-buttons">
+              <Link to="/" className="primary-button">
+                Return to Home
+              </Link>
+              <Link to="/login" className="secondary-button">
+                Login
+              </Link>
+            </div>
           )}
         </div>
       </div>

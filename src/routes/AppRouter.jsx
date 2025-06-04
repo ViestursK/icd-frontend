@@ -12,6 +12,7 @@ const Profile = lazy(() => import("../pages/Profile"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const NotFound = lazy(() => import("../pages/NotFound"));
+const LandingPage = lazy(() => import("../pages/LandingPage"));
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
@@ -52,6 +53,10 @@ function AppRouter() {
   return (
     <Suspense fallback={<LoadingScreen message="Loading application..." />}>
       <Routes>
+        {/* Landing Page - Public */}
+        <Route path="/" element={<LandingPage />} />
+
+        {/* Auth Routes - Public Only */}
         <Route
           path="/login"
           element={
@@ -92,9 +97,6 @@ function AppRouter() {
           <Route path="settings" element={<Settings />} />
           <Route path="profile" element={<Profile />} />
         </Route>
-
-        {/* Root path redirect */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
         {/* 404 Not Found */}
         <Route path="*" element={<NotFound />} />
