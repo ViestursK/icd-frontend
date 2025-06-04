@@ -2,8 +2,7 @@
   width: 100%;
   overflow: hidden;
   min-height: 300px;
-    padding: 1.25rem 1.5rem;
-
+  padding: 1.25rem 1.5rem;
 }
 
 .wallet-cards-grid {
@@ -294,8 +293,6 @@
   background-color: rgba(var(--color-error-rgb), 0.1);
   border-color: rgba(var(--color-error-rgb), 0.2);
 }
-
-
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

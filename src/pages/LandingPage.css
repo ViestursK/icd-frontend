@@ -3,6 +3,7 @@
   color: var(--color-text);
   scroll-behavior: smooth;
   z-index: 1;
+  font-family: "Work Sans", sans-serif;
 }
 
 .landing-container {
@@ -46,11 +47,13 @@
   left: 0;
   width: 100%;
   z-index: 10;
-  background-color: var(--color-card-background);
+  background-color: var(--color-active);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .nav-container {
-  padding: 0.5rem;
+  padding: 0.5rem 1.5rem;
   display: flex;
   flex-direction: row;
   width: inherit;
@@ -62,10 +65,11 @@
   align-items: center;
   font-weight: 700;
   font-size: 1.25rem;
+  filter: drop-shadow(0 1px 8px var(--color-primary-dark));
 }
 
 .logo-img {
-  height: 30px;
+  height: 3rem;
   margin-right: 0.75rem;
 }
 
@@ -95,7 +99,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   background-color: var(--color-hover-overlay);
   color: var(--color-text);
   transition: all 0.2s ease;
@@ -185,7 +188,7 @@
   background: linear-gradient(
     to right,
     var(--color-primary) 0%,
-    var(--color-secondary, rgba(var(--color-primary-rgb), 0.7)) 100%
+    var(--color-secondary, rgba(var(--color-primary-rgb), 1)) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -420,8 +423,7 @@
 }
 
 .faq-container {
-  max-width: 800px;
-  margin: 0 auto;
+  margin: 2rem auto;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -500,7 +502,7 @@
 }
 
 .cta-button {
-  background-color: var(--color-active-overlay);
+  background-color: var(--color-primary);
   color: white;
   border: none;
   padding: 1rem 2.5rem;
@@ -679,6 +681,14 @@
 }
 
 @media (max-width: 480px) {
+  .hero-container {
+    flex-direction: column;
+  }
+
+  .hero-content {
+    margin: 0 2rem;
+  }
+
   .hero-title {
     font-size: 1.875rem;
   }

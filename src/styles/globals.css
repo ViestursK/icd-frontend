@@ -25,21 +25,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  /* Removed overflow-y restriction - let it scroll naturally */
 }
 
-/* FIXED: Root div layout - this was the main problem */
 #root {
   min-height: 100vh; /* Changed from height: 100vh */
   width: 100%;
-  /* REMOVED: overflow: hidden - this was preventing all scrolling! */
   overflow-x: hidden; /* Only prevent horizontal overflow */
 }
 
-/* For the dashboard layout specifically */
 .dashboard-layout {
   height: 100vh;
-  overflow: hidden; /* Only the dashboard should be non-scrollable */
+  overflow: hidden;
 }
 
 .dashboard-content {
@@ -319,7 +315,7 @@ textarea:focus {
 
 /* Light theme adjustments */
 [data-theme="light"] .empty-state-icon {
-  color: #9e9ea0 !important;
+  color: #4b4b4b !important;
   opacity: 0.5;
 }
 

@@ -72,8 +72,12 @@ function Sidebar() {
             className="sidebar-logo-link"
             onClick={handleLinkClick}
           >
-            <img className="sidebar-logo" src="/assets/logo.svg" alt="logo" />
-            <h1 className="sidebar-title">Portfolio Tracker</h1>
+            <img
+              className="sidebar-logo"
+              src="src\assets\DECEN_logo_nobckgrnd.webp"
+              alt="logo"
+            />
+            {/* <h1 className="sidebar-title">Portfolio Tracker</h1> */}
           </Link>
 
           <button

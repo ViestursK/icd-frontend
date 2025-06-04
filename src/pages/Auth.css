@@ -54,8 +54,6 @@
 }
 
 .auth-logo {
-  width: 2.5rem;
-  height: 2.5rem;
   filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.8));
 }
 
@@ -339,8 +337,8 @@
   }
 
   .auth-logo {
-    width: 2rem;
-    height: 2rem;
+    width: 14rem;
+    height: auto;
   }
 
   .brand-name {

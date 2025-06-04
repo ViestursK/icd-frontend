@@ -290,6 +290,8 @@
   .holdings-actions {
     width: inherit;
     gap: 1rem;
+    display: flex;
+    justify-content: end;
   }
 
   .manage-wallets-button {

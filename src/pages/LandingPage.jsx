@@ -49,8 +49,11 @@ const LandingPage = () => {
       >
         <div className="landing-container nav-container">
           <div className="nav-logo">
-            <img src="/assets/logo.svg" alt="Decent" className="logo-img" />
-            <span className="logo-text">Decent</span>
+            <img
+              src="src\assets\DECEN_logo_nobckgrnd.webp"
+              alt="Decent"
+              className="logo-img"
+            />
           </div>
 
           <div
@@ -319,11 +322,10 @@ const LandingPage = () => {
           <div className="footer-content">
             <div className="footer-logo">
               <img
-                src="/assets/logo.svg"
+                src="src\assets\DECEN_logo_nobckgrnd.webp"
                 alt="Decent"
-                className="footer-logo-img"
+                className="logo-img"
               />
-              <span className="footer-logo-text">Decent</span>
             </div>
             <p className="footer-text">© 2025 Decent. All rights reserved.</p>
           </div>

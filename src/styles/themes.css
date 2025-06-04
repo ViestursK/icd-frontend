@@ -22,10 +22,10 @@
   --space-2xl: 3rem;
 
   /* Border radius */
-  --radius-sm: 0.25rem;
+  /* --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --radius-xl: 1rem; */
 
   /* Transitions */
   --transition-fast: 0.15s ease;
@@ -35,7 +35,6 @@
   /* Animation */
   --animation-spin: spin 1s linear infinite;
   --animation-shimmer: shimmer 1.5s infinite linear;
-  --animation-pulse: pulse 1.5s infinite;
 }
 
 /* Dark Theme (Default) - Cyberpunk lime accent with dark elegance */
@@ -94,10 +93,10 @@
   --color-gradient-overlay: rgba(10, 10, 10, 0.9);
 
   /* Background orbs - Lime and complementary colors */
-  --orb-lime-color: rgba(132, 204, 22, 0.12);
-  --orb-cyan-color: rgba(56, 189, 248, 0.08);
-  --orb-purple-color: rgba(168, 85, 247, 0.08);
-  --orb-pink-color: rgba(244, 114, 182, 0.06);
+  --orb-lime-color: rgba(132, 204, 22, 0.32);
+  --orb-cyan-color: rgba(56, 189, 248, 0.38);
+  --orb-purple-color: rgba(168, 85, 247, 0.38);
+  --orb-pink-color: rgba(244, 114, 182, 0.36);
   --background-gradient: linear-gradient(
     135deg,
     #0a0a0a 0%,
@@ -153,7 +152,7 @@
   --color-shadow: rgba(0, 0, 0, 0.1);
 
   /* Component-specific colors */
-  --color-card-bg: rgba(250, 250, 250, 0.8); /* Neutral-50 with opacity */
+  --color-card-bg: rgba(250, 250, 250, 0.993); /* Neutral-50 with opacity */
   --color-input-bg: rgba(245, 245, 245, 0.8); /* Neutral-100 with opacity */
   --color-hover-overlay: rgba(101, 163, 13, 0.08); /* Lime hover */
   --color-active-overlay: rgba(101, 163, 13, 0.15); /* Lime active */
@@ -161,10 +160,10 @@
   --color-gradient-overlay: rgba(255, 255, 255, 0.9);
 
   /* Background orbs - Very subtle for light theme */
-  --orb-lime-color: rgba(101, 163, 13, 0.06);
-  --orb-cyan-color: rgba(2, 132, 199, 0.04);
-  --orb-purple-color: rgba(147, 51, 234, 0.04);
-  --orb-pink-color: rgba(236, 72, 153, 0.03);
+  --orb-lime-color: rgba(100, 163, 13, 0.3);
+  --orb-cyan-color: rgba(2, 132, 199, 0.3);
+  --orb-purple-color: rgba(147, 51, 234, 0.3);
+  --orb-pink-color: rgba(236, 72, 153, 0.3);
   --background-gradient: linear-gradient(
     135deg,
     #ffffff 0%,
@@ -177,16 +176,6 @@
   /* Glow effects for lime accent */
   --glow-primary: 0 0 15px rgba(101, 163, 13, 0.2);
   --glow-primary-strong: 0 0 25px rgba(101, 163, 13, 0.3);
-}
-
-/* Apply transition to all elements for smooth theme switching */
-* {
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.1s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.1s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Define common animations with better easing and lime glow effects */
@@ -256,10 +245,6 @@
   box-shadow: var(--glow-primary-strong);
 }
 
-.lime-glow-pulse {
-  animation: glow-pulse 2s ease-in-out infinite;
-}
-
 .lime-gradient-text {
   background: linear-gradient(
     45deg,
@@ -271,7 +256,6 @@
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: lime-gradient 3s ease infinite;
 }
 
 .lime-border {
@@ -414,17 +398,230 @@
   transform: translateY(0);
 }
 
-/* Enhanced accessibility features */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+/* Enhanced background orbs with lime theme and better animations */
+.premium-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--background-gradient);
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: -1;
+  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  --mouse-x: 0px;
+  --mouse-y: 0px;
+}
+
+/* Primary lime orb - replaces purple */
+.orb-purple {
+  top: 30%;
+  left: 30%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    var(--orb-lime-color) 0%,
+    transparent 70%
+  );
+  max-width: 40vw;
+  max-height: 40vh;
+  animation: moveSlowly1 25s infinite alternate ease-in-out;
+  transform: translate(-50%, -50%);
+}
+
+/* Cyan orb - replaces blue */
+.orb-blue {
+  top: 60%;
+  left: 60%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(
+    circle,
+    var(--orb-cyan-color) 0%,
+    transparent 70%
+  );
+  max-width: 35vw;
+  max-height: 35vh;
+  animation: moveSlowly2 28s infinite alternate-reverse ease-in-out;
+  animation-delay: 3s;
+  transform: translate(-50%, -50%);
+}
+
+/* Purple accent orb - replaces indigo */
+.orb-indigo {
+  top: 40%;
+  left: 70%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    var(--orb-purple-color) 0%,
+    transparent 70%
+  );
+  max-width: 30vw;
+  max-height: 30vh;
+  animation: moveSlowly3 22s infinite alternate ease-in-out;
+  animation-delay: 1s;
+  transform: translate(-50%, -50%);
+}
+
+/* Pink highlight orb - replaces rose */
+.orb-rose {
+  top: 70%;
+  left: 20%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(
+    circle,
+    var(--orb-pink-color) 0%,
+    transparent 70%
+  );
+  max-width: 28vw;
+  max-height: 28vh;
+  animation: moveSlowly4 20s infinite alternate-reverse ease-in-out;
+  animation-delay: 2s;
+  transform: translate(-50%, -50%);
+}
+
+/* Enhanced animations with more organic movement - Updated to match original names */
+@keyframes moveSlowly1 {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) translateX(30px) rotate(0deg);
+  }
+  25% {
+    transform: translate(-50%, -50%) rotate(90deg) translateX(50px)
+      rotate(-90deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg) translateX(40px)
+      rotate(-180deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) rotate(270deg) translateX(35px)
+      rotate(-270deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) translateX(45px)
+      rotate(-360deg);
+  }
+}
+
+@keyframes moveSlowly2 {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) translateY(40px) rotate(0deg);
+  }
+  33% {
+    transform: translate(-50%, -50%) rotate(120deg) translateY(25px)
+      rotate(-120deg);
+  }
+  66% {
+    transform: translate(-50%, -50%) rotate(240deg) translateY(35px)
+      rotate(-240deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) translateY(30px)
+      rotate(-360deg);
+  }
+}
+
+@keyframes moveSlowly3 {
+  0% {
+    transform: translate(-50%, -50%) translateX(20px) translateY(15px);
+  }
+  25% {
+    transform: translate(-50%, -50%) translateX(-15px) translateY(25px);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateX(-25px) translateY(-20px);
+  }
+  75% {
+    transform: translate(-50%, -50%) translateX(10px) translateY(-30px);
+  }
+  100% {
+    transform: translate(-50%, -50%) translateX(25px) translateY(10px);
+  }
+}
+
+@keyframes moveSlowly4 {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(-50%, -50%) scale(1.1) rotate(5deg) translateX(20px);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9) rotate(-3deg) translateY(25px);
+  }
+  75% {
+    transform: translate(-50%, -50%) scale(1.05) rotate(2deg) translateX(-15px);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
+
+/* Mouse interaction effects */
+.orb:hover {
+  filter: blur(50px);
+  opacity: 1.2;
+}
+
+/* Responsive adjustments - Updated for original class names */
+@media (max-width: 768px) {
+  .orb {
+    filter: blur(40px);
   }
 
-  .lime-glow-pulse {
-    animation: none !important;
-    box-shadow: var(--glow-primary) !important;
+  .orb-purple {
+    width: 400px;
+    height: 400px;
+  }
+  .orb-blue {
+    width: 350px;
+    height: 350px;
+  }
+  .orb-indigo {
+    width: 320px;
+    height: 320px;
+  }
+  .orb-rose {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .orb {
+    filter: blur(30px);
+  }
+
+  .orb-purple {
+    width: 300px;
+    height: 300px;
+  }
+  .orb-blue {
+    width: 250px;
+    height: 250px;
+  }
+  .orb-indigo {
+    width: 220px;
+    height: 220px;
+  }
+  .orb-rose {
+    width: 200px;
+    height: 200px;
   }
 }
 

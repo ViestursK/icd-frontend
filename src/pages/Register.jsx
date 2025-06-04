@@ -139,8 +139,11 @@ const Register = () => {
       </Link>
 
       <div className="auth-brand">
-        <img src={logo} alt="Portfolio Tracker" className="auth-logo" />
-        <h2 className="brand-name">Portfolio Tracker</h2>
+        <img
+          src="src\assets\DECEN_logo_nobckgrnd.webp"
+          alt="Portfolio Tracker"
+          className="auth-logo"
+        />
       </div>
 
       <div className="auth-card">
