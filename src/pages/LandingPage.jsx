@@ -50,7 +50,7 @@ const LandingPage = () => {
         <div className="landing-container nav-container">
           <div className="nav-logo">
             <img
-              src="src\assets\DECEN_logo_nobckgrnd.webp"
+              src="/assets/DECEN_logo_nobckgrnd.webp"
               alt="Decent"
               className="logo-img"
             />
@@ -322,7 +322,7 @@ const LandingPage = () => {
           <div className="footer-content">
             <div className="footer-logo">
               <img
-                src="src\assets\DECEN_logo_nobckgrnd.webp"
+                src="/assets/DECEN_logo_nobckgrnd.webp"
                 alt="Decent"
                 className="logo-img"
               />

@@ -84,7 +84,7 @@ const LoadingScreen = ({ message = "Loading..." }) => {
       <div className="loading-container">
         <div className="loading-brand">
           <img
-            src="src\assets\DECEN_logo_nobckgrnd.webp"
+            src="/assets/DECEN_logo_nobckgrnd.webp"
             alt="Decent"
             className="logo-img"
           />
