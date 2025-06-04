@@ -1,4 +1,4 @@
-import "./PremiumBackground.css";
+import "/src/styles/themes.css";
 
 const PremiumBackground = () => {
   return (

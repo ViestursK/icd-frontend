@@ -1,4 +1,4 @@
-/* Updated themes.css with improved light mode styling */
+/* Professional themes.css with industry-standard colors and accessibility */
 
 :root {
   /* Typography */
@@ -38,101 +38,158 @@
   --animation-pulse: pulse 1.5s infinite;
 }
 
-/* Dark Theme (Default) */
+/* Dark Theme (Default) - Cyberpunk lime accent with dark elegance */
 :root {
-  /* Color RGB values for opacity adjustments */
-  --color-primary-rgb: 125, 103, 255;
-  --color-primary-light-rgb: 147, 129, 255;
-  --color-primary-dark-rgb: 106, 87, 217;
-  --color-success-rgb: 50, 195, 118;
-  --color-error-rgb: 255, 76, 76;
-  --color-info-rgb: 63, 140, 255;
-  --color-warning-rgb: 243, 186, 47;
+  /* Base color system - Lime green accent with complementary colors */
+  --hue-primary: 78; /* Lime green hue */
+  --hue-success: 142;
+  --hue-error: 0;
+  --hue-warning: 45;
+  --hue-info: 200;
 
-  /* Colors */
-  --color-primary: #7d67ff;
-  --color-primary-light: #9381ff;
-  --color-primary-dark: #6a57d9;
-  --color-text: #f2f2fa;
-  --color-text-secondary: #9e9ea0;
-  --color-background: #0d0a1f;
-  --color-card-background: #161231;
-  --color-error: #ff4c4c;
-  --color-success: #32c376;
-  --color-warning: #f3ba2f;
-  --color-info: #3f8cff;
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-shadow: rgba(0, 0, 0, 0.25);
+  /* Color RGB values for opacity adjustments */
+  --color-primary-rgb: 132, 204, 22;
+  --color-primary-light-rgb: 163, 230, 53;
+  --color-primary-dark-rgb: 101, 163, 13;
+  --color-success-rgb: 34, 197, 94;
+  --color-error-rgb: 248, 113, 113;
+  --color-info-rgb: 56, 189, 248;
+  --color-warning-rgb: 251, 191, 36;
+
+  /* Primary colors - Vibrant lime green system */
+  --color-primary: #84cc16; /* Lime-500 - Perfect balance */
+  --color-primary-light: #a3e635; /* Lime-400 - Brighter accent */
+  --color-primary-dark: #65a30d; /* Lime-600 - Deeper tone */
+
+  /* Text colors - High contrast with lime accents */
+  --color-text: #fafafa; /* Neutral-50 */
+  --color-text-secondary: #a1a1aa; /* Neutral-400 */
+  --color-text-muted: #71717a; /* Neutral-500 */
+  --color-text-accent: #a3e635; /* Lime accent for highlights */
+
+  /* Background colors - Rich dark with subtle warmth */
+  --color-background: #0a0a0a; /* Neutral-950 - Pure dark */
+  --color-card-background: #171717; /* Neutral-900 - Card surface */
+  --color-surface: #262626; /* Neutral-800 - Elevated surface */
+  --color-surface-hover: #404040; /* Neutral-700 - Hover state */
+
+  /* Semantic colors - Vibrant and accessible */
+  --color-error: #f87171; /* Red-400 - Softer red for dark theme */
+  --color-success: #84cc16; /* Lime-500 - Use primary for success */
+  --color-warning: #fbbf24; /* Amber-400 */
+  --color-info: #38bdf8; /* Sky-400 */
+
+  /* Border and shadow colors */
+  --color-border: #404040; /* Neutral-700 */
+  --color-border-light: #525252; /* Neutral-600 */
+  --color-border-accent: rgba(132, 204, 22, 0.3); /* Lime with opacity */
+  --color-shadow: rgba(0, 0, 0, 0.5);
 
   /* Component-specific colors */
-  --color-card-bg: rgba(33, 24, 68, 0.824);
-  --color-input-bg: rgba(15, 12, 29, 0.624);
-  --color-hover-overlay: rgba(255, 255, 255, 0.05);
-  --color-active-overlay: rgba(125, 103, 255, 0.15);
-  --color-shadow-color: rgba(0, 0, 0, 0.3);
-  --color-gradient-overlay: rgba(0, 0, 0, 0.7);
+  --color-card-bg: rgba(23, 23, 23, 0.9); /* Neutral-900 with opacity */
+  --color-input-bg: rgba(10, 10, 10, 0.8); /* Neutral-950 with opacity */
+  --color-hover-overlay: rgba(132, 204, 22, 0.1); /* Lime hover */
+  --color-active-overlay: rgba(132, 204, 22, 0.2); /* Lime active */
+  --color-shadow-color: rgba(0, 0, 0, 0.6);
+  --color-gradient-overlay: rgba(10, 10, 10, 0.9);
 
-  /* Background orbs for dark theme */
-  --orb-purple-color: rgba(139, 92, 246, 0.3);
-  --orb-blue-color: rgba(59, 130, 246, 0.2);
-  --orb-indigo-color: rgba(79, 70, 229, 0.2);
-  --orb-rose-color: rgba(244, 63, 94, 0.2);
-  --background-gradient: linear-gradient(135deg, #1e1647, #32103f);
-  --grid-color: rgba(255, 255, 255, 0.03);
-  --backdrop-opacity: 0.7;
+  /* Background orbs - Lime and complementary colors */
+  --orb-lime-color: rgba(132, 204, 22, 0.12);
+  --orb-cyan-color: rgba(56, 189, 248, 0.08);
+  --orb-purple-color: rgba(168, 85, 247, 0.08);
+  --orb-pink-color: rgba(244, 114, 182, 0.06);
+  --background-gradient: linear-gradient(
+    135deg,
+    #0a0a0a 0%,
+    #171717 50%,
+    #0a0a0a 100%
+  );
+  --grid-color: rgba(132, 204, 22, 0.05);
+  --backdrop-opacity: 0.8;
+
+  /* Glow effects for lime accent */
+  --glow-primary: 0 0 20px rgba(132, 204, 22, 0.3);
+  --glow-primary-strong: 0 0 30px rgba(132, 204, 22, 0.5);
 }
 
-/* Light Theme - Improved with better contrast */
+/* Light Theme - Clean with lime green accents */
 [data-theme="light"] {
   /* Color RGB values for opacity adjustments */
-  --color-primary-rgb: 106, 87, 217;
-  --color-primary-light-rgb: 125, 103, 255;
-  --color-primary-dark-rgb: 86, 71, 176;
-  --color-success-rgb: 38, 159, 91;
-  --color-error-rgb: 220, 53, 53;
-  --color-info-rgb: 44, 123, 229;
-  --color-warning-rgb: 224, 168, 0;
+  --color-primary-rgb: 101, 163, 13;
+  --color-primary-light-rgb: 132, 204, 22;
+  --color-primary-dark-rgb: 77, 124, 15;
+  --color-success-rgb: 34, 197, 94;
+  --color-error-rgb: 220, 38, 38;
+  --color-info-rgb: 2, 132, 199;
+  --color-warning-rgb: 217, 119, 6;
 
-  /* Colors */
-  --color-primary: #6a57d9;
-  --color-primary-light: #7d67ff;
-  --color-primary-dark: #5647b0;
-  --color-text: #1a1825;
-  --color-text-secondary: #5d5b6c;
-  --color-background: rgba(176, 176, 176, 0.516);
-  --color-card-background: #ffffff;
-  --color-error: #dc3545;
-  --color-success: #269f5b;
-  --color-warning: #e0a800;
-  --color-info: #2c7be5;
-  --color-border: rgba(0, 0, 0, 0.12);
-  --color-shadow: rgba(0, 0, 0, 0.08);
+  /* Primary colors - Darker lime for better contrast on light */
+  --color-primary: #65a30d; /* Lime-600 - Good contrast */
+  --color-primary-light: #84cc16; /* Lime-500 */
+  --color-primary-dark: #4d7c0f; /* Lime-700 */
+
+  /* Text colors - High contrast with lime accents */
+  --color-text: #0a0a0a; /* Neutral-950 */
+  --color-text-secondary: #525252; /* Neutral-600 */
+  --color-text-muted: #737373; /* Neutral-500 */
+  --color-text-accent: #65a30d; /* Lime accent for highlights */
+
+  /* Background colors - Clean and bright */
+  --color-background: #ffffff; /* Pure white */
+  --color-card-background: #fafafa; /* Neutral-50 */
+  --color-surface: #f5f5f5; /* Neutral-100 */
+  --color-surface-hover: #e5e5e5; /* Neutral-200 */
+
+  /* Semantic colors - Proper contrast for light backgrounds */
+  --color-error: #dc2626; /* Red-600 */
+  --color-success: #16a34a; /* Green-600 */
+  --color-warning: #d97706; /* Amber-600 */
+  --color-info: #0284c7; /* Sky-600 */
+
+  /* Border and shadow colors */
+  --color-border: #e5e5e5; /* Neutral-200 */
+  --color-border-light: #d4d4d4; /* Neutral-300 */
+  --color-border-accent: rgba(101, 163, 13, 0.3); /* Lime with opacity */
+  --color-shadow: rgba(0, 0, 0, 0.1);
 
   /* Component-specific colors */
-  --color-card-bg: rgb(242, 242, 242);
-  --color-input-bg: rgba(0, 0, 0, 0.04);
-  --color-hover-overlay: rgba(0, 0, 0, 0.04);
-  --color-active-overlay: rgba(106, 87, 217, 0.12);
-  --color-shadow-color: rgba(0, 0, 0, 0.1);
-  --color-gradient-overlay: rgba(255, 255, 255, 0.7);
+  --color-card-bg: rgba(250, 250, 250, 0.8); /* Neutral-50 with opacity */
+  --color-input-bg: rgba(245, 245, 245, 0.8); /* Neutral-100 with opacity */
+  --color-hover-overlay: rgba(101, 163, 13, 0.08); /* Lime hover */
+  --color-active-overlay: rgba(101, 163, 13, 0.15); /* Lime active */
+  --color-shadow-color: rgba(0, 0, 0, 0.08);
+  --color-gradient-overlay: rgba(255, 255, 255, 0.9);
 
-  /* Background orbs for light theme */
-  --orb-purple-color: rgba(139, 92, 246, 0.1);
-  --orb-blue-color: rgba(59, 130, 246, 0.08);
-  --orb-indigo-color: rgba(79, 70, 229, 0.08);
-  --orb-rose-color: rgba(244, 63, 94, 0.08);
-  --background-gradient: linear-gradient(135deg, #f0f5ff, #efe9ff);
-  --grid-color: rgba(0, 0, 0, 0.02);
-  --backdrop-opacity: 0.2;
+  /* Background orbs - Very subtle for light theme */
+  --orb-lime-color: rgba(101, 163, 13, 0.06);
+  --orb-cyan-color: rgba(2, 132, 199, 0.04);
+  --orb-purple-color: rgba(147, 51, 234, 0.04);
+  --orb-pink-color: rgba(236, 72, 153, 0.03);
+  --background-gradient: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #fafafa 50%,
+    #ffffff 100%
+  );
+  --grid-color: rgba(101, 163, 13, 0.03);
+  --backdrop-opacity: 0.85;
+
+  /* Glow effects for lime accent */
+  --glow-primary: 0 0 15px rgba(101, 163, 13, 0.2);
+  --glow-primary-strong: 0 0 25px rgba(101, 163, 13, 0.3);
 }
 
 /* Apply transition to all elements for smooth theme switching */
 * {
-  transition: background-color 0.3s ease, color 0.3s ease,
-    border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.1s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.1s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Define common animations once */
+/* Define common animations with better easing and lime glow effects */
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -158,7 +215,7 @@
   }
   50% {
     opacity: 1;
-    transform: scale(1.05);
+    transform: scale(1.02);
   }
   100% {
     opacity: 0.6;
@@ -166,12 +223,73 @@
   }
 }
 
-/* Chain-specific colors for consistency */
+@keyframes glow-pulse {
+  0% {
+    box-shadow: var(--glow-primary);
+  }
+  50% {
+    box-shadow: var(--glow-primary-strong);
+  }
+  100% {
+    box-shadow: var(--glow-primary);
+  }
+}
+
+@keyframes lime-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Utility classes for lime effects */
+.lime-glow {
+  box-shadow: var(--glow-primary);
+}
+
+.lime-glow-strong {
+  box-shadow: var(--glow-primary-strong);
+}
+
+.lime-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.lime-gradient-text {
+  background: linear-gradient(
+    45deg,
+    var(--color-primary),
+    var(--color-primary-light),
+    var(--color-primary)
+  );
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: lime-gradient 3s ease infinite;
+}
+
+.lime-border {
+  border: 1px solid var(--color-border-accent);
+}
+
+.lime-border-glow {
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 0 10px rgba(132, 204, 22, 0.3);
+}
+
+/* Cryptocurrency brand colors - Enhanced with better contrast */
 .chain-badge.ethereum,
 .chain-badge.eth,
 .asset-icon.eth {
   background-color: rgba(98, 126, 234, 0.15);
   color: #627eea;
+  border: 1px solid rgba(98, 126, 234, 0.3);
 }
 
 .chain-badge.bitcoin,
@@ -179,6 +297,7 @@
 .asset-icon.btc {
   background-color: rgba(247, 147, 26, 0.15);
   color: #f7931a;
+  border: 1px solid rgba(247, 147, 26, 0.3);
 }
 
 .chain-badge.binance,
@@ -187,6 +306,7 @@
 .asset-icon.bnb {
   background-color: rgba(243, 186, 47, 0.15);
   color: #f3ba2f;
+  border: 1px solid rgba(243, 186, 47, 0.3);
 }
 
 .chain-badge.polygon,
@@ -194,23 +314,158 @@
 .asset-icon.matic {
   background-color: rgba(130, 71, 229, 0.15);
   color: #8247e5;
+  border: 1px solid rgba(130, 71, 229, 0.3);
 }
 
 .chain-badge.solana,
 .chain-badge.sol,
 .asset-icon.sol {
-  background-color: rgba(0, 128, 255, 0.15);
-  color: #0080ff;
+  background-color: rgba(20, 194, 168, 0.15);
+  color: #14c2a8;
+  border: 1px solid rgba(20, 194, 168, 0.3);
 }
 
+.chain-badge.cardano,
+.chain-badge.ada,
+.asset-icon.ada {
+  background-color: rgba(0, 51, 173, 0.15);
+  color: #0033ad;
+  border: 1px solid rgba(0, 51, 173, 0.3);
+}
+
+.chain-badge.avalanche,
+.chain-badge.avax,
+.asset-icon.avax {
+  background-color: rgba(232, 65, 66, 0.15);
+  color: #e84142;
+  border: 1px solid rgba(232, 65, 66, 0.3);
+}
+
+.chain-badge.chainlink,
+.chain-badge.link,
+.asset-icon.link {
+  background-color: rgba(41, 98, 255, 0.15);
+  color: #2962ff;
+  border: 1px solid rgba(41, 98, 255, 0.3);
+}
+
+.chain-badge.polkadot,
+.chain-badge.dot,
+.asset-icon.dot {
+  background-color: rgba(230, 0, 122, 0.15);
+  color: #e6007a;
+  border: 1px solid rgba(230, 0, 122, 0.3);
+}
+
+/* Stablecoin colors */
 .chain-badge.usdt,
 .asset-icon.usdt {
   background-color: rgba(38, 161, 123, 0.15);
   color: #26a17b;
+  border: 1px solid rgba(38, 161, 123, 0.3);
 }
 
 .chain-badge.usdc,
 .asset-icon.usdc {
   background-color: rgba(39, 117, 202, 0.15);
   color: #2775ca;
+  border: 1px solid rgba(39, 117, 202, 0.3);
+}
+
+.chain-badge.dai,
+.asset-icon.dai {
+  background-color: rgba(243, 174, 61, 0.15);
+  color: #f3ae3d;
+  border: 1px solid rgba(243, 174, 61, 0.3);
+}
+
+.chain-badge.busd,
+.asset-icon.busd {
+  background-color: rgba(243, 186, 47, 0.15);
+  color: #f3ba2f;
+  border: 1px solid rgba(243, 186, 47, 0.3);
+}
+
+/* Special lime-themed crypto badges */
+.chain-badge.lime,
+.chain-badge.lime-token,
+.asset-icon.lime {
+  background-color: rgba(132, 204, 22, 0.15);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border-accent);
+  box-shadow: var(--glow-primary);
+}
+
+/* Hover effects for all chain badges */
+.chain-badge:hover,
+.asset-icon:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .chain-badge:hover,
+[data-theme="light"] .asset-icon:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Interactive states */
+.chain-badge:active,
+.asset-icon:active {
+  transform: translateY(0);
+}
+
+/* Enhanced accessibility features */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .lime-glow-pulse {
+    animation: none !important;
+    box-shadow: var(--glow-primary) !important;
+  }
+}
+
+/* Focus styles for accessibility with lime accent */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(132, 204, 22, 0.2);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: var(--color-primary);
+    --color-border-accent: var(--color-primary);
+  }
+
+  [data-theme="light"] {
+    --color-border: var(--color-primary-dark);
+    --color-border-accent: var(--color-primary-dark);
+  }
+}
+
+/* Print styles */
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Dark mode preference override */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  [data-theme="light"] {
+    color-scheme: light;
+  }
 }

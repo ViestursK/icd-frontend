@@ -49,12 +49,8 @@ const LandingPage = () => {
       >
         <div className="landing-container nav-container">
           <div className="nav-logo">
-            <img
-              src="/assets/logo.svg"
-              alt="Portfolio Tracker"
-              className="logo-img"
-            />
-            <span className="logo-text">Portfolio Tracker</span>
+            <img src="/assets/logo.svg" alt="Decent" className="logo-img" />
+            <span className="logo-text">Decent</span>
           </div>
 
           <div
@@ -98,7 +94,7 @@ const LandingPage = () => {
 
       {/* Hero Section */}
       <section className="hero-section">
-        <div className="landing-container">
+        <div className="hero-container">
           <div className="hero-content">
             <h1 className="hero-title">
               Track Your Crypto Portfolio In Real-Time
@@ -258,10 +254,10 @@ const LandingPage = () => {
 
           <div className="faq-container">
             <div className="faq-item">
-              <h3>Is Portfolio Tracker free to use?</h3>
+              <h3>Is Decent free to use?</h3>
               <p>
-                Yes, Portfolio Tracker is completely free for basic portfolio
-                tracking. We offer premium features for advanced users.
+                Yes, Decent is completely free for basic portfolio tracking. We
+                offer premium features for advanced users.
               </p>
             </div>
 
@@ -297,8 +293,8 @@ const LandingPage = () => {
         <div className="landing-container">
           <h2>Ready to take control of your crypto portfolio?</h2>
           <p>
-            Join thousands of users who trust Portfolio Tracker for their crypto
-            tracking needs
+            Join thousands of users who trust Decent for their crypto tracking
+            needs
           </p>
           <div className="cta-features">
             <div className="cta-feature">
@@ -324,32 +320,12 @@ const LandingPage = () => {
             <div className="footer-logo">
               <img
                 src="/assets/logo.svg"
-                alt="Portfolio Tracker"
+                alt="Decent"
                 className="footer-logo-img"
               />
-              <span className="footer-logo-text">Portfolio Tracker</span>
+              <span className="footer-logo-text">Decent</span>
             </div>
-            <p className="footer-text">
-              © 2025 Portfolio Tracker. All rights reserved.
-            </p>
-            <div className="footer-links">
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                Terms of Service
-              </a>
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                Privacy Policy
-              </a>
-            </div>
+            <p className="footer-text">© 2025 Decent. All rights reserved.</p>
           </div>
         </div>
       </footer>
