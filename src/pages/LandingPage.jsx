@@ -13,6 +13,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { useTheme } from "../context/ThemeContext";
+import DashboardShowcase from "../components/ui/DashboardShowcase";
 import "./LandingPage.css";
 
 const LandingPage = () => {
@@ -95,7 +96,7 @@ const LandingPage = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section with Dashboard Showcase */}
       <section className="hero-section">
         <div className="hero-container">
           <div className="hero-content">
@@ -118,12 +119,10 @@ const LandingPage = () => {
               </button>
             </div>
           </div>
-          <div className="hero-image">
-            <img
-              src="/assets/dashboard-preview.png"
-              alt="Portfolio Dashboard"
-              className="dashboard-preview"
-            />
+
+          {/* Replace the old hero-image with the new DashboardShowcase */}
+          <div className="hero-showcase">
+            <DashboardShowcase />
           </div>
         </div>
       </section>

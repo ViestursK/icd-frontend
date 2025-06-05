@@ -579,51 +579,56 @@
 }
 
 /* Responsive adjustments - Updated for original class names */
-@media (max-width: 768px) {
-  .orb {
-    filter: blur(40px);
-  }
+.orb {
+  filter: blur(40px);
+  transform: translate3d(0, 0, 0); /* Force hardware acceleration */
+  will-change: transform;
+}
 
-  .orb-purple {
-    width: 400px;
-    height: 400px;
-  }
-  .orb-blue {
-    width: 350px;
-    height: 350px;
-  }
-  .orb-indigo {
-    width: 320px;
-    height: 320px;
-  }
-  .orb-rose {
-    width: 280px;
-    height: 280px;
-  }
+/* Simplify animations on mobile */
+.orb-purple {
+  animation: moveSlowly1 35s infinite alternate ease-in-out;
+}
+
+.orb-blue {
+  animation: moveSlowly2 38s infinite alternate-reverse ease-in-out;
+}
+
+.orb-indigo {
+  animation: moveSlowly3 32s infinite alternate ease-in-out;
+}
+
+.orb-rose {
+  animation: moveSlowly4 30s infinite alternate-reverse ease-in-out;
 }
 
 @media (max-width: 480px) {
-  .orb {
-    filter: blur(30px);
+    .orb {
+      animation: none;
+      opacity: 0.3;
+    }
   }
 
-  .orb-purple {
-    width: 300px;
-    height: 300px;
+  /* Optimize backdrop filters for mobile */
+  .premium-background {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
   }
-  .orb-blue {
-    width: 250px;
-    height: 250px;
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    .orb {
+      animation: none;
+      opacity: 0.2;
+    }
+    
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
-  .orb-indigo {
-    width: 220px;
-    height: 220px;
-  }
-  .orb-rose {
-    width: 200px;
-    height: 200px;
-  }
-}
+
 
 /* Focus styles for accessibility with lime accent */
 :focus-visible {

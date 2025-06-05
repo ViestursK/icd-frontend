@@ -74,10 +74,9 @@ function Sidebar() {
           >
             <img
               className="sidebar-logo"
-              src="src\assets\DECEN_logo_nobckgrnd.webp"
-              alt="logo"
+              src="/assets/DECEN_logo_nobckgrnd.webp"
+              alt="Decen"
             />
-            {/* <h1 className="sidebar-title">Portfolio Tracker</h1> */}
           </Link>
 
           <button

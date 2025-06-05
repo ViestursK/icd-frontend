@@ -112,8 +112,8 @@ const Login = () => {
 
       <div className="auth-brand">
         <img
-          src="\src\assets\DECEN_logo_nobckgrnd.webp"
-          alt="Portfolio Tracker"
+          src="/assets/DECEN_logo_nobckgrnd.webp"
+          alt="Decen"
           className="auth-logo"
         />
       </div>

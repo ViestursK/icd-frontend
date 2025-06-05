@@ -1,4 +1,4 @@
-/* src/styles/globals.css - FIXED VERSION */
+/* src/styles/globals.css - FIXED VERSION WITH SAFE AREAS */
 @import "./themes.css";
 
 /* Reset and base styles */
@@ -11,7 +11,10 @@
 html {
   font-size: 16px;
   height: 100%;
-  overflow-x: hidden; /* Prevent horizontal scroll only */
+  overflow-x: hidden;
+  /* Prevent zoom on input focus in iOS */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -21,34 +24,97 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.5;
-  min-height: 100vh; /* Changed from height: 100vh */
+  min-height: 100vh;
+  min-height: 100dvh; /* Use dynamic viewport height on mobile */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+
+  /* Safe area support for notched devices */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+
+  /* Prevent rubber band scrolling on iOS */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {
-  min-height: 100vh; /* Changed from height: 100vh */
+  min-height: 100vh;
+  min-height: calc(
+    100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+  );
   width: 100%;
-  overflow-x: hidden; /* Only prevent horizontal overflow */
+  overflow-x: hidden;
 }
 
 .dashboard-layout {
   height: 100vh;
+  height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   overflow: hidden;
 }
 
 .dashboard-content {
   height: 100vh;
-  overflow-y: auto; /* Allow dashboard content to scroll */
+  height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Landing page should be fully scrollable */
 .landing-page {
-  min-height: 100vh; /* Allow it to grow beyond viewport */
-  overflow-y: auto; /* Ensure it can scroll */
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-y: auto;
   overflow-x: hidden;
+}
+
+/* Mobile-specific fixes */
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 14px;
+    /* Prevent zoom on double tap */
+    touch-action: manipulation;
+  }
+
+  body {
+    /* Additional safe area padding for mobile */
+    padding-top: max(env(safe-area-inset-top), 1rem);
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  }
+
+  /* Prevent horizontal scrolling on mobile */
+  body,
+  #root {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Fix input zoom issues on iOS */
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevents zoom on focus in iOS */
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+/* iPhone specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .dashboard-layout {
+    height: -webkit-fill-available;
+  }
+
+  .dashboard-content {
+    height: -webkit-fill-available;
+  }
 }
 
 /* Rest of your existing styles... */
@@ -71,6 +137,9 @@ a {
   color: var(--color-primary-light);
   text-decoration: none;
   transition: color var(--transition-fast);
+  /* Prevent callout on touch devices */
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 a:hover {
@@ -82,6 +151,10 @@ svg {
   max-width: 100%;
   height: auto;
   vertical-align: middle;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
 }
 
 button,
@@ -91,11 +164,16 @@ textarea {
   font-family: inherit;
   font-size: 100%;
   margin: 0;
+  /* Prevent zoom on focus */
+  font-size: max(16px, 1em);
 }
 
 button,
 select {
   text-transform: none;
+  /* Remove tap highlight */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 button,
@@ -105,6 +183,8 @@ button,
   cursor: pointer;
   background-color: transparent;
   background-image: none;
+  /* Prevent touch delay */
+  touch-action: manipulation;
 }
 
 button:focus,
@@ -140,45 +220,49 @@ textarea:focus {
 .text-center {
   text-align: center;
 }
-
 .text-left {
   text-align: left;
 }
-
 .text-right {
   text-align: right;
 }
-
 .flex {
   display: flex;
 }
-
 .flex-col {
   flex-direction: column;
 }
-
 .items-center {
   align-items: center;
 }
-
 .justify-center {
   justify-content: center;
 }
-
 .justify-between {
   justify-content: space-between;
 }
-
 .gap-sm {
   gap: var(--space-sm);
 }
-
 .gap-md {
   gap: var(--space-md);
 }
-
 .gap-lg {
   gap: var(--space-lg);
+}
+
+/* Safe area utilities */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-left {
+  padding-left: env(safe-area-inset-left);
+}
+.safe-right {
+  padding-right: env(safe-area-inset-right);
 }
 
 /* Responsive breakpoints utilities */
@@ -192,7 +276,6 @@ textarea:focus {
   .md\:flex {
     display: flex;
   }
-
   .md\:hidden {
     display: none;
   }
@@ -202,7 +285,6 @@ textarea:focus {
   .lg\:flex {
     display: flex;
   }
-
   .lg\:hidden {
     display: none;
   }
@@ -243,76 +325,6 @@ textarea:focus {
   max-width: 300px;
 }
 
-/* Balance Card specific empty state */
-.balance-empty-wrapper {
-  min-height: 160px;
-  padding: 1.5rem;
-}
-
-.balance-card .empty-state-icon {
-  margin-bottom: 0.75rem;
-}
-
-.balance-card .empty-state-text {
-  font-size: 0.9rem;
-}
-
-/* Stats Card specific empty state */
-.stats-empty-wrapper {
-  min-height: 140px;
-  padding: 1rem;
-}
-
-.stats-card .empty-state-icon {
-  margin-bottom: 0.75rem;
-}
-
-.stats-card .empty-state-text {
-  font-size: 0.9rem;
-}
-
-/* Asset Chart specific empty state */
-.chart-empty-wrapper {
-  min-height: 180px;
-}
-
-.asset-allocation-chart-container .empty-state-icon {
-  margin-bottom: 1rem;
-}
-
-.asset-allocation-chart-container .empty-state-text {
-  font-size: 0.9rem;
-}
-
-/* Asset Table specific empty state */
-.data-table .empty-state-container {
-  padding: 3rem 1rem;
-  min-height: 250px;
-}
-
-.data-table .empty-state-icon {
-  margin-bottom: 1.25rem;
-}
-
-.data-table .empty-state-text {
-  font-size: 1rem;
-}
-
-/* Wallet List specific empty state */
-.wallet-cards-grid .empty-state-container {
-  grid-column: 1 / -1;
-  min-height: 300px;
-  padding: 3rem 1rem;
-}
-
-.wallet-cards-grid .empty-state-icon {
-  margin-bottom: 1.25rem;
-}
-
-.wallet-cards-grid .empty-state-text {
-  font-size: 1rem;
-}
-
 /* Light theme adjustments */
 [data-theme="light"] .empty-state-icon {
   color: #4b4b4b !important;
@@ -321,21 +333,6 @@ textarea:focus {
 
 [data-theme="light"] .empty-state-text {
   color: var(--color-text-secondary);
-}
-
-/* Hover effects for interactive empty states */
-.empty-state-container:hover .empty-state-icon,
-.chart-empty-wrapper:hover .empty-state-icon,
-.balance-empty-wrapper:hover .empty-state-icon,
-.stats-empty-wrapper:hover .empty-state-icon {
-  opacity: 0.8;
-  transform: translateY(-2px);
-}
-
-/* Remove any existing emoji or svg icon styling that conflicts */
-.chart-empty-wrapper svg:not(.empty-state-icon),
-.empty-state-container svg:not(.empty-state-icon) {
-  display: none;
 }
 
 /* Responsive adjustments */

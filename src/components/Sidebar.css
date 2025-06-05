@@ -2,7 +2,7 @@
 .mobile-menu-toggle {
   display: none;
   position: fixed;
-  top: 1rem;
+  top: max(1rem, env(safe-area-inset-top));
   left: 1rem;
   z-index: 1001;
   background: var(--color-card-background);
@@ -13,6 +13,9 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   box-shadow: 0 2px 8px var(--color-shadow);
+  /* Prevent tap highlight */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .mobile-menu-toggle:hover {
@@ -27,6 +30,7 @@
   top: 0;
   left: 0;
   height: 100vh;
+  height: 100dvh;
   width: 280px;
   background: var(--color-sidebar-bg);
   border-right: 1px solid var(--color-border);
@@ -34,6 +38,9 @@
   flex-direction: column;
   z-index: 1000;
   transition: transform var(--transition-normal);
+  /* Safe area support */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Sidebar header */
@@ -45,6 +52,8 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  /* Account for safe area */
+  margin-top: max(0, env(safe-area-inset-top));
 }
 
 .sidebar-logo-link {
@@ -85,6 +94,8 @@
   border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
   margin-left: 0.5rem;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .mobile-close-button:hover {
@@ -97,6 +108,7 @@
   flex: 1;
   padding: 1rem 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .nav-list {
@@ -119,6 +131,8 @@
   transition: all var(--transition-fast);
   border-radius: 0;
   position: relative;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .nav-link:hover {
@@ -150,6 +164,9 @@
   padding: 1.25rem;
   border-top: 1px solid var(--color-border);
   background: var(--color-sidebar-footer-bg);
+  /* Ensure it's above the safe area */
+  padding-bottom: max(1.25rem, calc(1.25rem + env(safe-area-inset-bottom)));
+  margin-bottom: 0;
 }
 
 .logout-button {
@@ -164,6 +181,10 @@
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  /* Increase tap target size for mobile */
+  min-height: 44px;
 }
 
 .logout-button:hover:not(:disabled) {
@@ -203,6 +224,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
   backdrop-filter: blur(4px);
@@ -213,6 +235,16 @@
   .sidebar-container {
     position: relative;
     transform: none !important;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .sidebar-header {
+    margin-top: 0;
+  }
+
+  .sidebar-footer {
+    padding-bottom: 1.25rem;
   }
 
   .mobile-menu-toggle,
@@ -233,6 +265,9 @@
   .sidebar-container {
     transform: translateX(-100%);
     box-shadow: 0 0 20px var(--color-shadow);
+    /* Full height including safe areas */
+    height: 100vh;
+    height: 100dvh;
   }
 
   .sidebar-container.mobile-open {
@@ -253,16 +288,24 @@
   .sidebar-header {
     display: flex;
     justify-content: center;
-    /* padding: 1rem 1.25rem; */
+    padding: 1rem 1.25rem;
   }
 
   .sidebar-title {
     font-size: 1.125rem;
   }
 
-  .sidebar-logo {
-    /* width: 2rem; */
-    /* margin-right: 0.5rem; */
+  /* Ensure footer is accessible on mobile */
+  .sidebar-footer {
+    padding-bottom: max(
+      1.25rem,
+      calc(1.25rem + env(safe-area-inset-bottom) + 1rem)
+    );
+  }
+
+  .logout-button {
+    min-height: 48px; /* Larger tap target on mobile */
+    font-size: 1rem;
   }
 }
 
@@ -295,7 +338,7 @@
   }
 
   .mobile-menu-toggle {
-    top: 0.75rem;
+    top: max(0.75rem, env(safe-area-inset-top));
     left: 0.75rem;
     padding: 0.625rem;
   }
@@ -318,5 +361,34 @@
 
   .sidebar-footer {
     padding: 1rem;
+    padding-bottom: max(
+      1rem,
+      calc(1rem + env(safe-area-inset-bottom) + 1.5rem)
+    );
+  }
+
+  .logout-button {
+    min-height: 50px; /* Even larger on small screens */
+  }
+}
+
+/* iPhone specific adjustments */
+@supports (-webkit-touch-callout: none) {
+  .sidebar-container {
+    height: -webkit-fill-available;
+  }
+
+  .sidebar-backdrop {
+    height: -webkit-fill-available;
+  }
+
+  /* Extra bottom padding for iPhone home indicator */
+  @media (max-width: 1023px) {
+    .sidebar-footer {
+      padding-bottom: max(
+        1.25rem,
+        calc(1.25rem + env(safe-area-inset-bottom) + 2rem)
+      );
+    }
   }
 }

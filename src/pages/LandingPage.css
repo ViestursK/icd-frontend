@@ -1,3 +1,5 @@
+/* Updated LandingPage.css with Dashboard Showcase integration */
+
 /* Base Styles */
 .landing-page {
   color: var(--color-text);
@@ -102,6 +104,7 @@
   background-color: var(--color-hover-overlay);
   color: var(--color-text);
   transition: all 0.2s ease;
+  border-radius: var(--radius-md);
 }
 
 .theme-toggle:hover {
@@ -159,25 +162,31 @@
   cursor: pointer;
 }
 
-/* Hero Section */
-
-.hero-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
+/* Hero Section - Updated for Dashboard Showcase */
 .hero-section {
   min-height: 100vh;
   display: flex;
   width: 100%;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  width: 100%;
+  padding: 120px 2rem 60px;
+  gap: 4rem;
 }
 
 .hero-content {
-  max-width: 700px;
-  margin-right: 2rem;
+  flex: 1;
+  max-width: 600px;
+  z-index: 2;
 }
 
 .hero-title {
@@ -188,7 +197,7 @@
   background: linear-gradient(
     to right,
     var(--color-primary) 0%,
-    var(--color-secondary, rgba(var(--color-primary-rgb), 1)) 100%
+    var(--color-primary-light) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -223,10 +232,7 @@
 }
 
 .primary-button:hover {
-  background-color: var(
-    --color-primary-dark,
-    rgba(var(--color-primary-rgb), 0.8)
-  );
+  background-color: var(--color-primary-dark);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.3);
   color: white;
@@ -250,40 +256,29 @@
   color: var(--color-text);
 }
 
-.hero-image {
+/* Hero Showcase - New section for the dashboard preview */
+.hero-showcase {
   flex: 1;
+  min-height: 600px;
+  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-}
-
-.dashboard-preview {
-  max-width: 100%;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 10px 30px var(--color-shadow);
-  transition: all 0.3s ease;
-  transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
-  border: 1px solid var(--color-border);
-}
-
-.dashboard-preview:hover {
-  transform: perspective(1000px) rotateY(-2deg) rotateX(2deg) scale(1.02);
-  box-shadow: 0 15px 40px rgba(var(--color-primary-rgb), 0.2);
+  justify-content: center;
 }
 
 /* Features Section */
 .features-section {
   padding: 100px 0;
-  background-color: var(
-    --color-background-secondary,
-    rgba(var(--color-primary-rgb), 0.05)
-  );
+  background-color: rgba(var(--color-primary-rgb), 0.02);
+  border-top: 1px solid var(--color-border);
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .feature-card {
@@ -338,6 +333,8 @@
   justify-content: space-between;
   gap: 2rem;
   flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .step-card {
@@ -374,10 +371,8 @@
 /* Security Section */
 .security-section {
   padding: 100px 0;
-  background-color: var(
-    --color-background-secondary,
-    rgba(var(--color-primary-rgb), 0.05)
-  );
+  background-color: rgba(var(--color-primary-rgb), 0.02);
+  border-top: 1px solid var(--color-border);
 }
 
 .security-features {
@@ -427,6 +422,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-width: 800px;
 }
 
 .faq-item {
@@ -516,8 +512,7 @@
 }
 
 .cta-button:hover {
-  background-color: var(--color-primary, rgba(var(--color-primary-rgb), 0.2));
-  /* transform: translateY(-3px); */
+  background-color: var(--color-primary-dark);
   box-shadow: 0 10px 30px rgba(var(--color-primary-rgb), 0.3);
   color: white;
 }
@@ -525,7 +520,6 @@
 /* Footer */
 .landing-footer {
   padding: 4rem 0;
-  /* background-color: var(--color-card-background); */
   border-top: 1px solid var(--color-border);
 }
 
@@ -544,54 +538,41 @@
   font-size: 1.25rem;
 }
 
-.footer-logo-img {
-  height: 30px;
-  margin-right: 0.75rem;
-}
-
 .footer-text {
   color: var(--color-text-secondary);
   margin: 0;
 }
 
-.footer-links {
-  display: flex;
-  gap: 2rem;
-}
-
-.footer-links a {
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.footer-links a:hover {
-  color: var(--color-primary);
-}
-
 /* Media Queries */
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
+  .hero-container {
+    padding: 100px 1.5rem 60px;
+    gap: 3rem;
+  }
+
   .hero-title {
-    font-size: 2.75rem;
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
   }
 
   .hero-content {
-    margin-right: 0;
-    margin-bottom: 3rem;
+    max-width: 100%;
   }
 
-  .hero-section .landing-container {
-    flex-direction: column;
-    align-items: center;
+  .hero-showcase {
+    width: 100%;
+    min-height: 500px;
   }
 
-  .dashboard-preview {
-    transform: none;
-    max-width: 90%;
-  }
-
-  .dashboard-preview:hover {
-    transform: none;
+  .hero-title {
+    font-size: 2.75rem;
   }
 
   .security-feature {
@@ -605,7 +586,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 932px) {
   .section-title {
     font-size: 2rem;
   }
@@ -615,7 +596,7 @@
   }
 
   .hero-section {
-    padding: 150px 0 70px;
+    /* padding: 120px 0 60px; */
   }
 
   .features-section,
@@ -637,6 +618,16 @@
 
   .nav-toggle {
     display: block;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .nav-links {
@@ -680,13 +671,9 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 414px) {
   .hero-container {
-    flex-direction: column;
-  }
-
-  .hero-content {
-    margin: 0 2rem;
+    padding: 1rem;
   }
 
   .hero-title {
@@ -717,5 +704,26 @@
 
   .hero-buttons {
     flex-direction: column;
+  }
+
+  .hero-showcase {
+    min-height: 400px;
+  }
+
+  .features-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .feature-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

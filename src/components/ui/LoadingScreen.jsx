@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import logo from "../../assets/logo.svg";
 import "./LoadingScreen.css";
 
 const LoadingScreen = ({ message = "Loading..." }) => {
@@ -85,8 +84,8 @@ const LoadingScreen = ({ message = "Loading..." }) => {
         <div className="loading-brand">
           <img
             src="/assets/DECEN_logo_nobckgrnd.webp"
-            alt="Decent"
-            className="logo-img"
+            alt="Decen"
+            className="auth-logo"
           />
         </div>
         <p className="loading-message">{message}</p>
