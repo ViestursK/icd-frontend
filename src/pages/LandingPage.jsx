@@ -4,22 +4,16 @@ import {
   FaChartLine,
   FaWallet,
   FaChartPie,
-  FaMoon,
-  FaSun,
   FaLock,
   FaShieldAlt,
   FaCheck,
-  FaBars,
-  FaTimes,
 } from "react-icons/fa";
-import { useTheme } from "../context/ThemeContext";
+import Navigation from "../components/Navigation";
 import DashboardShowcase from "../components/ui/DashboardShowcase";
 import "./LandingPage.css";
 
 const LandingPage = () => {
-  const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Listen for scroll to change navbar appearance
   useEffect(() => {
@@ -31,70 +25,15 @@ const LandingPage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll to section
-  const scrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-    setMobileMenuOpen(false);
-  };
-
   return (
     <div className="landing-page">
       {/* Navigation */}
-      <nav
-        className={`landing-nav ${isScrolled ? "scrolled" : ""} ${
-          mobileMenuOpen ? "menu-open" : ""
-        }`}
-      >
-        <div className="landing-container nav-container">
-          <div className="nav-logo">
-            <img
-              src="/assets/DECEN_logo_nobckgrnd.webp"
-              alt="Decent"
-              className="logo-img"
-            />
-          </div>
-
-          <div
-            className="nav-toggle"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
-          </div>
-
-          <div className={`nav-links ${mobileMenuOpen ? "open" : ""}`}>
-            <button onClick={() => scrollToSection("features")}>
-              Features
-            </button>
-            <button onClick={() => scrollToSection("how-it-works")}>
-              How It Works
-            </button>
-            <button onClick={() => scrollToSection("security")}>
-              Security
-            </button>
-            <button onClick={() => scrollToSection("faq")}>FAQ</button>
-
-            <div
-              className="theme-toggle"
-              onClick={toggleTheme}
-              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            >
-              {theme === "dark" ? <FaSun /> : <FaMoon />}
-            </div>
-
-            <div className="auth-buttons">
-              <Link to="/login" className="nav-login">
-                Login
-              </Link>
-              <Link to="/register" className="nav-signup">
-                Sign Up Free
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navigation
+        variant="landing"
+        showAuthButtons={true}
+        showThemeToggle={true}
+        scrolled={isScrolled}
+      />
 
       {/* Hero Section with Dashboard Showcase */}
       <section className="hero-section">
@@ -112,7 +51,12 @@ const LandingPage = () => {
                 Get Started — It's Free
               </Link>
               <button
-                onClick={() => scrollToSection("features")}
+                onClick={() => {
+                  const section = document.getElementById("features");
+                  if (section) {
+                    section.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
                 className="secondary-button"
               >
                 Learn More
@@ -120,7 +64,6 @@ const LandingPage = () => {
             </div>
           </div>
 
-          {/* Replace the old hero-image with the new DashboardShowcase */}
           <div className="hero-showcase">
             <DashboardShowcase />
           </div>
@@ -251,7 +194,6 @@ const LandingPage = () => {
 
       {/* FAQ Section */}
       <section id="faq" className="faq-section">
-
         <div className="landing-container">
           <h2 className="section-title">Frequently Asked Questions</h2>
 
