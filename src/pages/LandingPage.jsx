@@ -251,6 +251,7 @@ const LandingPage = () => {
 
       {/* FAQ Section */}
       <section id="faq" className="faq-section">
+
         <div className="landing-container">
           <h2 className="section-title">Frequently Asked Questions</h2>
 

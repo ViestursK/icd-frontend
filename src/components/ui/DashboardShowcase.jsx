@@ -39,8 +39,8 @@ const DashboardShowcase = ({ className = "" }) => {
           <img
             src={
               currentTheme === "dark"
-                ? "/assets/Laptop_black.png" // Replace with your desktop dark image
-                : "/assets/Laptop_white.png" // Replace with your desktop light image
+                ? "/assets/mockups/Laptop_black.webp" // Replace with your desktop dark image
+                : "/assets/mockups/Laptop_white.webp" // Replace with your desktop light image
             }
             alt="Desktop Dashboard"
             className="dashboard-image desktop-image"
@@ -52,8 +52,8 @@ const DashboardShowcase = ({ className = "" }) => {
           <img
             src={
               currentTheme === "dark"
-                ? "/assets/PhoneMockup_black.png"
-                : "/assets/PhoneMockup_white.png"
+                ? "/assets/mockups/PhoneMockup_black.webp"
+                : "/assets/mockups/PhoneMockup_white.webp"
             }
             alt="Mobile Dashboard"
             className="dashboard-image mobile-image"
