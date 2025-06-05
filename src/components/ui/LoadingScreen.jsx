@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ThemeLogo from "./ThemeLogo";
 import "./LoadingScreen.css";
 
 const LoadingScreen = ({ message = "Loading..." }) => {
@@ -82,10 +83,10 @@ const LoadingScreen = ({ message = "Loading..." }) => {
     >
       <div className="loading-container">
         <div className="loading-brand">
-          <img
-            src="/assets/DECEN_logo_nobckgrnd.webp"
-            alt="Decen"
+          <ThemeLogo
             className="loading-logo pulse"
+            size="large"
+            withGlow={true}
           />
         </div>
         <p className="loading-message">{message}</p>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaBars, FaTimes, FaMoon, FaSun } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import ThemeLogo from "./ui/ThemeLogo";
 import "./Navigation.css";
 
 const Navigation = ({
@@ -112,11 +113,7 @@ const Navigation = ({
             className="nav-logo-link"
             onClick={() => setMobileOpen(false)}
           >
-            <img
-              className="nav-logo"
-              src="/assets/DECEN_logo_nobckgrnd.webp"
-              alt="Decen"
-            />
+            <ThemeLogo className="nav-logo" withGlow={true} />
           </Link>
 
           <button

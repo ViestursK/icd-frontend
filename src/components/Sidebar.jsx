@@ -10,6 +10,7 @@ import {
   FaWallet,
 } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import ThemeLogo from "./ui/ThemeLogo";
 import "./Sidebar.css";
 
 function Sidebar() {
@@ -72,11 +73,7 @@ function Sidebar() {
             className="sidebar-logo-link"
             onClick={handleLinkClick}
           >
-            <img
-              className="sidebar-logo"
-              src="/assets/DECEN_logo_nobckgrnd.webp"
-              alt="Decen"
-            />
+            <ThemeLogo className="sidebar-logo" withGlow={true} />
           </Link>
 
           <button

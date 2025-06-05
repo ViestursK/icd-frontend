@@ -1,0 +1,65 @@
+.theme-logo {
+  transition: filter 0.3s ease;
+}
+
+/* Logo sizes */
+.theme-logo-small {
+  height: 2rem;
+  width: auto;
+}
+
+.theme-logo-medium {
+  height: 3rem;
+  width: auto;
+}
+
+.theme-logo-large {
+  height: 4rem;
+  width: auto;
+}
+
+/* Add glow effect (like original) */
+.theme-logo.with-glow {
+  filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.6));
+}
+
+/* Animation for loading screens */
+.theme-logo.pulse {
+  animation: logo-pulse 1.5s infinite;
+}
+
+@keyframes logo-pulse {
+  0% {
+    filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.6));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(var(--color-primary-rgb), 1));
+    transform: scale(1.05);
+  }
+  100% {
+    filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.6));
+    transform: scale(1);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .theme-logo-medium {
+    height: 2.5rem;
+  }
+
+  .theme-logo-large {
+    height: 3.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-logo-medium {
+    height: 2rem;
+  }
+
+  .theme-logo-large {
+    height: 3rem;
+  }
+}

@@ -8,6 +8,7 @@ import {
   FaExclamationCircle,
   FaArrowLeft,
 } from "react-icons/fa";
+import ThemeLogo from "../components/ui/ThemeLogo";
 import "./Auth.css";
 
 const Login = () => {
@@ -111,11 +112,7 @@ const Login = () => {
       </Link>
 
       <div className="auth-brand">
-        <img
-          src="/assets/DECEN_logo_nobckgrnd.webp"
-          alt="Decen"
-          className="auth-logo"
-        />
+        <ThemeLogo className="auth-logo" size="large" withGlow={true} />
       </div>
 
       <div className="auth-card">

@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import Navigation from "../components/Navigation";
 import DashboardShowcase from "../components/ui/DashboardShowcase";
+import ThemeLogo from "../components/ui/ThemeLogo";
 import "./LandingPage.css";
 
 const LandingPage = () => {
@@ -263,11 +264,7 @@ const LandingPage = () => {
         <div className="landing-container">
           <div className="footer-content">
             <div className="footer-logo">
-              <img
-                src="/assets/DECEN_logo_nobckgrnd.webp"
-                alt="Decent"
-                className="logo-img"
-              />
+              <ThemeLogo className="logo-img" size="medium" withGlow={true} />
             </div>
             <p className="footer-text">© 2025 Decent. All rights reserved.</p>
           </div>

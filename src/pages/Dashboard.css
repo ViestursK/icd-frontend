@@ -5,7 +5,6 @@
   overflow-x: hidden;
   padding: 0 1rem;
   box-sizing: border-box;
-  /* REMOVED: any height constraints that could cause issues */
 }
 
 .container {
@@ -13,7 +12,6 @@
   max-width: 100%;
   overflow-x: hidden;
   box-sizing: border-box;
-  /* REMOVED: height constraints */
 }
 
 .top-container {
@@ -49,7 +47,6 @@
   flex-direction: column;
   width: 100%;
   animation: fadeIn 0.3s ease-in-out;
-  /* REMOVED: height: max-content which could cause issues */
 }
 
 @keyframes fadeIn {

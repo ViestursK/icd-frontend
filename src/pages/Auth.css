@@ -12,6 +12,11 @@
   cursor: pointer;
   transition: all 0.2s ease;
   z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 1rem;
 }
 
 .back-to-home:hover {
@@ -38,8 +43,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  z-index: 1;
+  height: 90vh;
+  /* z-index: 1; */
+  margin: 1rem;
 }
 
 .auth-brand {
