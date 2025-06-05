@@ -258,14 +258,11 @@
 @media (max-width: 1023px) {
   .mobile-menu-toggle {
     display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .sidebar-container {
     transform: translateX(-100%);
     box-shadow: 0 0 20px var(--color-shadow);
-    /* Full height including safe areas */
     height: 100vh;
     height: 100dvh;
   }
@@ -277,7 +274,6 @@
   .sidebar-container.mobile-open .mobile-close-button {
     display: flex;
     align-items: center;
-    justify-content: center;
   }
 
   .sidebar-backdrop {
