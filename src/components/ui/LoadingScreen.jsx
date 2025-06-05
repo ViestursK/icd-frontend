@@ -85,7 +85,7 @@ const LoadingScreen = ({ message = "Loading..." }) => {
           <img
             src="/assets/DECEN_logo_nobckgrnd.webp"
             alt="Decen"
-            className="auth-logo"
+            className="loading-logo pulse"
           />
         </div>
         <p className="loading-message">{message}</p>
