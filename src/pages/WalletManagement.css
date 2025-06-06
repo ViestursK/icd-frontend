@@ -66,6 +66,10 @@
   color: var(--color-text);
 }
 
+h3{
+  margin: 0;
+}
+
 .empty-state p {
   color: var(--color-text-secondary);
   max-width: 400px;
@@ -161,9 +165,9 @@
 }
 
 .modal-close {
-  position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
+  position: relative;
+  /* top: 1.25rem;
+  right: 1.25rem; */
   background: none;
   border: none;
   color: var(--color-text-secondary);
@@ -182,7 +186,7 @@
 }
 
 .modal-body {
-  padding: 2.5rem;
+  padding: 1.5rem;
   text-align: center;
   background-color: var(--color-card-bg);
 }

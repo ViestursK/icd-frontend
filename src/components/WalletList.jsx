@@ -1,19 +1,13 @@
-import React, {
-  useState,
-  useCallback,
-  useMemo,
-  useRef,
-  useEffect,
-} from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   FaSearch,
   FaTimes,
   FaPencilAlt,
   FaSave,
-  FaUndo,
   FaTrashAlt,
   FaCopy,
+  FaTag,
 } from "react-icons/fa";
 import "../styles/tableUtils.css";
 import "./WalletList.css";
@@ -24,12 +18,14 @@ const WalletList = ({ wallets, isLoading, onDeleteClick }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedChain, setSelectedChain] = useState("all");
   const [visibleCount, setVisibleCount] = useState(15);
-  const [editingWalletId, setEditingWalletId] = useState(null);
-  const [editedName, setEditedName] = useState("");
-  const [savingName, setSavingName] = useState(false);
   const [optimisticWallets, setOptimisticWallets] = useState([]);
 
-  const editInputRef = useRef(null);
+  // States for edit name modal
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editWallet, setEditWallet] = useState(null);
+  const [editedName, setEditedName] = useState("");
+  const [savingName, setSavingName] = useState(false);
+
   const { updateWalletName } = useWallet();
   const toast = useToast();
 
@@ -37,14 +33,7 @@ const WalletList = ({ wallets, isLoading, onDeleteClick }) => {
     setOptimisticWallets(wallets);
   }, [wallets]);
 
-  useEffect(() => {
-    if (editingWalletId && editInputRef.current) {
-      editInputRef.current.focus();
-      editInputRef.current.select();
-    }
-  }, [editingWalletId]);
-
-  // Show shimmer effect when loading
+  // Global loading - show shimmer for entire grid
   if (isLoading) {
     return (
       <div
@@ -84,8 +73,8 @@ const WalletList = ({ wallets, isLoading, onDeleteClick }) => {
     const button = e.currentTarget;
     button.setAttribute("data-copied", "true");
     setTimeout(() => {
-      button.setAttribute("data-copied", "false");
-    }, 2000);
+      toast.info("Wallet copied to clipboard!");
+    }, 0);
   };
 
   const clearSearch = useCallback(() => {
@@ -120,64 +109,64 @@ const WalletList = ({ wallets, isLoading, onDeleteClick }) => {
     return filteredWallets.slice(0, visibleCount);
   }, [filteredWallets, visibleCount]);
 
-  const startEditingName = (wallet, e) => {
+  // Open edit name modal
+  const handleEditNameClick = (wallet, e) => {
     if (e) e.stopPropagation();
-    setEditingWalletId(getWalletId(wallet));
+    setEditWallet(wallet);
     setEditedName(wallet.name || "");
+    setShowEditModal(true);
   };
 
-  const cancelEditing = (e) => {
-    if (e) e.stopPropagation();
-    setEditingWalletId(null);
+  // Close edit name modal
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setEditWallet(null);
     setEditedName("");
   };
 
-  const handleKeyPress = (e, wallet) => {
-    if (e.key === "Enter") {
-      saveWalletName(wallet, e);
-    } else if (e.key === "Escape") {
-      cancelEditing(e);
-    }
-  };
+  // Save wallet name
+  const handleSaveWalletName = async () => {
+    if (!editWallet) return;
 
-  const saveWalletName = async (wallet, e) => {
-    if (e) e.stopPropagation();
-    if (!wallet) return;
-
-    if ((wallet.name || "") === editedName.trim()) {
-      cancelEditing(e);
+    // If name hasn't changed, just close the modal
+    if ((editWallet.name || "") === editedName.trim()) {
+      handleCloseEditModal();
       return;
     }
 
     setSavingName(true);
     const newName = editedName.trim();
 
+    // Optimistically update the UI
     setOptimisticWallets((prevWallets) =>
       prevWallets.map((w) => {
-        if (w.address === wallet.address && w.chain === wallet.chain) {
+        if (w.address === editWallet.address && w.chain === editWallet.chain) {
           return { ...w, name: newName };
         }
         return w;
       })
     );
 
-    setEditingWalletId(null);
+    // Close modal before actual API call
+    setShowEditModal(false);
     toast.info("Updating wallet name...", { duration: 2000 });
 
     try {
       const result = await updateWalletName({
-        address: wallet.address,
-        chain: wallet.chain,
+        address: editWallet.address,
+        chain: editWallet.chain,
         name: newName,
       });
 
       if (result.success) {
         toast.success("Wallet name updated successfully");
       } else {
+        // Revert optimistic update if failed
         setOptimisticWallets(wallets);
         toast.error("Failed to update wallet name");
       }
     } catch (error) {
+      // Revert optimistic update if error
       setOptimisticWallets(wallets);
       toast.error("An error occurred while updating the wallet name");
     } finally {
@@ -191,6 +180,11 @@ const WalletList = ({ wallets, isLoading, onDeleteClick }) => {
 
   const handleViewWallet = (wallet) => {
     window.location.href = `/dashboard/wallet/${wallet.chain}/${wallet.address}`;
+  };
+
+  const handleDelete = (wallet, e) => {
+    if (e) e.stopPropagation();
+    onDeleteClick(wallet);
   };
 
   return (
@@ -250,53 +244,20 @@ const WalletList = ({ wallets, isLoading, onDeleteClick }) => {
 
       <div className="wallet-cards-grid">
         {visibleWallets.length > 0 ? (
-          visibleWallets.map((wallet, index) => (
-            <div
-              key={getWalletId(wallet)}
-              className="wallet-card"
-              onClick={() => handleViewWallet(wallet)}
-            >
-              <div className="wallet-card-header">
-                <span className={`chain-badge ${wallet.chain.toLowerCase()}`}>
-                  {wallet.chain.toUpperCase()}
-                </span>
+          visibleWallets.map((wallet, index) => {
+            const walletId = getWalletId(wallet);
 
-                {editingWalletId === getWalletId(wallet) ? (
-                  <div
-                    className="wallet-name-edit"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <input
-                      ref={editInputRef}
-                      type="text"
-                      value={editedName}
-                      onChange={(e) => setEditedName(e.target.value)}
-                      onKeyDown={(e) => handleKeyPress(e, wallet)}
-                      className="wallet-name-input"
-                      placeholder="Enter wallet name"
-                      disabled={savingName}
-                      maxLength={30}
-                    />
-                    <div className="name-edit-actions">
-                      <button
-                        className="name-edit-button save"
-                        onClick={(e) => saveWalletName(wallet, e)}
-                        disabled={savingName}
-                        title="Save name"
-                      >
-                        <FaSave />
-                      </button>
-                      <button
-                        className="name-edit-button cancel"
-                        onClick={(e) => cancelEditing(e)}
-                        disabled={savingName}
-                        title="Cancel"
-                      >
-                        <FaUndo />
-                      </button>
-                    </div>
-                  </div>
-                ) : (
+            return (
+              <div
+                key={walletId}
+                className="wallet-card"
+                onClick={() => handleViewWallet(wallet)}
+              >
+                <div className="wallet-card-header">
+                  <span className={`chain-badge ${wallet.chain.toLowerCase()}`}>
+                    {wallet.chain.toUpperCase()}
+                  </span>
+
                   <div className="wallet-name-display">
                     <span className="wallet-name">
                       {wallet.name ||
@@ -304,67 +265,64 @@ const WalletList = ({ wallets, isLoading, onDeleteClick }) => {
                     </span>
                     <button
                       className="edit-name-button"
-                      onClick={(e) => startEditingName(wallet, e)}
+                      onClick={(e) => handleEditNameClick(wallet, e)}
                       aria-label="Edit wallet name"
                       title="Edit name"
                     >
                       <FaPencilAlt />
                     </button>
                   </div>
-                )}
-              </div>
-
-              <div className="wallet-card-body">
-                <div className="address-container" title={wallet.address}>
-                  <span className="address-label">Address:</span>
-                  <span className="address-text">
-                    {formatAddress(wallet.address)}
-                  </span>
-                  <button
-                    className="copy-button"
-                    onClick={(e) => copyToClipboard(wallet.address, e)}
-                    aria-label="Copy wallet address"
-                    title="Copy address"
-                  >
-                    <FaCopy />
-                  </button>
                 </div>
 
-                <div className="balance-container">
-                  <span className="balance-label">Balance:</span>
-                  <span className="balance-value">
-                    ${formatBalance(wallet.balance_usd)}
-                  </span>
+                <div className="wallet-card-body">
+                  <div className="address-container" title={wallet.address}>
+                    <span className="address-label">Address:</span>
+                    <span className="address-text">
+                      {formatAddress(wallet.address)}
+                    </span>
+                    <button
+                      className="copy-button"
+                      onClick={(e) => copyToClipboard(wallet.address, e)}
+                      aria-label="Copy wallet address"
+                      title="Copy address"
+                    >
+                      <FaCopy />
+                    </button>
+                  </div>
+
+                  <div className="balance-container">
+                    <span className="balance-label">Balance:</span>
+                    <span className="balance-value">
+                      ${formatBalance(wallet.balance_usd)}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div className="wallet-card-footer">
-                <button
-                  className="wallet-action-button view"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleViewWallet(wallet);
-                  }}
-                >
-                  View Assets
-                </button>
-
-                {onDeleteClick && (
+                <div className="wallet-card-footer">
                   <button
-                    className="wallet-action-button delete"
+                    className="wallet-action-button view"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onDeleteClick(wallet);
+                      handleViewWallet(wallet);
                     }}
-                    aria-label={`Remove ${wallet.chain} wallet`}
-                    title="Remove wallet"
                   >
-                    <FaTrashAlt />
+                    View Assets
                   </button>
-                )}
+
+                  {onDeleteClick && (
+                    <button
+                      className="wallet-action-button delete"
+                      onClick={(e) => handleDelete(wallet, e)}
+                      aria-label={`Remove ${wallet.chain} wallet`}
+                      title="Remove wallet"
+                    >
+                      <FaTrashAlt />
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <div className="empty-state-container">
             <div className="empty-message">
@@ -390,6 +348,80 @@ const WalletList = ({ wallets, isLoading, onDeleteClick }) => {
         <button onClick={handleShowMore} className="show-more-button">
           Show more wallets ({visibleCount} of {filteredWallets.length})
         </button>
+      )}
+
+      {/* Edit Name Modal */}
+      {showEditModal && editWallet && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>Edit Wallet Name</h3>
+              <button
+                className="modal-close"
+                onClick={handleCloseEditModal}
+                disabled={savingName}
+              >
+                <FaTimes />
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>Enter a new name for this wallet:</p>
+              <div className="wallet-info">
+                <div className="wallet-info-chain">
+                  {editWallet.chain.toUpperCase()}
+                </div>
+                <div className="wallet-info-address">{editWallet.address}</div>
+              </div>
+
+              <div className="edit-name-form">
+                <div className="form-group">
+                  <label htmlFor="wallet-name">Wallet Name</label>
+                  <div className="input-wrapper">
+                    <FaTag className="input-icon" />
+                    <input
+                      id="wallet-name"
+                      type="text"
+                      value={editedName}
+                      onChange={(e) => setEditedName(e.target.value)}
+                      placeholder="Enter wallet name"
+                      className="form-input with-icon"
+                      maxLength={30}
+                      autoFocus
+                    />
+                  </div>
+                  <p className="form-hint">
+                    A custom name helps you identify this wallet easily.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                className="modal-button cancel"
+                onClick={handleCloseEditModal}
+                disabled={savingName}
+              >
+                Cancel
+              </button>
+              <button
+                className="modal-button save"
+                onClick={handleSaveWalletName}
+                disabled={savingName || !editedName.trim()}
+              >
+                {savingName ? (
+                  <>
+                    <span className="button-spinner spinning-icon"></span>
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <FaSave /> Save
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

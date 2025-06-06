@@ -328,3 +328,185 @@
     width: 100%;
   }
 }
+
+/* Wallet List and Shimmer Effects */
+
+/* Enhanced shimmer effect specifically for wallet cards */
+.wallet-card.shimmer-loading {
+  background: linear-gradient(
+    90deg,
+    var(--color-card-bg) 25%,
+    rgba(var(--color-primary-rgb), 0.08) 50%,
+    var(--color-card-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3.5s infinite linear;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  min-height: 200px;
+}
+
+/* For wallet grid shimmer effect */
+.wallet-cards-grid.shimmer-loading {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  min-height: 300px;
+  background: linear-gradient(
+    90deg,
+    var(--color-card-bg) 25%,
+    rgba(var(--color-primary-rgb), 0.08) 50%,
+    var(--color-card-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3.5s infinite linear;
+  border-radius: var(--radius-lg);
+}
+
+/* Button spinner animation */
+.button-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning-icon {
+  animation: spin 1s linear infinite;
+}
+
+/* Modal styling for edit name */
+.edit-name-form {
+  margin-top: 1.5rem;
+}
+
+.edit-name-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.edit-name-form label {
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.edit-name-form .input-wrapper {
+  position: relative;
+}
+
+.edit-name-form .input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-input-bg);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.form-input.with-icon {
+  padding-left: 2.5rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.15);
+}
+
+.form-hint {
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  margin: 0.25rem 0 0;
+}
+
+/* Save button styling */
+.modal-button.save {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  border: none;
+  box-shadow: 0 2px 10px rgba(var(--color-primary-rgb), 0.3);
+}
+
+.modal-button.save:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.4);
+}
+
+/* Add these to WalletManagement.css if not already present */
+.wallet-list-wrapper {
+  width: 100%;
+}
+
+/* Light mode adjustments */
+[data-theme="light"] .wallet-card.shimmer-loading,
+[data-theme="light"] .wallet-cards-grid.shimmer-loading {
+  background: linear-gradient(
+    90deg,
+    var(--color-card-bg) 25%,
+    rgba(var(--color-primary-rgb), 0.05) 50%,
+    var(--color-card-bg) 75%
+  );
+}
+
+[data-theme="light"] .form-input {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.15);
+  color: var(--color-text);
+}
+
+[data-theme="light"] .form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.1);
+}
+
+[data-theme="light"] .edit-name-form label {
+  color: var(--color-text);
+}
+
+[data-theme="light"] .form-hint {
+  color: var(--color-text-secondary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .wallet-cards-grid.shimmer-loading {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .wallet-cards-grid.shimmer-loading {
+    grid-template-columns: 1fr;
+  }
+  
+  .edit-name-form .form-input {
+    font-size: 0.875rem;
+  }
+  
+  .edit-name-form label {
+    font-size: 0.875rem;
+  }
+}

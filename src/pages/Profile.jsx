@@ -1,321 +1,329 @@
-import React, { useState, useEffect } from "react";
-import { 
-  FaUser, 
-  FaEnvelope, 
-  FaCalendar, 
-  FaCoins, 
-  FaChartLine, 
-  FaAward 
-} from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaUser, FaCoins, FaChartLine } from "react-icons/fa";
 import Header from "../components/ui/Header";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
-import "./Dashboard.css"; // Use Dashboard styles
-import "./Auth.css"; // Reuse some auth page styling
+import { useWallet } from "../context/WalletContext";
+import { getUserIdFromToken } from "../utils/auth";
+import api from "../api/api";
+import "./Profile.css";
+
+// Cache settings
+const PROFILE_CACHE_EXPIRATION = 30 * 60 * 1000; // 30 minutes
+
+// Cache service
+const profileCacheService = {
+  set: (key, data, expiration = PROFILE_CACHE_EXPIRATION) => {
+    if (!key) return false;
+    localStorage.setItem(
+      key,
+      JSON.stringify({
+        timestamp: Date.now(),
+        data,
+      })
+    );
+    return true;
+  },
+
+  get: (key, defaultExpiration = PROFILE_CACHE_EXPIRATION) => {
+    if (!key) return null;
+    const cachedData = localStorage.getItem(key);
+    if (!cachedData) return null;
+
+    try {
+      const parsed = JSON.parse(cachedData);
+      if (Date.now() - parsed.timestamp < defaultExpiration) {
+        return parsed.data;
+      }
+      // Cache expired, remove it
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error("Error parsing cached profile data:", error);
+      localStorage.removeItem(key);
+    }
+    return null;
+  },
+
+  remove: (key) => {
+    if (!key) return;
+    localStorage.removeItem(key);
+  },
+
+  clearUserProfile: () => {
+    const accessToken = localStorage.getItem("access_token");
+    const userId = getUserIdFromToken(accessToken);
+    if (userId) {
+      localStorage.removeItem(`profile_${userId}`);
+    }
+  },
+};
+
+// Helper function to get profile cache key for current user
+const getProfileCacheKey = () => {
+  const accessToken = localStorage.getItem("access_token");
+  const userId = getUserIdFromToken(accessToken);
+  return userId ? `profile_${userId}` : null;
+};
 
 const Profile = () => {
   const { logout } = useAuth();
   const toast = useToast();
-  const [profile, setProfile] = useState({
-    username: "CryptoTracker123",
-    email: "user@example.com",
-    joinDate: new Date("2024-01-15"),
-    totalNetworth: 15234.56,
-    portfolioGrowth: 24.5,
-    achievements: [
-      { id: 1, name: "First Wallet", description: "Added your first crypto wallet", date: new Date("2024-01-20") },
-      { id: 2, name: "Diversified", description: "Tracked wallets across 3+ blockchains", date: new Date("2024-02-05") }
-    ]
-  });
+  const { wallets, assets, totalBalance, changePercent } = useWallet();
 
-  const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({
-    username: profile.username,
-    email: profile.email
-  });
+  // Profile state
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
+  // Fetch profile data from cache or /me endpoint
+  const fetchProfile = async (forceRefresh = false) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const profileCacheKey = getProfileCacheKey();
+
+      // Try to get from cache first if not forcing refresh
+      if (!forceRefresh && profileCacheKey) {
+        const cachedProfile = profileCacheService.get(profileCacheKey);
+        if (cachedProfile) {
+          console.log("[DEBUG] Loading profile from cache");
+          setProfile(cachedProfile);
+          setFormData({
+            username: cachedProfile.username || "",
+            email: cachedProfile.email || "",
+          });
+          setLoading(false);
+          return;
+        }
+      }
+
+      console.log("[DEBUG] Fetching profile from API");
+      const response = await api.get("/api/users/me/");
+      const userData = response.data;
+
+      setProfile(userData);
+      setFormData({
+        username: userData.username || "",
+        email: userData.email || "",
+      });
+
+      // Cache the profile data
+      if (profileCacheKey) {
+        profileCacheService.set(profileCacheKey, userData);
+        console.log("[DEBUG] Profile data cached");
+      }
+    } catch (err) {
+      const errorMessage =
+        err.response?.data?.detail || "Failed to load profile data";
+      setError(errorMessage);
+      console.error("Error fetching profile:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load profile on component mount
+  useEffect(() => {
+    fetchProfile();
+
+    // Cleanup function
+    return () => {
+      // Any cleanup if needed
+    };
+  }, []);
+
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveProfile = () => {
-    setProfile(prev => ({
-      ...prev,
-      username: formData.username,
-      email: formData.email
-    }));
-    setEditMode(false);
-    toast.success("Profile updated successfully!");
+  // Save profile changes
+  const handleSaveProfile = async () => {
+    if (!formData.username.trim()) {
+      toast.error("Username cannot be empty");
+      return;
+    }
+
+    setUpdating(true);
+    try {
+      const response = await api.patch("/api/users/me/", {
+        username: formData.username.trim(),
+        email: formData.email.trim(),
+      });
+
+      const updatedProfile = response.data;
+      setProfile(updatedProfile);
+
+      // Update cache with new profile data
+      const profileCacheKey = getProfileCacheKey();
+      if (profileCacheKey) {
+        profileCacheService.set(profileCacheKey, updatedProfile);
+        console.log("[DEBUG] Profile cache updated after save");
+      }
+
+      toast.success("Profile updated successfully!");
+    } catch (err) {
+      const errorMessage =
+        err.response?.data?.detail || "Failed to update profile";
+      toast.error(errorMessage);
+      console.error("Error updating profile:", err);
+    } finally {
+      setUpdating(false);
+    }
   };
+
+  // Force refresh profile data
+  const handleRefreshProfile = async () => {
+    setRefreshing(true);
+    try {
+      await fetchProfile(true);
+      toast.success("Profile data refreshed");
+    } catch (error) {
+      toast.error("Failed to refresh profile data");
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  // Calculate portfolio statistics
+  const portfolioStats = {
+    walletCount: wallets.length,
+    assetCount: assets.length,
+    totalValue: parseFloat(totalBalance || 0),
+    portfolioGrowth: parseFloat(changePercent || 0),
+  };
+
+  // Loading state
+  if (loading && !profile) {
+    return (
+      <div className="dashboard-container">
+        <Header title="PROFILE" />
+        <div className="profile-container">
+          <div className="shimmer-loading" style={{ height: "400px" }}></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error && !profile) {
+    return (
+      <div className="dashboard-container">
+        <Header title="PROFILE" />
+        <div className="profile-container">
+          <div className="error-state">
+            <p>Failed to load profile data</p>
+            <button onClick={() => fetchProfile(true)} className="retry-button">
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-container">
       <Header title="PROFILE" />
-      
-      <div className="container">
-        <div className="holdings-container">
-          {/* Profile Overview */}
-          <div className="holdings-header">
-            <h3>Profile Information</h3>
-          </div>
-          
-          <div className="profile-avatar text-center mb-4">
-            <FaUser size={80} color="var(--color-primary)" />
+
+      <div className="profile-container">
+        {/* Profile Information Section */}
+        <section
+          className={`profile-section ${refreshing ? "refreshing" : ""}`}
+        >
+          <div className="profile-section-header">
+            <FaUser className="section-icon" />
+            <h2>Profile Information</h2>
+            {refreshing && <div className="refresh-indicator">Updating...</div>}
           </div>
 
-          {editMode ? (
-            <div className="edit-profile-form">
-              <div className="form-group">
-                <label className="form-label">Username</label>
-                <input
-                  name="username"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  className="form-input"
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Email</label>
-                <input
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="form-input"
-                />
-              </div>
-              <div className="flex justify-between mt-4">
-                <button 
-                  className="auth-button" 
-                  style={{ background: 'var(--color-primary)' }}
-                  onClick={handleSaveProfile}
-                >
-                  Save Changes
-                </button>
-                <button 
-                  className="auth-button" 
-                  style={{ background: 'var(--color-text-secondary)' }}
-                  onClick={() => setEditMode(false)}
-                >
-                  Cancel
-                </button>
+          <div className="profile-content">
+            <div className="profile-avatar">
+              <div className="avatar-circle">
+                <FaUser size={40} />
               </div>
             </div>
-          ) : (
-            <div className="text-center">
-              <h2 className="mb-2">{profile.username}</h2>
-              <p className="mb-4">{profile.email}</p>
-              <button 
-                className="auth-button" 
-                style={{ background: 'var(--color-primary)' }}
-                onClick={() => setEditMode(true)}
-              >
-                Edit Profile
-              </button>
-            </div>
-          )}
 
-          {/* Profile Stats */}
-          <div className="holdings-header mt-4">
-            <h3>Profile Statistics</h3>
+            <div className="profile-display">
+              <div className="profile-info">
+                <h3 className="profile-email">
+                  {profile?.email || "No email provided"}
+                </h3>
+                {profile?.date_joined && (
+                  <p className="profile-joined">
+                    Member since{" "}
+                    {new Date(profile.date_joined).toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-3 gap-4 mb-4">
+        </section>
+
+        {/* Portfolio Statistics Section */}
+        <section className="profile-section">
+          <div className="profile-section-header">
+            <FaChartLine className="section-icon" />
+            <h2>Portfolio Statistics</h2>
+          </div>
+
+          <div className="stats-grid">
             <div className="stat-card">
-              <FaCalendar className="stat-icon" />
-              <div>
-                <h4>Member Since</h4>
-                <p>{profile.joinDate.toLocaleDateString()}</p>
+              <div className="stat-icon wallet">
+                <FaCoins />
+              </div>
+              <div className="stat-content">
+                <h4>Total Wallets</h4>
+                <p className="stat-value">{portfolioStats.walletCount}</p>
               </div>
             </div>
+
             <div className="stat-card">
-              <FaCoins className="stat-icon" />
-              <div>
-                <h4>Total Networth</h4>
-                <p>${profile.totalNetworth.toLocaleString()}</p>
+              <div className="stat-icon assets">
+                <FaChartLine />
+              </div>
+              <div className="stat-content">
+                <h4>Tracked Assets</h4>
+                <p className="stat-value">{portfolioStats.assetCount}</p>
               </div>
             </div>
+
             <div className="stat-card">
-              <FaChartLine className="stat-icon" />
-              <div>
-                <h4>Portfolio Growth</h4>
-                <p style={{ color: profile.portfolioGrowth > 0 ? 'var(--color-success)' : 'var(--color-error)' }}>
-                  {profile.portfolioGrowth > 0 ? '+' : ''}{profile.portfolioGrowth}%
+              <div className="stat-icon portfolio">
+                <FaCoins />
+              </div>
+              <div className="stat-content">
+                <h4>Portfolio Value</h4>
+                <p className="stat-value">
+                  ${portfolioStats.totalValue.toLocaleString()}
+                </p>
+              </div>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-icon growth">
+                <FaChartLine />
+              </div>
+              <div className="stat-content">
+                <h4>24h Change</h4>
+                <p
+                  className={`stat-value ${
+                    portfolioStats.portfolioGrowth >= 0
+                      ? "positive"
+                      : "negative"
+                  }`}
+                >
+                  {portfolioStats.portfolioGrowth >= 0 ? "+" : ""}
+                  {portfolioStats.portfolioGrowth}%
                 </p>
               </div>
             </div>
           </div>
-
-          {/* Achievements */}
-          <div className="holdings-header">
-            <h3>Achievements</h3>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            {profile.achievements.map(achievement => (
-              <div key={achievement.id} className="achievement-card">
-                <div className="achievement-icon">
-                  <FaAward />
-                </div>
-                <div className="achievement-details">
-                  <h4>{achievement.name}</h4>
-                  <p>{achievement.description}</p>
-                  <small>{achievement.date.toLocaleDateString()}</small>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        </section>
       </div>
-
-      <style jsx>{`
-        .profile-avatar {
-          display: flex;
-          justify-content: center;
-          margin-bottom: 1rem;
-        }
-
-        .form-input {
-          background-color: #1c1833;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: #f2f2fa;
-        }
-
-        .form-input:focus {
-          border-color: var(--color-primary);
-          box-shadow: 0 0 0 2px rgba(125, 103, 255, 0.2);
-        }
-
-        .stat-card {
-          display: flex;
-          align-items: center;
-          background-color: var(--color-card-background);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 0.5rem;
-          padding: 1rem;
-          gap: 1rem;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-          background-color: rgba(125, 103, 255, 0.05);
-          border-color: rgba(125, 103, 255, 0.1);
-        }
-
-        .stat-icon {
-          font-size: 2rem;
-          color: var(--color-primary);
-          min-width: 2rem;
-        }
-
-        .stat-card div {
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-        }
-
-        .stat-card h4 {
-          margin: 0;
-          font-size: 0.875rem;
-          color: var(--color-text-secondary);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .stat-card p {
-          margin: 0;
-          font-size: 1rem;
-          font-weight: 600;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .achievement-card {
-          display: flex;
-          align-items: center;
-          background-color: var(--color-card-background);
-          border-radius: 0.5rem;
-          padding: 1rem;
-          gap: 1rem;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .achievement-icon {
-          background-color: rgba(125, 103, 255, 0.1);
-          color: var(--color-primary);
-          border-radius: 50%;
-          width: 50px;
-          height: 50px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.5rem;
-        }
-
-        .achievement-details h4 {
-          margin: 0 0 0.5rem 0;
-          font-size: 1rem;
-        }
-
-        .achievement-details p {
-          margin: 0;
-          font-size: 0.875rem;
-          color: var(--color-text-secondary);
-        }
-
-        .achievement-details small {
-          color: var(--color-text-secondary);
-          font-size: 0.75rem;
-        }
-
-        .text-center {
-          text-align: center;
-        }
-
-        .mb-2 {
-          margin-bottom: 0.5rem;
-        }
-
-        .mb-4 {
-          margin-bottom: 1rem;
-        }
-
-        .mt-4 {
-          margin-top: 1.5rem;
-        }
-
-        .grid {
-          display: grid;
-        }
-
-        .grid-cols-3 {
-          grid-template-columns: repeat(3, 1fr);
-        }
-
-        .grid-cols-2 {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .gap-4 {
-          gap: 1rem;
-        }
-
-        .flex {
-          display: flex;
-        }
-
-        .justify-between {
-          justify-content: space-between;
-        }
-
-        @media (max-width: 768px) {
-          .grid-cols-3,
-          .grid-cols-2 {
-            grid-template-columns: 1fr;
-          }
-        }
-      `}</style>
     </div>
   );
 };

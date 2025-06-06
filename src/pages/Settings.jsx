@@ -86,7 +86,7 @@ const Settings = () => {
               <div className="theme-label">Dark</div>
             </div>
 
-            <div
+            {/* <div
               className={`theme-option ${theme === "system" ? "active" : ""}`}
               onClick={() => handleThemeChange("system")}
             >
@@ -94,7 +94,7 @@ const Settings = () => {
                 <FaDesktop />
               </div>
               <div className="theme-label">System</div>
-            </div>
+            </div> */}
           </div>
         </section>
       </div>

@@ -1,3 +1,4 @@
+// Updated WalletManagement.jsx
 import { useState } from "react";
 import { FaWallet, FaTimes, FaTrashAlt } from "react-icons/fa";
 import Header from "../components/ui/Header";
@@ -20,6 +21,14 @@ function WalletManagement() {
   const handleDeleteClick = (wallet) => {
     setSelectedWallet(wallet);
     setShowDeleteModal(true);
+  };
+
+  // Handle modal close - ensure all states are reset
+  const handleCloseModal = () => {
+    setShowDeleteModal(false);
+    setSelectedWallet(null);
+    // This will be passed to WalletList to clear any processing states
+    setRefreshing(false);
   };
 
   // Handle confirm delete
@@ -75,23 +84,27 @@ function WalletManagement() {
           <FaWallet className="wallet-icon" />
           <h2>Wallets</h2>
         </div>
-        {/* Wallets List */}
-        {isLoading || refreshing ? (
-          <div className="shimmer-loading"></div>
-        ) : wallets.length > 0 ? (
-          <WalletList
-            wallets={wallets}
-            isLoading={isLoading}
-            onDeleteClick={handleDeleteClick}
-          />
-        ) : (
-          <div className="empty-state-container">
-            <div className="empty-state">
-              <FaWallet className="empty-state-icon" size={48} />
-              <p className="empty-state-text">No wallets found</p>
+        {/* Wallets List - Using proper shimmer loading for consistent experience */}
+        <div className="wallet-list-wrapper">
+          {isLoading || refreshing ? (
+            <div className="wallet-list-container">
+              <div className="wallet-cards-grid shimmer-loading"></div>
             </div>
-          </div>
-        )}
+          ) : wallets.length > 0 ? (
+            <WalletList
+              wallets={wallets}
+              isLoading={isLoading || refreshing}
+              onDeleteClick={handleDeleteClick}
+            />
+          ) : (
+            <div className="empty-state-container">
+              <div className="empty-state">
+                <FaWallet className="empty-state-icon" size={48} />
+                <p className="empty-state-text">No wallets found</p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Delete Confirmation Modal */}
@@ -102,7 +115,8 @@ function WalletManagement() {
               <h3>Remove Wallet</h3>
               <button
                 className="modal-close"
-                onClick={() => setShowDeleteModal(false)}
+                onClick={handleCloseModal}
+                disabled={refreshing}
               >
                 <FaTimes />
               </button>
@@ -124,7 +138,7 @@ function WalletManagement() {
             <div className="modal-footer">
               <button
                 className="modal-button cancel"
-                onClick={() => setShowDeleteModal(false)}
+                onClick={handleCloseModal}
                 disabled={refreshing}
               >
                 Cancel
@@ -136,14 +150,7 @@ function WalletManagement() {
               >
                 {refreshing ? (
                   <>
-                    <img
-                      src="/assets/logo.svg"
-                      alt="Loading"
-                      className="pulse"
-                      width="16"
-                      height="14"
-                      style={{ marginRight: "0.5rem" }}
-                    />
+                    <span className="button-spinner spinning-icon"></span>
                     Removing...
                   </>
                 ) : (
