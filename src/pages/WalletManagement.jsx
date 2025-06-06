@@ -28,17 +28,23 @@ function WalletManagement() {
 
     setRefreshing(true);
     try {
-      await removeWallet({
+      const result = await removeWallet({
         address: selectedWallet.address,
         chain: selectedWallet.chain,
       });
-      toast.success("Wallet removed successfully");
-      setShowDeleteModal(false);
-      setSelectedWallet(null);
+
+      if (result.success) {
+        toast.success("Wallet removed successfully");
+      } else {
+        toast.error(result.error || "Failed to remove wallet");
+      }
     } catch (error) {
       toast.error("Failed to remove wallet");
     } finally {
       setRefreshing(false);
+      // Close modal after operation completes (success or failure)
+      setShowDeleteModal(false);
+      setSelectedWallet(null);
     }
   };
 
@@ -65,18 +71,13 @@ function WalletManagement() {
       )}
 
       <div className="wallet-container">
+        <div className="wallets-header">
+          <FaWallet className="wallet-icon" />
+          <h2>Wallets</h2>
+        </div>
         {/* Wallets List */}
         {isLoading || refreshing ? (
-          <div className="wallet-loading">
-            <img
-              src="/assets/logo.svg"
-              alt="Loading"
-              className="loading-logo pulse"
-              width="50"
-              height="42"
-            />
-            <p>Loading wallets...</p>
-          </div>
+          <div className="shimmer-loading"></div>
         ) : wallets.length > 0 ? (
           <WalletList
             wallets={wallets}
@@ -84,12 +85,11 @@ function WalletManagement() {
             onDeleteClick={handleDeleteClick}
           />
         ) : (
-          <div className="empty-state">
-            <FaWallet className="empty-icon" />
-            <h3>No Wallets Found</h3>
-            <p>
-              You haven't added any wallets yet. Add a wallet to get started.
-            </p>
+          <div className="empty-state-container">
+            <div className="empty-state">
+              <FaWallet className="empty-state-icon" size={48} />
+              <p className="empty-state-text">No wallets found</p>
+            </div>
           </div>
         )}
       </div>
