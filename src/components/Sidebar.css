@@ -154,6 +154,16 @@
 
 .nav-label {
   font-size: 0.9375rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  border-radius: 0;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* Sidebar footer */
@@ -161,7 +171,6 @@
   padding: 1.25rem;
   border-top: 1px solid var(--color-border);
   background: var(--color-sidebar-footer-bg);
-  /* Ensure it's above the safe area */
   padding-bottom: max(1.25rem, calc(1.25rem + env(safe-area-inset-bottom)));
   margin-bottom: 0;
 }

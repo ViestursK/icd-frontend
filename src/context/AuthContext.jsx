@@ -1,9 +1,12 @@
+// src/context/AuthContext.jsx - FIXED VERSION
+
 import React, {
   createContext,
   useContext,
   useState,
   useEffect,
   useCallback,
+  useRef,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { authEvents } from "../api/api";
@@ -18,83 +21,215 @@ const AuthContext = createContext(null);
 // Auth provider component
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+  const initializationRef = useRef(false);
 
-  // Initialize state with a more reliable way to check authentication
-  const [authState, setAuthState] = useState(() => {
-    const token = tokenService.getAccessToken();
-    const isAuthenticated = !!token && !authService.isTokenExpired(token);
-
-    return {
-      isAuthenticated,
-      userId: isAuthenticated ? getUserIdFromToken(token) : null,
-      loading: false, // Set initial loading to false to avoid unnecessary redirects
-      initialChecking: true, // Add a new state for initial auth checking
-      error: null,
-    };
+  // Initialize state more safely
+  const [authState, setAuthState] = useState({
+    isAuthenticated: false,
+    userId: null,
+    loading: false,
+    initialChecking: true,
+    error: null,
   });
 
-  // One-time initialization on component mount
-  useEffect(() => {
-    // Set a flag to indicate we're checking authentication
-    setAuthState((prev) => ({ ...prev, initialChecking: true }));
+  // Safe token validation
+  const validateCurrentToken = useCallback(() => {
+    try {
+      const token = tokenService.getAccessToken();
+      if (!token) return false;
 
-    // Try to initialize token refresh
-    const isValid = tokenService.initializeTokenRefresh();
-
-    // Update auth state based on token validity
-    setAuthState((prev) => ({
-      ...prev,
-      isAuthenticated: isValid,
-      userId: isValid
-        ? getUserIdFromToken(tokenService.getAccessToken())
-        : null,
-      initialChecking: false,
-    }));
-
-    // Listen for auth events (like token expiration)
-    const unsubscribe = authEvents.subscribe("logout", handleLogout);
-
-    return () => {
-      unsubscribe();
-    };
+      return tokenService.isTokenValid(token);
+    } catch (error) {
+      console.error("Error validating token:", error);
+      return false;
+    }
   }, []);
 
-  // Handle logout
+  // Handle logout with improved error handling
   const handleLogout = useCallback(
     ({ reason = "user_initiated" } = {}) => {
-      // Clear auth tokens
-      authService.logout();
+      try {
+        console.log("Logout triggered:", reason);
 
-      // Clear user-specific cached data
-      cacheService.clearUserCache();
+        // Clear auth tokens
+        authService.logout();
 
-      // Update auth state
+        // Clear user-specific cached data
+        cacheService.clearUserCache();
+
+        // Update auth state
+        setAuthState({
+          isAuthenticated: false,
+          userId: null,
+          loading: false,
+          initialChecking: false,
+          error:
+            reason === "token_expired" || reason === "token_refresh_failed"
+              ? "Your session expired. Please login again."
+              : null,
+        });
+
+        // Reset token service initialization
+        tokenService.resetInitialization();
+
+        // Navigate to login page
+        navigate("/login", {
+          state: {
+            from: window.location.pathname,
+            message:
+              reason === "token_expired" || reason === "token_refresh_failed"
+                ? "Your session expired. Please login again."
+                : null,
+          },
+        });
+      } catch (error) {
+        console.error("Error during logout:", error);
+        // Force navigation even if logout fails
+        navigate("/login");
+      }
+    },
+    [navigate]
+  );
+
+  // Initialize authentication state
+  const initializeAuth = useCallback(async () => {
+    if (initializationRef.current) return;
+    initializationRef.current = true;
+
+    try {
+      console.log("Initializing authentication...");
+
+      setAuthState((prev) => ({ ...prev, initialChecking: true, error: null }));
+
+      // Check if we have a valid token
+      const isValidToken = validateCurrentToken();
+
+      if (isValidToken) {
+        // Initialize token refresh system
+        const initResult = await tokenService.initializeTokenRefresh();
+
+        if (initResult) {
+          const token = tokenService.getAccessToken();
+          const userId = getUserIdFromToken(token);
+
+          setAuthState({
+            isAuthenticated: true,
+            userId,
+            loading: false,
+            initialChecking: false,
+            error: null,
+          });
+
+          console.log("Authentication initialized successfully");
+        } else {
+          // Token initialization failed, user needs to login
+          setAuthState({
+            isAuthenticated: false,
+            userId: null,
+            loading: false,
+            initialChecking: false,
+            error: null,
+          });
+
+          console.log("Token initialization failed");
+        }
+      } else {
+        // No valid token, user needs to login
+        tokenService.clearTokens();
+
+        setAuthState({
+          isAuthenticated: false,
+          userId: null,
+          loading: false,
+          initialChecking: false,
+          error: null,
+        });
+
+        console.log("No valid token found");
+      }
+    } catch (error) {
+      console.error("Error during auth initialization:", error);
+
+      // Clear potentially corrupted tokens
+      tokenService.clearTokens();
+
       setAuthState({
         isAuthenticated: false,
         userId: null,
         loading: false,
         initialChecking: false,
         error:
-          reason === "token_expired" || reason === "token_refresh_failed"
-            ? "Your session expired. Please login again."
-            : null,
+          "Authentication initialization failed. Please try refreshing the page.",
       });
+    }
+  }, [validateCurrentToken]);
 
-      // Redirect to login page
-      navigate("/login", {
-        state: {
-          from: window.location.pathname,
-          message:
-            reason === "token_expired" || reason === "token_refresh_failed"
-              ? "Your session expired. Please login again."
-              : null,
-        },
-      });
-    },
-    [navigate]
-  );
+  // One-time initialization on component mount
+  useEffect(() => {
+    let mounted = true;
 
-  // Handle login
+    const setupAuth = async () => {
+      if (!mounted) return;
+
+      // Set up logout event listener first
+      const unsubscribeLogout = authEvents.subscribe("logout", handleLogout);
+
+      // Set up token refresh listener
+      const unsubscribeRefresh = tokenService.addTokenListener(
+        "onRefresh",
+        async () => {
+          if (!mounted) return;
+
+          try {
+            console.log("Token refresh triggered");
+            await authService.refreshToken();
+          } catch (error) {
+            console.error("Token refresh failed:", error);
+            if (mounted) {
+              handleLogout({ reason: "token_refresh_failed" });
+            }
+          }
+        }
+      );
+
+      // Set up token expired listener
+      const unsubscribeExpired = tokenService.addTokenListener(
+        "onExpired",
+        async () => {
+          if (!mounted) return;
+
+          try {
+            console.log("Token expired event triggered");
+            await authService.refreshToken();
+          } catch (error) {
+            console.error("Token refresh after expiry failed:", error);
+            if (mounted) {
+              handleLogout({ reason: "token_expired" });
+            }
+          }
+        }
+      );
+
+      // Initialize authentication state
+      await initializeAuth();
+
+      return () => {
+        unsubscribeLogout();
+        unsubscribeRefresh();
+        unsubscribeExpired();
+      };
+    };
+
+    setupAuth().then((cleanup) => {
+      if (!mounted && cleanup) cleanup();
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, [handleLogout, initializeAuth]);
+
+  // Handle login with improved error handling
   const login = useCallback(
     async (credentials) => {
       setAuthState((prev) => ({ ...prev, loading: true, error: null }));
@@ -102,6 +237,9 @@ export const AuthProvider = ({ children }) => {
       try {
         const data = await authService.login(credentials);
         const userId = getUserIdFromToken(data.access);
+
+        // Reset initialization flag
+        initializationRef.current = false;
 
         // Update auth state
         setAuthState({
@@ -112,11 +250,15 @@ export const AuthProvider = ({ children }) => {
           error: null,
         });
 
+        // Initialize token refresh for the new tokens
+        await tokenService.initializeTokenRefresh();
+
         // Redirect to dashboard
         navigate("/dashboard");
 
         return true;
       } catch (error) {
+        console.error("Login failed:", error);
         setAuthState((prev) => ({
           ...prev,
           isAuthenticated: false,
@@ -162,6 +304,7 @@ export const AuthProvider = ({ children }) => {
 
         return true;
       } catch (error) {
+        console.error("Registration failed:", error);
         setAuthState((prev) => ({
           ...prev,
           loading: false,

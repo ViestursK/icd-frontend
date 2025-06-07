@@ -1,3 +1,5 @@
+// src/api/api.js - FIXED VERSION
+
 import axios from "axios";
 import tokenService from "../services/tokenService";
 import authService from "../services/authService";
@@ -25,7 +27,13 @@ export const authEvents = {
   },
   emit: (event, data) => {
     if (authEvents.listeners[event]) {
-      authEvents.listeners[event].forEach((callback) => callback(data));
+      authEvents.listeners[event].forEach((callback) => {
+        try {
+          callback(data);
+        } catch (error) {
+          console.error(`Error in auth event listener for ${event}:`, error);
+        }
+      });
     }
   },
 };
@@ -51,13 +59,25 @@ const subscribeToTokenRefresh = (callback) => {
 
 // Helper to process retry queue
 const onTokenRefreshed = (newToken) => {
-  refreshSubscribers.forEach((callback) => callback(newToken));
+  refreshSubscribers.forEach((callback) => {
+    try {
+      callback(newToken);
+    } catch (error) {
+      console.error("Error in token refresh subscriber:", error);
+    }
+  });
   refreshSubscribers = [];
 };
 
 // Helper to reject all requests in the queue
 const onTokenRefreshFailed = (error) => {
-  refreshSubscribers.forEach((callback) => callback(null, error));
+  refreshSubscribers.forEach((callback) => {
+    try {
+      callback(null, error);
+    } catch (err) {
+      console.error("Error in token refresh failure subscriber:", err);
+    }
+  });
   refreshSubscribers = [];
 };
 
@@ -101,7 +121,7 @@ api.interceptors.response.use(
 
             if (newToken) {
               originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
-              resolve(axios(originalRequest));
+              resolve(api(originalRequest));
             } else {
               // No new token means auth failed
               authEvents.emit("logout", { reason: "token_refresh_failed" });
@@ -115,8 +135,15 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
+        console.log("401 error, attempting token refresh...");
+
         // Attempt to refresh the token
         const newToken = await authService.refreshToken();
+
+        if (!newToken) {
+          throw new Error("No token returned from refresh");
+        }
+
         isRefreshing = false;
 
         // Update request headers with new token
@@ -125,13 +152,20 @@ api.interceptors.response.use(
         // Process queued requests
         onTokenRefreshed(newToken);
 
+        console.log("Token refreshed successfully, retrying original request");
+
         // Retry the original request
-        return axios(originalRequest);
+        return api(originalRequest);
       } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
+
         isRefreshing = false;
 
         // Notify all queued requests about failure
         onTokenRefreshFailed(refreshError);
+
+        // Clear tokens since refresh failed
+        tokenService.clearTokens();
 
         // Emit logout event
         authEvents.emit("logout", { reason: "token_expired" });
@@ -145,25 +179,7 @@ api.interceptors.response.use(
   }
 );
 
-// Initialize token refresh schedule when the module loads
-tokenService.initializeTokenRefresh();
-
-// Set up token refresh listener
-tokenService.addTokenListener("onRefresh", async () => {
-  try {
-    await authService.refreshToken();
-  } catch (error) {
-    authEvents.emit("logout", { reason: "token_refresh_failed" });
-  }
-});
-
-// Set up token expired listener
-tokenService.addTokenListener("onExpired", async () => {
-  try {
-    await authService.refreshToken();
-  } catch (error) {
-    authEvents.emit("logout", { reason: "token_expired" });
-  }
-});
+// REMOVED: Don't initialize token refresh here to prevent race conditions
+// This should only be done in AuthContext after proper setup
 
 export default api;

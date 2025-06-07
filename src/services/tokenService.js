@@ -1,4 +1,4 @@
-// src/services/tokenService.js
+// src/services/tokenService.js - FIXED VERSION
 
 import { decodeToken, getTokenExpirationTime } from "../utils/auth";
 
@@ -9,6 +9,7 @@ const REFRESH_BEFORE_EXPIRY_MS = 5 * 60 * 1000; // Refresh 5 minutes before expi
 
 // Token refresh timer
 let refreshTimer = null;
+let initializationPromise = null; // Prevent multiple initializations
 
 // Listeners for token events
 const listeners = {
@@ -30,7 +31,13 @@ export const addTokenListener = (event, callback) => {
 // Notify listeners
 const notifyListeners = (event, data = {}) => {
   if (listeners[event]) {
-    listeners[event].forEach((callback) => callback(data));
+    listeners[event].forEach((callback) => {
+      try {
+        callback(data);
+      } catch (error) {
+        console.error(`Error in token listener for ${event}:`, error);
+      }
+    });
   }
 };
 
@@ -64,6 +71,9 @@ export const clearTokens = () => {
     clearTimeout(refreshTimer);
     refreshTimer = null;
   }
+
+  // Reset initialization promise
+  initializationPromise = null;
 };
 
 // Calculate time until token needs refreshing
@@ -101,39 +111,97 @@ export const scheduleTokenRefresh = (token) => {
   const timeUntilRefresh = getTimeUntilRefresh(token);
 
   if (timeUntilRefresh <= 0) {
-    // Token is already expired or close to expiry, refresh now
-    notifyListeners("onExpired");
+    // Token is already expired or close to expiry, don't schedule, let the app handle it
+    console.log("Token is expired, not scheduling refresh");
     return;
   }
 
   // Set timer to refresh before token expires
   refreshTimer = setTimeout(() => {
+    console.log("Scheduled token refresh triggered");
     notifyListeners("onRefresh");
   }, timeUntilRefresh);
+
+  console.log(
+    `Token refresh scheduled in ${Math.round(
+      timeUntilRefresh / 1000 / 60
+    )} minutes`
+  );
 };
 
-// Initialize token management on app start
-export const initializeTokenRefresh = () => {
-  const token = getAccessToken();
-  if (token) {
-    const decoded = decodeToken(token);
+// Check if token is valid (not expired)
+export const isTokenValid = (token) => {
+  if (!token) return false;
 
-    if (decoded) {
-      // Check if token is valid
-      if (getTimeUntilRefresh(token) > 0) {
-        // Schedule refresh
-        scheduleTokenRefresh(token);
-        return true;
-      } else {
-        // Token is expired or about to expire, trigger refresh now
-        notifyListeners("onExpired");
-      }
-    } else {
-      // Invalid token, clear it
-      clearTokens();
-    }
+  const decoded = decodeToken(token);
+  if (!decoded) return false;
+
+  return getRemainingTokenTime(token) > 0;
+};
+
+// Initialize token management on app start - FIXED VERSION
+export const initializeTokenRefresh = () => {
+  // Prevent multiple simultaneous initializations
+  if (initializationPromise) {
+    return initializationPromise;
   }
-  return false;
+
+  initializationPromise = new Promise((resolve) => {
+    try {
+      const token = getAccessToken();
+
+      if (!token) {
+        console.log("No access token found");
+        resolve(false);
+        return;
+      }
+
+      const decoded = decodeToken(token);
+      if (!decoded) {
+        console.log("Invalid access token, clearing tokens");
+        clearTokens();
+        resolve(false);
+        return;
+      }
+
+      const remainingTime = getRemainingTokenTime(token);
+      const timeUntilRefresh = getTimeUntilRefresh(token);
+
+      console.log(
+        `Token expires in ${Math.round(remainingTime / 1000 / 60)} minutes`
+      );
+
+      if (remainingTime <= 0) {
+        // Token is completely expired
+        console.log("Token is expired");
+        resolve(false);
+        return;
+      }
+
+      if (timeUntilRefresh > 0) {
+        // Token is valid and not close to expiry, schedule refresh
+        scheduleTokenRefresh(token);
+        resolve(true);
+        return;
+      } else {
+        // Token is close to expiry but not expired, still valid
+        console.log("Token is close to expiry but still valid");
+        resolve(true);
+        return;
+      }
+    } catch (error) {
+      console.error("Error in token initialization:", error);
+      clearTokens();
+      resolve(false);
+    }
+  });
+
+  return initializationPromise;
+};
+
+// Reset initialization state
+export const resetInitialization = () => {
+  initializationPromise = null;
 };
 
 // Create a default export object with all the functions
@@ -147,6 +215,8 @@ const tokenService = {
   getTimeUntilRefresh,
   getRemainingTokenTime,
   scheduleTokenRefresh,
+  isTokenValid,
+  resetInitialization,
 };
 
 export default tokenService;
