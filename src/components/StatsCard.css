@@ -1,6 +1,7 @@
 .stats-card {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: center;
   background: var(--color-card-bg);
   border-radius: var(--radius-lg);
   box-shadow: 0 4px 20px var(--color-shadow);
@@ -14,10 +15,16 @@
   min-height: 180px;
 }
 
+.stats-empty-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .stats-card:hover {
-  box-shadow: 0 6px 25px rgba(var(--color-primary-rgb), 0.25);
-  border-color: rgba(var(--color-primary-rgb), 0.3);
-  background-color: var(--color-card-background);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.22);
+  border-color: var(--color-border-accent);
 }
 
 .stat-badge {

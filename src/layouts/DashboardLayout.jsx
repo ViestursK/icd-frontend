@@ -4,7 +4,6 @@ import Sidebar from "../components/Sidebar";
 import { useAuth } from "../context/AuthContext";
 import "./DashboardLayout.css";
 
-
 function DashboardLayout() {
   const { isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ function DashboardLayout() {
   }
 
   return (
-    <div className="dashboard-layout">      
+    <div className="dashboard-layout">
       <Sidebar />
 
       <main className="dashboard-content">

@@ -116,22 +116,11 @@
 }
 
 [data-theme="light"] .balance-card:hover {
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
-  border-color: rgba(var(--color-primary-rgb), 0.2);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.22);
+  border-color: var(--color-border-accent);
 }
 
 [data-theme="light"] .currency-symbol,
 [data-theme="light"] .balance-value {
   color: var(--color-text);
 }
-
-[data-theme="light"] .shimmer-line {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.05) 25%,
-    rgba(var(--color-primary-rgb), 0.1) 50%,
-    rgba(0, 0, 0, 0.05) 75%
-  );
-  background-size: 200% 100%;
-}
-

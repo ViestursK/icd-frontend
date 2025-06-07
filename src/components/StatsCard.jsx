@@ -1,6 +1,11 @@
-// StatsCard.jsx - Simple shimmer when loading
 import PropTypes from "prop-types";
-import { FaWallet, FaCoins, FaStar, FaChartLine } from "react-icons/fa";
+import {
+  FaWallet,
+  FaCoins,
+  FaStar,
+  FaChartLine,
+  FaChartBar,
+} from "react-icons/fa";
 import "./StatsCard.css";
 
 const StatsCard = ({ stats, isLoading }) => {
@@ -8,19 +13,20 @@ const StatsCard = ({ stats, isLoading }) => {
     return <div className="shimmer-loading"></div>;
   }
 
-  if (!stats) {
+  // Check if we have meaningful stats data
+  const hasData =
+    stats &&
+    (stats.walletCount > 0 ||
+      stats.assetCount > 0 ||
+      stats.topAsset?.symbol !== "N/A" ||
+      stats.biggestImpact?.symbol !== "N/A");
+
+  if (!hasData) {
     return (
       <div className="stats-card">
-        <div className="stat-badge blue">
-          <FaWallet className="stat-badge-icon" />
-          <span className="stat-badge-value">0</span>
-          <span className="stat-badge-label">Wallets</span>
-        </div>
-
-        <div className="stat-badge purple">
-          <FaCoins className="stat-badge-icon" />
-          <span className="stat-badge-value">0</span>
-          <span className="stat-badge-label">Assets</span>
+        <div className="stats-empty-wrapper">
+          <FaChartBar className="empty-state-icon" size={48} />
+          <p className="empty-state-text">No statistics available</p>
         </div>
       </div>
     );

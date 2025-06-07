@@ -19,6 +19,7 @@
   background-size: 200% 100%;
   animation: shimmer 3.5s infinite linear;
   height: 17rem;
+  border-radius: 1rem;
 }
 
 /* Light mode shimmer */
@@ -32,4 +33,5 @@
   background-size: 200% 100%;
   animation: shimmer 3.5s infinite linear;
   height: 17rem;
+  border-radius: 1rem;
 }

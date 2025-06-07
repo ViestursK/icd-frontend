@@ -20,14 +20,17 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   margin-top: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .header-actions-container {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .section-title {
@@ -42,7 +45,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: max-content;
   animation: fadeIn 0.3s ease-in-out;
 }
 
@@ -59,23 +61,9 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   width: 100%;
-}
-
-/* Ensure card wrapper never collapses */
-.card-wrapper {
-  display: flex;
-  min-height: 180px;
-  width: 100%;
-  position: relative;
-}
-
-/* Prevent cards from disappearing */
-.card-wrapper > * {
-  width: 100%;
-  min-width: 0;
-  flex: 1;
+  box-sizing: border-box;
 }
 
 /* Holdings container */
@@ -90,6 +78,7 @@
   margin-bottom: 1.5rem;
   width: 100%;
   transition: all var(--transition-normal);
+  box-sizing: border-box;
 }
 
 .holdings-container:hover {
@@ -103,13 +92,35 @@
   align-items: center;
   margin-bottom: 1rem;
   width: 100%;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .holdings-header h3 {
   margin: 0;
   font-size: 1.2rem;
   color: var(--color-text);
-  font-weight: 600;
+}
+
+/* Dashboard grid layout */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.main-column {
+  flex: 1;
+  width: 100%;
 }
 
 /* Error alert styling */
@@ -123,6 +134,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .error-alert p {
@@ -141,6 +154,7 @@
   justify-content: center;
   border-radius: 50%;
   transition: all var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .dismiss-error:hover {
@@ -152,15 +166,12 @@
   display: flex;
   gap: 1rem;
   align-items: center;
-  margin-top: 1rem;
+  flex-wrap: wrap;
 }
 
-/* Manage Wallets Button Styling */
-.manage-wallets-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+/* Button styling */
+.manage-wallets-button,
+.show-more-button {
   padding: 0.6rem 1rem;
   background-color: var(--color-hover-overlay);
   color: var(--color-text);
@@ -170,113 +181,27 @@
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-fast);
+  box-sizing: border-box;
+  white-space: nowrap;
 }
 
-.manage-wallets-button:hover {
-  background-color: var(--color-active-overlay);
-  border-color: rgba(var(--color-primary-rgb), 0.3);
-  color: var(--color-primary);
+.manage-wallets-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-/* Show more button styles */
 .show-more-button {
-  padding: 0.75rem;
-  background-color: var(--color-hover-overlay);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  transition: all var(--transition-fast);
   width: 100%;
   margin-top: 1rem;
 }
 
+.manage-wallets-button:hover,
 .show-more-button:hover {
   background-color: var(--color-active-overlay);
   border-color: rgba(var(--color-primary-rgb), 0.3);
-}
-
-/* Dashboard grid layout */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  width: 100%;
-}
-
-.dashboard-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.main-column {
-  flex: 1;
-}
-
-@media screen and (max-width: 768px) {
-  .balance-stats-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-  }
-
-  .wallet-cards-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-  }
-
-  .wallet-card {
-    min-width: 100%;
-    width: 100%;
-  }
-
-  .balance-stats-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-  }
-
-  .wallet-cards-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-  }
-
-  .data-table-container {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-  }
-
-  .data-table {
-    min-width: auto;
-    width: 100%;
-  }
-
-  .header-actions-container {
-    width: 100%;
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .wallet-selector {
-    width: 100%;
-  }
-
-  .wallet-selector-toggle {
-    width: 100%;
-  }
-
-  .add-wallet-button {
-    width: 100%;
-  }
+  color: var(--color-primary);
 }
 
 /* Light mode specific adjustments */
@@ -295,6 +220,8 @@
   background-color: rgba(var(--color-primary-rgb), 0.08);
   border-color: rgba(var(--color-primary-rgb), 0.2);
 }
+
+/* Responsive design */
 @media (min-width: 1200px) {
   .dashboard-grid {
     grid-template-columns: 2fr 1fr;
@@ -309,6 +236,10 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard-container {
+    padding: 0 0.5rem;
+  }
+
   .balance-stats-wrapper {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -321,56 +252,45 @@
   .top-container {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
   }
 
-  /* Ensure cards maintain minimum height on mobile */
-  .card-wrapper {
-    min-height: 160px;
+  .header-actions-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }
 
 @media (max-width: 640px) {
+  .dashboard-container {
+    padding: 0 0.25rem;
+  }
+
+  .top-container {
+    padding: 0 0.5rem;
+  }
+
   .header-actions-container {
     width: 100%;
-    /* flex-direction: column; */
+    flex-direction: row;
     align-items: stretch;
   }
 
   .holdings-header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-evenly;
   }
 
   .holdings-actions {
-    width: 100%;
-    justify-content: space-between;
+    width: inherit;
+    gap: 1rem;
+    display: flex;
+    justify-content: end;
   }
 
-  .manage-wallets-button,
-  .refresh-button {
+  .manage-wallets-button {
     flex: 1;
-  }
-
-  /* Further reduce minimum height for very small screens */
-  .card-wrapper {
-    min-height: 140px;
-  }
-}
-
-/* Ensure grid items don't collapse */
-.balance-stats-wrapper > * {
-  min-width: 0;
-  min-height: 180px;
-}
-
-@media (max-width: 768px) {
-  .balance-stats-wrapper > * {
-    min-height: 160px;
-  }
-}
-
-@media (max-width: 640px) {
-  .balance-stats-wrapper > * {
-    min-height: 140px;
   }
 }
