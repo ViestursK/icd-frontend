@@ -1,3 +1,9 @@
+.theme-logo-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
 .theme-logo {
   transition: filter 0.3s ease;
 }
@@ -16,6 +22,25 @@
 .theme-logo-large {
   height: 4rem;
   width: auto;
+}
+
+/* Beta label styling - similar to asset-chain-badge */
+.beta-label {
+  background-color: rgba(var(--color-primary-rgb), 0.2);
+  color: var(--color-primary);
+  padding: 1px 5px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-left: 0.5rem;
+  letter-spacing: 0.05em;
+  position: relative;
+  top: -0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.25rem;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.3);
 }
 
 /* Add glow effect (like original) */
@@ -52,6 +77,13 @@
   .theme-logo-large {
     height: 3.5rem;
   }
+
+  .beta-label {
+    font-size: 0.6rem;
+    padding: 0 4px;
+    height: 1.1rem;
+    top: -0.3rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -61,5 +93,13 @@
 
   .theme-logo-large {
     height: 3rem;
+  }
+
+  .beta-label {
+    font-size: 0.55rem;
+    padding: 0 3px;
+    height: 1rem;
+    margin-left: 0.3rem;
+    top: -0.2rem;
   }
 }

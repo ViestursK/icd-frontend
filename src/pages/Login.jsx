@@ -112,7 +112,7 @@ const Login = () => {
       </Link>
 
       <div className="auth-brand">
-        <ThemeLogo className="auth-logo" size="large" withGlow={true} />
+        <ThemeLogo className="auth-logo" size="large" />
       </div>
 
       <div className="auth-card">

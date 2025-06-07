@@ -1,11 +1,13 @@
 import React from "react";
 import { useTheme } from "../../context/ThemeContext";
+import "./ThemeLogo.css";
 
 const ThemeLogo = ({
   className = "",
   alt = "Decen",
   style = {},
   size = "medium",
+  showBeta = true,
   ...props
 }) => {
   const { theme } = useTheme();
@@ -23,13 +25,15 @@ const ThemeLogo = ({
       : "theme-logo-medium";
 
   return (
-    <img
-      src={logoSrc}
-      alt={alt}
-      className={`theme-logo ${sizeClass} ${className}`}
-      style={style}
-      {...props}
-    />
+    <div className={`theme-logo-container ${className}`} style={style}>
+      <img
+        src={logoSrc}
+        alt={alt}
+        className={`theme-logo ${sizeClass}`}
+        {...props}
+      />
+      {showBeta && <span className="beta-label">BETA</span>}
+    </div>
   );
 };
 

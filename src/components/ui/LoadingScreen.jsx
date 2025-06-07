@@ -86,7 +86,6 @@ const LoadingScreen = ({ message = "Loading..." }) => {
           <ThemeLogo
             className="loading-logo pulse"
             size="large"
-            withGlow={true}
           />
         </div>
         <p className="loading-message">{message}</p>

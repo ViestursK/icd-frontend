@@ -264,7 +264,7 @@ const LandingPage = () => {
         <div className="landing-container">
           <div className="footer-content">
             <div className="footer-logo">
-              <ThemeLogo className="logo-img" size="medium" withGlow={true} />
+              <ThemeLogo className="logo-img" size="medium" />
             </div>
             <p className="footer-text">© 2025 Decent. All rights reserved.</p>
           </div>

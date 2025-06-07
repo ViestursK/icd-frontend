@@ -113,7 +113,7 @@ const Navigation = ({
             className="nav-logo-link"
             onClick={() => setMobileOpen(false)}
           >
-            <ThemeLogo className="nav-logo" withGlow={true} />
+            <ThemeLogo className="nav-logo"/>
           </Link>
 
           <button

@@ -73,7 +73,7 @@ function Sidebar() {
             className="sidebar-logo-link"
             onClick={handleLinkClick}
           >
-            <ThemeLogo className="sidebar-logo" withGlow={true} />
+            <ThemeLogo className="sidebar-logo" />
           </Link>
 
           <button
