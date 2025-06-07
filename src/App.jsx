@@ -16,10 +16,10 @@ function App() {
   return (
     <>
       <Helmet>
-        <title>Crypto Dashboard</title>
+        <title>Decen</title>
         <meta name="description" content="Your all-in-one crypto dashboard" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/assets/DECEN_logo_nobckgrnd.webp" />
       </Helmet>
 
       <ErrorBoundary>
