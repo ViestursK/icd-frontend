@@ -116,13 +116,11 @@
 }
 
 [data-theme="light"] .balance-card:hover {
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
-  border-color: rgba(var(--color-primary-rgb), 0.2);
-  background-color: var(--color-card-background);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.22);
+  border-color: var(--color-border-accent);
 }
 
 [data-theme="light"] .currency-symbol,
 [data-theme="light"] .balance-value {
   color: var(--color-text);
 }
-

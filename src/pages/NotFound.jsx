@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import logo from "../assets/logo.svg";
+import ThemeLogo from "../components/ui/ThemeLogo";
 import "./NotFound.css";
 
 const NotFound = () => {
@@ -10,7 +10,7 @@ const NotFound = () => {
   return (
     <div className="not-found-container">
       <div className="not-found-content">
-        <img src={logo} alt="Portfolio Tracker" className="not-found-logo" />
+        <ThemeLogo className="not-found-logo" size="large" withGlow={true} />
         <h1>404</h1>
         <h2>Page Not Found</h2>
         <p>The page you are looking for doesn't exist or has been moved.</p>

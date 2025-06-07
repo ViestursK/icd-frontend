@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaCogs,
+  FaUser,
   FaSignOutAlt,
   FaBars,
   FaTimes,
@@ -10,8 +11,8 @@ import {
   FaWallet,
 } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import ThemeLogo from "./ui/ThemeLogo";
 import "./Sidebar.css";
+import ThemeLogo from "./ui/ThemeLogo";
 
 function Sidebar() {
   const location = useLocation();
@@ -22,15 +23,15 @@ function Sidebar() {
 
   // Handle logout with loading state
   const handleLogout = async () => {
-    if (loggingOut) return;
+    if (loggingOut) return; // Prevent multiple clicks
 
     setLoggingOut(true);
 
     // Small delay for UX to show loading state
     setTimeout(() => {
       logout();
-      navigate("/login");
-    }, 500);
+      navigate("/");
+    }, 400);
   };
 
   // Toggle mobile sidebar
@@ -50,22 +51,22 @@ function Sidebar() {
     { path: "/dashboard", icon: <FaHome />, label: "Dashboard" },
     { path: "/dashboard/wallets", icon: <FaWallet />, label: "Wallets" },
     { path: "/dashboard/settings", icon: <FaCogs />, label: "Settings" },
-    // { path: "/dashboard/profile", icon: <FaUser />, label: "Profile" },
+    { path: "/dashboard/profile", icon: <FaUser />, label: "Profile" },
   ];
 
   return (
     <>
-      {!mobileOpen && (
-        <button
-          className="mobile-menu-toggle"
-          onClick={toggleSidebar}
-          aria-label="Open menu"
-          aria-expanded={false}
-        >
-          <FaBars />
-        </button>
-      )}
+      {/* Mobile Hamburger Menu - Only visible on mobile */}
+      <button
+        className="mobile-menu-toggle"
+        onClick={toggleSidebar}
+        aria-label={mobileOpen ? "Close menu" : "Open menu"}
+        aria-expanded={mobileOpen}
+      >
+        {mobileOpen ? <FaTimes /> : <FaBars />}
+      </button>
 
+      {/* Sidebar */}
       <aside className={`sidebar-container ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="sidebar-header">
           <Link
@@ -73,16 +74,8 @@ function Sidebar() {
             className="sidebar-logo-link"
             onClick={handleLinkClick}
           >
-            <ThemeLogo className="sidebar-logo" />
+            <ThemeLogo></ThemeLogo>
           </Link>
-
-          <button
-            className="mobile-close-button"
-            onClick={toggleSidebar}
-            aria-label="Close menu"
-          >
-            <FaTimes />
-          </button>
         </div>
 
         <nav className="sidebar-nav" aria-label="Main navigation">
@@ -122,11 +115,12 @@ function Sidebar() {
             ) : (
               <FaSignOutAlt className="logout-icon" />
             )}
-            <span>{loggingOut ? "Logging out..." : "Sign Out"}</span>
+            <span>{loggingOut ? "Logging out..." : "Logout"}</span>
           </button>
         </div>
       </aside>
 
+      {/* Backdrop for mobile */}
       {mobileOpen && (
         <div
           className="sidebar-backdrop"

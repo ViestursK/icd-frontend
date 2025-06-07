@@ -3,16 +3,35 @@
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
-  margin: 1rem auto;
+  margin: 1rem 0;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .profile-section {
   background: var(--color-card-bg);
   border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px var(--color-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--color-border);
   overflow: hidden;
   transition: all var(--transition-normal);
-  box-shadow: 0 4px 20px var(--color-shadow);
+}
+
+.profile-section:hover {
+  box-shadow: 0 6px 25px rgba(var(--color-primary-rgb), 0.25);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
 }
 
 .profile-header {
@@ -35,18 +54,199 @@
   color: var(--color-text);
 }
 
+/* Information display */
 .info {
   display: flex;
+  flex-direction: column;
   gap: 1.5rem;
   padding: 1.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
   background-color: var(--color-card-bg);
 }
 
 .info-row {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background-color: var(--color-hover-overlay);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-fast);
+}
+
+.info-row:hover {
+  background-color: var(--color-active-overlay);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
+}
+
+.info-icon {
+  font-size: 1.125rem;
+  color: var(--color-primary);
+  width: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.info-label {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-right: 0.5rem;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 1rem;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+/* Stats cards */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--color-hover-overlay);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-fast);
+  flex: 1;
+  min-width: 200px;
+}
+
+.stat-card:hover {
+  background-color: var(--color-active-overlay);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.stat-value.positive {
+  color: var(--color-success);
+}
+
+.stat-value.negative {
+  color: var(--color-error);
+}
+
+.profile-error {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--color-error);
+}
+
+/* Responsive styles */
+@media (min-width: 768px) {
+  .info {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .info-row {
+    width: calc(50% - 0.75rem);
+  }
+
+  .stat-card {
+    max-width: calc(50% - 0.75rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .profile-section {
+    border-radius: var(--radius-md);
+  }
+
+  .profile-header {
+    padding: 1rem;
+  }
+
+  .info {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .info-row {
+    padding: 0.625rem;
+  }
+
+  .stat-card {
+    width: 100%;
+  }
+
+  .stat-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-header h2 {
+    font-size: 1.125rem;
+  }
+
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .info-label {
+    margin-right: 0;
+  }
+
+  .stat-card {
+    padding: 0.75rem;
+  }
+
+  .stat-icon {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+
+  .stat-value {
+    font-size: 1rem;
+  }
 }

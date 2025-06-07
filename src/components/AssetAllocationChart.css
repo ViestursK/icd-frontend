@@ -183,7 +183,7 @@
 }
 
 [data-theme="light"] .asset-allocation-chart-container:hover {
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.22);
   border-color: var(--color-border-accent);
 }
 

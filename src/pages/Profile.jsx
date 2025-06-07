@@ -92,14 +92,6 @@ const Profile = () => {
 
           <div className="info">
             <div className="info-row">
-              <FaUser className="info-icon" />
-              <div className="info-content">
-                <span className="info-label">User ID</span>
-                <span className="info-value">#{userProfile.id}</span>
-              </div>
-            </div>
-
-            <div className="info-row">
               <FaEnvelope className="info-icon" />
               <span className="info-label">Email</span>
               <span className="info-value">{userProfile.email}</span>

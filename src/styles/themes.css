@@ -160,13 +160,13 @@
   --color-gradient-overlay: rgba(255, 255, 255, 0.9);
 
   /* Background orbs - Very subtle for light theme */
-  --orb-lime-color: rgba(125, 103, 255, 0.2);
-  --orb-cyan-color: rgba(2, 132, 199, 0.2);
-  --orb-purple-color: rgba(147, 51, 234, 0.2);
-  --orb-pink-color: rgba(236, 72, 153, 0.2);
+  --orb-lime-color: rgba(125, 103, 255, 0.4);
+  --orb-cyan-color: rgba(2, 132, 199, 0.8);
+  --orb-purple-color: rgba(147, 51, 234, 0.6);
+  --orb-pink-color: rgba(236, 72, 153, 0.6);
   --background-gradient: linear-gradient(
     135deg,
-    #f8f9fc 0%,
+    #5d23fc27 0%,
     #ffffff 50%,
     #f1f5f9 100%
   );
@@ -607,12 +607,6 @@
     animation: none;
     opacity: 0.3;
   }
-}
-
-/* Optimize backdrop filters for mobile */
-.premium-background {
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
 }
 
 /* Reduce motion for users who prefer it */

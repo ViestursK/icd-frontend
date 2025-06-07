@@ -158,7 +158,10 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .theme-options {
-    justify-content: space-evenly;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* justify-content: space-evenly; */
   }
 
   .settings-option {
