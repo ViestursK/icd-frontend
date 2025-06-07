@@ -426,7 +426,7 @@
 /* Media Queries */
 @media (max-width: 1200px) {
   .hero-container {
-    padding: 100px 1.5rem 60px;
+    padding: 2rem 0.5rem;
     gap: 3rem;
   }
 
