@@ -1,5 +1,6 @@
+// src/components/Navigation.jsx
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes, FaMoon, FaSun } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
@@ -17,6 +18,10 @@ const Navigation = ({
   const { isAuthenticated } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
 
   // Default navigation items for landing page
   const defaultLandingItems = [
@@ -42,7 +47,7 @@ const Navigation = ({
     },
   ];
 
-  // Use provided items or defaults
+  // Always use the navigation items, even on auth pages
   const navItems =
     navigationItems.length > 0 ? navigationItems : defaultLandingItems;
 
@@ -53,28 +58,45 @@ const Navigation = ({
 
   // Handle navigation item click
   const handleItemClick = (item) => {
+    // Close mobile menu first
+    setMobileOpen(false);
+
     if (item.type === "scroll" && item.id) {
-      // Scroll to section
-      const section = document.getElementById(item.id);
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth" });
+      // If we're on an auth page, first navigate to home page
+      if (isAuthPage) {
+        navigate("/");
+
+        // Wait for navigation to complete, then scroll to section
+        setTimeout(() => {
+          const section = document.getElementById(item.id);
+          if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 100);
+      } else {
+        // Already on landing page, just scroll
+        const section = document.getElementById(item.id);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
       }
     } else if (item.type === "link" && item.path) {
-      // Handle link navigation if needed
-      window.location.href = item.path;
+      // Handle link navigation
+      navigate(item.path);
     } else if (onNavigationClick) {
       // Custom handler
       onNavigationClick(item);
     }
-
-    // Close mobile menu
-    setMobileOpen(false);
   };
 
   // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (mobileOpen && !event.target.closest(".navigation-container")) {
+      if (
+        mobileOpen &&
+        !event.target.closest(".navigation-container") &&
+        !event.target.closest(".mobile-header-bar")
+      ) {
         setMobileOpen(false);
       }
     };
@@ -88,32 +110,36 @@ const Navigation = ({
 
   return (
     <>
-      {/* Mobile toggle button - only show when menu is closed */}
-      {!mobileOpen && (
+      {/* Mobile Header Bar - Always visible on mobile */}
+      <div className="mobile-header-bar">
+        <Link to="/" className="nav-logo-link">
+          <ThemeLogo className="nav-logo" size="small" />
+        </Link>
+
         <button
           className="mobile-nav-toggle"
           onClick={toggleMobileNav}
-          aria-label="Open menu"
-          aria-expanded={false}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
         >
-          <FaBars />
+          {mobileOpen ? <FaTimes /> : <FaBars />}
         </button>
-      )}
+      </div>
 
       {/* Navigation container */}
       <nav
         className={`navigation-container ${className} ${
           mobileOpen ? "mobile-open" : ""
-        } ${scrolled ? "scrolled" : ""}`}
+        } ${scrolled ? "scrolled" : ""} ${isAuthPage ? "auth-page" : ""}`}
       >
-        {/* Navigation header */}
+        {/* Navigation header - for desktop */}
         <div className="nav-header">
           <Link
             to="/"
             className="nav-logo-link"
             onClick={() => setMobileOpen(false)}
           >
-            <ThemeLogo className="nav-logo"/>
+            <ThemeLogo className="nav-logo" />
           </Link>
 
           <button
@@ -145,7 +171,7 @@ const Navigation = ({
           {/* Additional controls */}
           <div className="nav-controls">
             {/* Theme toggle */}
-            {showThemeToggle && (
+            {/* {showThemeToggle && (
               <button
                 className="theme-toggle"
                 onClick={toggleTheme}
@@ -156,7 +182,7 @@ const Navigation = ({
               >
                 {theme === "dark" ? <FaSun /> : <FaMoon />}
               </button>
-            )}
+            )} */}
 
             {/* Auth buttons for landing page */}
             {showAuthButtons && !isAuthenticated && (

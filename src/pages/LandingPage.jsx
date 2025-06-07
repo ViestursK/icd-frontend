@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   FaChartLine,
   FaWallet,
-  FaChartPie,
   FaLock,
   FaShieldAlt,
   FaCheck,
 } from "react-icons/fa";
-import Navigation from "../components/Navigation";
 import DashboardShowcase from "../components/ui/DashboardShowcase";
 import ThemeLogo from "../components/ui/ThemeLogo";
 import "./LandingPage.css";
+import { FaImagePortrait } from "react-icons/fa6";
 
 const LandingPage = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-
   // Listen for scroll to change navbar appearance
   useEffect(() => {
     const handleScroll = () => {
@@ -28,28 +25,18 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
-      {/* Navigation */}
-      <Navigation
-        variant="landing"
-        showAuthButtons={true}
-        showThemeToggle={true}
-        scrolled={isScrolled}
-      />
-
       {/* Hero Section with Dashboard Showcase */}
       <section className="hero-section">
         <div className="hero-container">
           <div className="hero-content">
-            <h1 className="hero-title">
-              Track Your Crypto Portfolio In Real-Time
-            </h1>
+            <h1 className="hero-title">ALL YOUR CRYPTO, ONE DASHBOARD</h1>
             <p className="hero-subtitle">
-              Monitor all your cryptocurrency investments in one place with
-              powerful analytics, real-time updates, and multi-chain support.
+              Pulling all your wallets, exchanges, and assets across 20+
+              blockchains into one single dashboard.
             </p>
             <div className="hero-buttons">
               <Link to="/register" className="primary-button">
-                Get Started — It's Free
+                Get Started
               </Link>
               <button
                 onClick={() => {
@@ -74,7 +61,7 @@ const LandingPage = () => {
       {/* Features Section */}
       <section id="features" className="features-section">
         <div className="landing-container">
-          <h2 className="section-title">Powerful Portfolio Tracking</h2>
+          <h2 className="section-title">OUR FOCUS IS ON WHAT MATTERS</h2>
           <p className="section-subtitle">
             Everything you need to manage your crypto investments
           </p>
@@ -82,46 +69,37 @@ const LandingPage = () => {
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon">
-                <FaChartLine />
-              </div>
-              <h3>Real-Time Tracking</h3>
-              <p>
-                Monitor your portfolio value with live price updates and
-                performance metrics
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <div className="feature-icon">
                 <FaWallet />
               </div>
               <h3>Multi-Chain Support</h3>
               <p>
-                Track assets across Ethereum, Bitcoin, Binance Smart Chain,
-                Polygon, and more
+                Track assets across 21 (and growing) blockchains (Ethereum,
+                Solana, BNB Smart Chain and others)
               </p>
             </div>
 
             <div className="feature-card">
               <div className="feature-icon">
-                <FaChartPie />
+                <FaChartLine />
               </div>
-              <h3>Portfolio Analytics</h3>
-              <p>
-                Visualize your asset allocation and analyze performance with
-                intuitive charts
-              </p>
+              <h3>Real-Time Tracking [in progress]</h3>
+              <p>Real-time price updates for all popular tokens.</p>
+            </div>
+
+            <div className="feature-card">
+              <div className="feature-icon">
+                <FaImagePortrait />
+              </div>
+              <h3>NFT tracking [in progress]</h3>
+              <p>Got more than coins? We got you covered.</p>
             </div>
 
             <div className="feature-card">
               <div className="feature-icon">
                 <FaLock />
               </div>
-              <h3>Non-Custodial</h3>
-              <p>
-                We never hold your keys - just connect your wallet addresses for
-                tracking
-              </p>
+              <h3>Zero-risk</h3>
+              <p>No wallet connection needed, just drop the address</p>
             </div>
           </div>
         </div>
@@ -131,19 +109,19 @@ const LandingPage = () => {
       <section id="how-it-works" className="how-it-works-section">
         <div className="landing-container">
           <h2 className="section-title">How It Works</h2>
-          <p className="section-subtitle">Get started in three simple steps</p>
+          {/* <p className="section-subtitle">Get started in three simple steps</p> */}
 
           <div className="steps-container">
             <div className="step-card">
               <div className="step-number">1</div>
               <h3>Create an Account</h3>
-              <p>Sign up with your email and create a secure password</p>
+              <p>Sign up with email</p>
             </div>
 
             <div className="step-card">
               <div className="step-number">2</div>
-              <h3>Add Your Wallets</h3>
-              <p>Connect your wallet addresses from any supported blockchain</p>
+              <h3>Add Your Wallet</h3>
+              <p>Paste the wallet address you want to add to your portfolio</p>
             </div>
 
             <div className="step-card">
@@ -161,8 +139,8 @@ const LandingPage = () => {
       <section id="security" className="security-section">
         <div className="landing-container">
           <h2 className="section-title">Security First</h2>
-          <p className="section-subtitle">Your security is our top priority</p>
-
+          <p className="section-subtitle"></p>{" "}
+          {/*Your security is our top priority*/}
           <div className="security-features">
             <div className="security-feature">
               <div className="security-icon">
@@ -200,35 +178,27 @@ const LandingPage = () => {
 
           <div className="faq-container">
             <div className="faq-item">
-              <h3>Is Decent free to use?</h3>
+              <h3>Is Decen free to use?</h3>
               <p>
-                Yes, Decent is completely free for basic portfolio tracking. We
-                offer premium features for advanced users.
+                Yes, You can use DECEN for free for up to 2 wallets or exchange
+                accounts or upgrade to premium if you want to track more.
               </p>
             </div>
 
             <div className="faq-item">
               <h3>Which blockchains are supported?</h3>
               <p>
-                We currently support Ethereum, Bitcoin, Binance Smart Chain,
-                Polygon, Avalanche, Solana, and more blockchains.
+                Ethereum, Solana, BNB Smart Chain, Arbitrum One, Optimism,
+                Polygon, Avalanche, Base, Scroll, zkSync, Zora, Berachain,
+                Blast, Celo, Ronin, Rootstock, Gnosis (formerly xDai), Linea,
+                Unichain, World Chain, Abstract, AnimeChain, ApeChain, Genesys,
+                Ink, Lens Protocol, Soneium, Story Protocol.
               </p>
             </div>
 
             <div className="faq-item">
               <h3>Do I need to connect my wallet?</h3>
-              <p>
-                No, you only need to provide your public wallet addresses. We
-                never ask for or store private keys or seed phrases.
-              </p>
-            </div>
-
-            <div className="faq-item">
-              <h3>How often is the data updated?</h3>
-              <p>
-                Portfolio data is updated in real-time, with price information
-                refreshed every few minutes.
-              </p>
+              <p>No, you only need to provide the wallet addresses.</p>
             </div>
           </div>
         </div>
@@ -237,11 +207,11 @@ const LandingPage = () => {
       {/* CTA Section */}
       <section className="cta-section">
         <div className="landing-container">
-          <h2>Ready to take control of your crypto portfolio?</h2>
-          <p>
+          <h2>All your crypto in the palm of your hand.</h2>
+          {/* <p>
             Join thousands of users who trust Decent for their crypto tracking
             needs
-          </p>
+          </p> */}
           <div className="cta-features">
             <div className="cta-feature">
               <FaCheck /> Free to use

@@ -1,13 +1,8 @@
-// Login.jsx
+// src/pages/Login.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import {
-  FaEnvelope,
-  FaLock,
-  FaExclamationCircle,
-  FaArrowLeft,
-} from "react-icons/fa";
+import { FaEnvelope, FaLock, FaExclamationCircle } from "react-icons/fa";
 import ThemeLogo from "../components/ui/ThemeLogo";
 import "./Auth.css";
 
@@ -107,10 +102,6 @@ const Login = () => {
 
   return (
     <div className="auth-container">
-      <Link to="/" className="back-to-home">
-        <FaArrowLeft /> Back to Home
-      </Link>
-
       <div className="auth-brand">
         <ThemeLogo className="auth-logo" size="large" />
       </div>

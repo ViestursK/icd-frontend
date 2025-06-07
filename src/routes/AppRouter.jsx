@@ -1,10 +1,14 @@
+// src/routes/AppRouter.jsx
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { useAuth } from "../context/AuthContext";
 import LoadingScreen from "../components/ui/LoadingScreen";
 
-// Lazy load components for better performance
+// Layouts
 const DashboardLayout = lazy(() => import("../layouts/DashboardLayout"));
+const PublicLayout = lazy(() => import("../layouts/PublicLayout"));
+
+// Pages
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const WalletManagement = lazy(() => import("../pages/WalletManagement"));
 const Settings = lazy(() => import("../pages/Settings"));
@@ -53,15 +57,24 @@ function AppRouter() {
   return (
     <Suspense fallback={<LoadingScreen message="Loading application..." />}>
       <Routes>
-        {/* Landing Page - Public */}
-        <Route path="/" element={<LandingPage />} />
+        {/* Public Routes */}
+        <Route
+          path="/"
+          element={
+            <PublicLayout>
+              <LandingPage />
+            </PublicLayout>
+          }
+        />
 
         {/* Auth Routes - Public Only */}
         <Route
           path="/login"
           element={
             <PublicRoute>
-              <Login />
+              <PublicLayout>
+                <Login />
+              </PublicLayout>
             </PublicRoute>
           }
         />
@@ -70,7 +83,9 @@ function AppRouter() {
           path="/register"
           element={
             <PublicRoute>
-              <Register />
+              <PublicLayout>
+                <Register />
+              </PublicLayout>
             </PublicRoute>
           }
         />
@@ -99,7 +114,14 @@ function AppRouter() {
         </Route>
 
         {/* 404 Not Found */}
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="*"
+          element={
+            <PublicLayout>
+              <NotFound />
+            </PublicLayout>
+          }
+        />
       </Routes>
     </Suspense>
   );

@@ -1,12 +1,12 @@
 .dashboard-showcase {
-  position: relative;
-  width: 100%;
+  /* position: absolute; */
+  /* width: 100%; */
   min-height: 500px;
   max-height: 700px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  /* overflow: hidden; */
   padding: 2rem;
 }
 

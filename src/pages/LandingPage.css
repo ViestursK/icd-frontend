@@ -51,11 +51,12 @@
 }
 
 .hero-container {
+  position: absolute;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  max-width: 1400px;
+  max-width: 90%;
   width: 100%;
   padding: 120px 2rem 60px;
 }
@@ -91,7 +92,7 @@
 .hero-buttons {
   display: flex;
   gap: 1rem;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .primary-button {
@@ -393,7 +394,7 @@
 
 /* Footer */
 .landing-footer {
-  padding: 4rem 0;
+  padding: 2rem 0;
   border-top: 1px solid var(--color-border);
 }
 
@@ -512,10 +513,7 @@
   .hero-buttons {
     display: flex;
     gap: 1rem;
-    justify-content: start;
-  }
-  .hero-container {
-    padding: 1rem;
+    justify-content: center;
   }
 
   .hero-title {
@@ -524,6 +522,7 @@
 
   .hero-subtitle {
     font-size: 1rem;
+    margin: 1rem 2rem;
   }
 
   .section-title {

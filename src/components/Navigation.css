@@ -1,10 +1,6 @@
-/* Mobile toggle button */
+
 .mobile-nav-toggle {
   display: none;
-  position: fixed;
-  top: max(1rem, env(safe-area-inset-top));
-  right: 1rem;
-  z-index: 1001;
   background: var(--color-card-background);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -21,6 +17,25 @@
   background: var(--color-hover-overlay);
   border-color: var(--color-primary);
   color: var(--color-primary);
+}
+
+/* Mobile header bar - always visible on mobile */
+.mobile-header-bar {
+  display: none; /* Hidden on desktop */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--color-card-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 1rem;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1100;
+  box-shadow: 0 2px 10px var(--color-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* Navigation container - top navbar style */
@@ -234,8 +249,23 @@
   display: none;
 }
 
+/* Special styles for auth pages */
+.navigation-container.auth-page {
+  opacity: 1;
+  top: 1;
+  left: 0;
+  width: 100%;
+  background: var(--color-card-bg);
+  box-shadow: 0 2px 10px var(--color-shadow);
+  height: max-content;
+}
+
 /* Desktop styles */
 @media (min-width: 1024px) {
+  .mobile-header-bar {
+    display: none;
+  }
+
   .mobile-nav-toggle,
   .nav-backdrop,
   .mobile-close-button {
@@ -245,10 +275,29 @@
 
 /* Mobile styles */
 @media (max-width: 1023px) {
+  /* Show the mobile header bar */
+  .mobile-header-bar {
+    display: flex;
+  }
+
+  /* Adjust mobile toggle positioning */
   .mobile-nav-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    top: auto;
+    right: auto;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0.5rem;
+    border-radius: 50%;
+  }
+
+  .mobile-nav-toggle:hover {
+    background: var(--color-hover-overlay);
+    border: none;
   }
 
   /* Landing mobile */
@@ -258,20 +307,27 @@
     flex-direction: column;
     align-items: stretch;
     padding: 0;
-    height: auto;
-    max-height: 100vh;
     overflow-y: auto;
+    top: 60px; 
+    
   }
 
   .navigation-container.mobile-open {
     transform: translateY(0);
     opacity: 1;
+    height: max-content;
   }
 
   .nav-header {
+    display: none;
     padding: 1rem;
     border-bottom: 1px solid var(--color-border);
     justify-content: space-between;
+  }
+
+  /* Hide desktop nav logo since it's now in the mobile header */
+  .navigation-container .nav-header .nav-logo-link {
+    display: none;
   }
 
   .navigation-container.mobile-open .mobile-close-button {
@@ -318,27 +374,50 @@
   .nav-backdrop {
     display: block;
   }
+
+  /* Auth pages on mobile */
+  .navigation-container.auth-page {
+    transform: translateY(-100%); /* Hide the full navigation on auth pages */
+    opacity: 0;
+  }
+
+  .navigation-container.auth-page.mobile-open {
+    transform: translateY(0); /* Show when menu is open */
+    opacity: 1;
+  }
 }
 
 /* Tablet adjustments */
 @media (max-width: 768px) {
+  .mobile-header-bar {
+    height: 50px;
+  }
+
+  .navigation-container {
+    top: 50px; /* Position below smaller mobile header */
+    height: calc(100vh - 50px);
+    max-height: calc(100vh - 50px);
+  }
+
   .mobile-nav-toggle {
-    top: max(0.75rem, env(safe-area-inset-top));
-    right: 0.75rem;
-    padding: 0.625rem;
+    padding: 0.375rem;
   }
 }
 
 /* Light theme adjustments */
-[data-theme="light"] .mobile-nav-toggle {
+[data-theme="light"] .mobile-header-bar {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+[data-theme="light"] .mobile-nav-toggle {
+  background: transparent;
+  color: var(--color-text);
+}
+
 [data-theme="light"] .mobile-nav-toggle:hover {
-  background: rgba(255, 255, 255, 1);
-  border-color: var(--color-primary);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="light"] .mobile-close-button {

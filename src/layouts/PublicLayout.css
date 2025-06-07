@@ -1,0 +1,58 @@
+/* src/layouts/PublicLayout.css */
+.public-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.public-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desktop - space for fixed navbar */
+.public-content {
+  padding-top: 60px; /* Match height of navbar */
+}
+
+/* For auth pages */
+.public-content.auth-page {
+  padding-top: 60px; /* Same as regular content */
+}
+
+/* Landing page adjustments */
+.landing-page .hero-section {
+  min-height: calc(100vh - 60px);
+}
+
+/* Mobile adjustments */
+@media (max-width: 1023px) {
+  .public-content {
+    padding-top: 60px; /* Match height of mobile header */
+  }
+
+  .public-content.auth-page {
+    padding-top: 60px; /* Same as regular content */
+  }
+
+  .landing-page .hero-section {
+    min-height: calc(100vh - 60px);
+  }
+}
+
+/* Smaller devices */
+@media (max-width: 768px) {
+  .public-content {
+    padding-top: 50px; /* Match height of smaller mobile header */
+  }
+
+  .public-content.auth-page {
+    padding-top: 50px;
+  }
+
+  .landing-page .hero-section {
+    min-height: calc(100vh - 50px);
+  }
+}

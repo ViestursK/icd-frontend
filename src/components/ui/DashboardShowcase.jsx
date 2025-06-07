@@ -65,15 +65,15 @@ const DashboardShowcase = ({ className = "" }) => {
       <div className="floating-elements">
         <div className="float-card card-1">
           <div className="card-icon">📊</div>
-          <div className="card-text">Real-time Analytics</div>
+          <div className="card-text">20+ chains</div>
         </div>
         <div className="float-card card-2">
           <div className="card-icon">🔒</div>
-          <div className="card-text">Secure & Private</div>
+          <div className="card-text">Secure & Encrypted</div>
         </div>
         <div className="float-card card-3">
           <div className="card-icon">⚡</div>
-          <div className="card-text">Lightning Fast</div>
+          <div className="card-text">Real-time pricing</div>
         </div>
       </div>
     </div>

@@ -166,9 +166,9 @@
   --orb-pink-color: rgba(236, 72, 153, 0.6);
   --background-gradient: linear-gradient(
     135deg,
-    #5d23fc27 0%,
+    #f1d9ff4f 0%,
     #ffffff 50%,
-    #f1f5f9 100%
+    #2c78c42c 100%
   );
   --grid-color: rgba(125, 103, 255, 0.03);
   --backdrop-opacity: 0.85;

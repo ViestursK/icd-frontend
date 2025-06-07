@@ -1,3 +1,4 @@
+// src/pages/Register.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -6,7 +7,6 @@ import {
   FaLock,
   FaExclamationCircle,
   FaUser,
-  FaArrowLeft,
 } from "react-icons/fa";
 import ThemeLogo from "../components/ui/ThemeLogo";
 import "./Auth.css";
@@ -134,10 +134,6 @@ const Register = () => {
 
   return (
     <div className="auth-container">
-      <Link to="/" className="back-to-home">
-        <FaArrowLeft /> Back to Home
-      </Link>
-
       <div className="auth-brand">
         <ThemeLogo className="auth-logo" size="large" />
       </div>
