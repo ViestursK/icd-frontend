@@ -63,7 +63,7 @@ const LandingPage = () => {
         <div className="landing-container">
           <h2 className="section-title">OUR FOCUS IS ON WHAT MATTERS</h2>
           <p className="section-subtitle">
-            Everything you need to manage your crypto investments
+            {/* Everything you need to manage your crypto investments */}
           </p>
 
           <div className="features-grid">
