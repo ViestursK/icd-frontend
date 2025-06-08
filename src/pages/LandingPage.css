@@ -544,7 +544,7 @@
   }
 
   .hero-showcase {
-    /* min-height: 400px; */
+    min-height: 400px;
   }
 
   .features-grid {
