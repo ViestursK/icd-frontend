@@ -62,6 +62,7 @@
   text-decoration: none;
   color: var(--color-text);
   transition: color var(--transition-fast);
+  gap: 0.5rem;
 }
 
 .sidebar-logo-link:hover {
@@ -70,7 +71,7 @@
 
 .sidebar-logo {
   display: flex;
-  height: 3rem;
+  height: 2rem;
   filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.6));
 }
 
@@ -265,7 +266,7 @@
   /* Adjust sidebar header for mobile */
   .sidebar-header {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     padding: 1rem 1.25rem;
   }
 

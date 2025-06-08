@@ -252,14 +252,15 @@
   .top-container {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    /* gap: 1rem; */
+    padding: 0;
   }
 
   .header-actions-container {
-    width: 100%;
-    display: flex;
+    /* width: 100%; */
+    /* display: flex; */
     flex-direction: column;
-    gap: 0.5rem;
+    /* gap: 0.5rem; */
   }
 }
 
@@ -269,13 +270,13 @@
   }
 
   .top-container {
-    padding: 0 0.5rem;
+    padding: 0;
   }
 
   .header-actions-container {
     width: 100%;
     flex-direction: row;
-    align-items: stretch;
+    /* align-items: stretch; */
   }
 
   .holdings-header {

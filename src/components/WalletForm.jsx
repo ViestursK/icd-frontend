@@ -244,7 +244,7 @@ export default function WalletForm() {
                   {isSubmitting ? (
                     <>
                       <span className="button-spinner">
-                        <FaWallet className="spinning-icon" />
+                        {/* <FaWallet className="spinning-icon" /> */}
                       </span>
                       Adding Wallet...
                     </>

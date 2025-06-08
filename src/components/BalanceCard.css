@@ -109,7 +109,7 @@
 }
 
 /* Light mode adjustments */
-[data-theme="light"] .balance-card {
+/* [data-theme="light"] .balance-card {
   background: var(--color-card-bg);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -123,4 +123,4 @@
 [data-theme="light"] .currency-symbol,
 [data-theme="light"] .balance-value {
   color: var(--color-text);
-}
+} */

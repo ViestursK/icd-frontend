@@ -360,6 +360,10 @@
 }
 
 @media (max-width: 480px) {
+  .add-wallet-button {
+    width: 100%;
+  }
+
   .wallet-modal-overlay {
     padding: 0.5rem;
   }

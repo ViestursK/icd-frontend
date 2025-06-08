@@ -13,8 +13,8 @@
 }
 
 .asset-allocation-chart-container:hover {
-  box-shadow: 0 6px 25px rgba(var(--color-primary-rgb), 0.15);
-  border-color: var(--color-border-accent);
+  box-shadow: 0 6px 25px rgba(var(--color-primary-rgb), 0.25);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
   background-color: var(--color-card-background);
 }
 
@@ -23,16 +23,8 @@
   filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.3));
 }
 
-/* Center text styling */
-.donut-center-label,
-.donut-center-value,
-.donut-center-percent {
-  fill: var(--color-text);
-  font-family: var(--font-family);
-}
-
 .donut-center-label {
-  font-size: 0.8rem;
+  /* font-size: 0.8rem; */
   font-weight: 500;
   fill: var(--color-text-secondary);
 }
@@ -46,7 +38,7 @@
 .donut-center-percent {
   font-size: 0.75rem;
   font-weight: 500;
-  fill: var(--color-text-muted);
+  fill: var(--color-text);
 }
 
 /* Legend styling */
@@ -82,6 +74,7 @@
   margin-right: 0.5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
 }
 
 .legend-text {
@@ -175,7 +168,7 @@
   }
 }
 
-/* Light theme specific adjustments */
+/* Light theme specific adjustments
 [data-theme="light"] .asset-allocation-chart-container {
   background: var(--color-card-bg);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -208,4 +201,4 @@
 
 [data-theme="light"] .active-sector {
   filter: drop-shadow(0 0 6px rgba(var(--color-primary-rgb), 0.2));
-}
+} */

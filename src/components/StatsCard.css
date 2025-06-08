@@ -23,8 +23,9 @@
 }
 
 .stats-card:hover {
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.22);
-  border-color: var(--color-border-accent);
+  box-shadow: 0 6px 25px rgba(var(--color-primary-rgb), 0.25);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+  background-color: var(--color-card-background);
 }
 
 .stat-badge {

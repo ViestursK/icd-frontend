@@ -1,8 +1,8 @@
 .dashboard-layout {
   /* display: flex; */
   width: 100%;
-  height: inherit;
-  /* overflow: hidden; */
+  /* height: inherit; */
+  overflow: hidden;
 }
 
 .sidebar-container {
@@ -27,7 +27,6 @@
   padding: 1rem;
   width: calc(100% - 250px);
   margin-left: 250px;
-  height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -63,9 +62,9 @@
     justify-content: space-around;
   }
 
-  .sidebar-container.mobile-open {
+  /* .sidebar-container.mobile-open {
     transform: translateX(0);
-  }
+  } */
 
   .sidebar-backdrop {
     position: fixed;

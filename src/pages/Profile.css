@@ -30,7 +30,7 @@
   align-items: center;
   padding: 1.25rem 1.5rem;
   border-bottom: 1px solid var(--color-border);
-  background-color: var(--color-card-bg);
+  /* background-color: var(--color-card-bg); */
 }
 
 .section-icon {
@@ -400,8 +400,8 @@
 }
 
 [data-theme="light"] .profile-section-header {
-  background-color: var(--color-card-bg);
-  border-bottom-color: rgba(0, 0, 0, 0.08);
+  /* background-color: var(--color-card-bg);
+  border-bottom-color: rgba(0, 0, 0, 0.08); */
 }
 
 [data-theme="light"] .form-input {

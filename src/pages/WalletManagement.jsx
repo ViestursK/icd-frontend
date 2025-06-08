@@ -61,7 +61,7 @@ function WalletManagement() {
     <div className="dashboard-container">
       <div className="top-container">
         <Header
-          title="WALLETS"
+          title="WALLET MANAGEMENT"
           actions={
             <div className="header-actions-container">
               <WalletForm />
