@@ -188,11 +188,9 @@ const LandingPage = () => {
             <div className="faq-item">
               <h3>Which blockchains are supported?</h3>
               <p>
-                Ethereum, Solana, BNB Smart Chain, Arbitrum One, Optimism,
-                Polygon, Avalanche, Base, Scroll, zkSync, Zora, Berachain,
-                Blast, Celo, Ronin, Rootstock, Gnosis (formerly xDai), Linea,
-                Unichain, World Chain, Abstract, AnimeChain, ApeChain, Genesys,
-                Ink, Lens Protocol, Soneium, Story Protocol.
+                We support major blockchains including Ethereum, Polygon,
+                Binance Smart Chain, Avalanche, and Fantom, along with 20+
+                additional networks. And we're working to add more.
               </p>
             </div>
 
@@ -236,7 +234,7 @@ const LandingPage = () => {
             <div className="footer-logo">
               <ThemeLogo className="logo-img" size="medium" />
             </div>
-            <p className="footer-text">© 2025 Decent. All rights reserved.</p>
+            <p className="footer-text">© 2025 Decen. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -1,5 +1,3 @@
-/* Updated LandingPage.css - Navigation styles moved to Navigation.css */
-
 /* Base Styles */
 .landing-page {
   color: var(--color-text);
@@ -56,14 +54,14 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  max-width: 90%;
+  max-width: 1800px;
   width: 100%;
   /* padding: 120px 2rem 60px; */
 }
 
 .hero-content {
   flex: 1;
-  max-width: 600px;
+  max-width: 700px;
   z-index: 2;
 }
 
@@ -87,6 +85,7 @@
   color: var(--color-text-secondary);
   margin-bottom: 2.5rem;
   line-height: 1.6;
+  max-width: 500px;
 }
 
 .hero-buttons {
@@ -439,11 +438,13 @@
   .hero-container {
     flex-direction: column;
     text-align: center;
-    gap: 2rem;
+    gap: 0rem;
   }
 
   .hero-content {
     max-width: 100%;
+    justify-content: center;
+    align-items: center;
   }
 
   .hero-showcase {
@@ -509,7 +510,7 @@
   }
 }
 
-@media (max-width: 414px) {
+@media (max-width: 434px) {
   .hero-buttons {
     display: flex;
     gap: 1rem;
@@ -543,7 +544,7 @@
   }
 
   .hero-showcase {
-    min-height: 400px;
+    /* min-height: 400px; */
   }
 
   .features-grid {
