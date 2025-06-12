@@ -52,11 +52,7 @@ export const WalletProvider = ({ children }) => {
       try {
         const walletsData = await walletService.fetchWallets(forceRefresh);
         setWallets(walletsData || []);
-
-        // Note: We'll calculate total balance from assets now, as it's more reliable
       } catch (err) {
-        // Only set error if it's not a case of a new user with no wallets
-        // New users will just see empty wallet tables, not an error message
         if (err.response?.status !== 404) {
           const errorMessage =
             err.response?.data?.detail || "Failed to load wallet data.";

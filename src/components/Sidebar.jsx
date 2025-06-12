@@ -50,7 +50,7 @@ function Sidebar() {
   const navLinks = [
     { path: "/dashboard", icon: <FaHome />, label: "Dashboard" },
     { path: "/dashboard/wallets", icon: <FaWallet />, label: "Wallets" },
-    { path: "/dashboard/settings", icon: <FaCogs />, label: "Settings" },
+    // { path: "/dashboard/settings", icon: <FaCogs />, label: "Settings" },
     { path: "/dashboard/profile", icon: <FaUser />, label: "Profile" },
   ];
 

@@ -5,6 +5,10 @@ const ThemeContext = createContext(null);
 
 // Initialize theme immediately before React renders
 const getInitialTheme = () => {
+  // TEMPORARILY DISABLED - DARK THEME ONLY
+  // Uncomment below to restore original light/dark theme functionality
+  
+  /*
   // First check if already set on document
   const documentTheme = document.documentElement.getAttribute("data-theme");
   if (documentTheme) {
@@ -28,6 +32,11 @@ const getInitialTheme = () => {
   // Apply immediately to prevent flash
   document.documentElement.setAttribute("data-theme", systemTheme);
   return systemTheme;
+  */
+
+  // NEW LOGIC - FORCE DARK THEME ONLY
+  document.documentElement.setAttribute("data-theme", "dark");
+  return "dark";
 };
 
 // Theme provider component
@@ -37,16 +46,30 @@ export const ThemeProvider = ({ children }) => {
 
   // Apply theme to document when theme changes
   useEffect(() => {
+    // TEMPORARILY DISABLED - DARK THEME ONLY
+    // Uncomment below to restore original functionality
+    
+    /*
     document.documentElement.setAttribute("data-theme", theme);
 
     // Only save to localStorage if it's not system preference
     if (theme !== "system") {
       localStorage.setItem("theme", theme);
     }
+    */
+
+    // NEW LOGIC - FORCE DARK THEME ONLY
+    document.documentElement.setAttribute("data-theme", "dark");
+    // Clear any existing theme preferences
+    localStorage.removeItem("theme");
   }, [theme]);
 
   // Listen for system preference changes
   useEffect(() => {
+    // TEMPORARILY DISABLED - DARK THEME ONLY
+    // Uncomment below to restore original functionality
+    
+    /*
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     const handleChange = (e) => {
@@ -75,15 +98,31 @@ export const ThemeProvider = ({ children }) => {
         mediaQuery.removeListener(handleChange);
       }
     };
+    */
+
+    // NEW LOGIC - NO SYSTEM PREFERENCE LISTENING (DARK ONLY)
+    // Do nothing - theme stays dark
   }, []);
 
   // Toggle theme function
   const toggleTheme = () => {
+    // TEMPORARILY DISABLED - DARK THEME ONLY
+    // Uncomment below to restore original functionality
+    
+    /*
     setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
+    */
+
+    // NEW LOGIC - DISABLE TOGGLE (DARK ONLY)
+    console.log("Theme toggle disabled - dark theme only");
   };
 
   // Set specific theme
   const setThemeMode = (mode) => {
+    // TEMPORARILY DISABLED - DARK THEME ONLY
+    // Uncomment below to restore original functionality
+    
+    /*
     if (mode === "light" || mode === "dark") {
       setTheme(mode);
     } else if (mode === "system") {
@@ -95,13 +134,29 @@ export const ThemeProvider = ({ children }) => {
       const systemTheme = prefersDark ? "dark" : "light";
       setTheme(systemTheme);
     }
+    */
+
+    // NEW LOGIC - DISABLE THEME SWITCHING (DARK ONLY)
+    console.log("Theme switching disabled - dark theme only");
   };
 
   // Context value
   const contextValue = {
+    // TEMPORARILY DISABLED - DARK THEME ONLY
+    // Uncomment below to restore original functionality
+    
+    /*
     theme,
     isDark: theme === "dark",
     isLight: theme === "light",
+    toggleTheme,
+    setTheme: setThemeMode,
+    */
+
+    // NEW LOGIC - FORCE DARK THEME VALUES
+    theme: "dark",
+    isDark: true,
+    isLight: false,
     toggleTheme,
     setTheme: setThemeMode,
   };
