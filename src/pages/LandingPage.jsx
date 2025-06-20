@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   FaChartLine,
@@ -14,14 +13,6 @@ import { FaImagePortrait } from "react-icons/fa6";
 
 const LandingPage = () => {
   // Listen for scroll to change navbar appearance
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <div className="landing-page">
@@ -231,10 +222,26 @@ const LandingPage = () => {
       <footer className="landing-footer">
         <div className="landing-container">
           <div className="footer-content">
-            <div className="footer-logo">
-              <ThemeLogo className="logo-img" size="medium" />
+            <div className="logo">
+              <div className="footer-logo">
+                <ThemeLogo className="logo-img" size="medium" />
+              </div>
+              <p className="footer-text">© 2025 Decen. All rights reserved.</p>
             </div>
-            <p className="footer-text">© 2025 Decen. All rights reserved.</p>
+            <div className="footer-contacts">
+              <p className="footer-text">
+                <a href="https://www.linkedin.com/company/decen-app">
+                  {" "}
+                  Let's connect on{" "}
+                  <img
+                    className="linkedin-logo"
+                    src="/assets/linkedin_logo_green.png"
+                    alt="Linkedin"
+                  />
+                </a>
+                <p className="footer-text">Email: build@decen.app</p>
+              </p>
+            </div>
           </div>
         </div>
       </footer>

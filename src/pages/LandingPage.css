@@ -30,7 +30,7 @@
 
 .section-subtitle {
   font-size: 1.25rem;
-  text-align: center;
+  /* text-align: center; */
   color: var(--color-text-secondary);
   margin-bottom: 3rem;
   max-width: 700px;
@@ -56,7 +56,7 @@
   align-items: center;
   max-width: 1800px;
   width: 100%;
-  /* padding: 120px 2rem 60px; */
+  padding: 120px 2rem 60px;
 }
 
 .hero-content {
@@ -86,6 +86,7 @@
   margin-bottom: 2.5rem;
   line-height: 1.6;
   max-width: 500px;
+  align-;
 }
 
 .hero-buttons {
@@ -399,10 +400,11 @@
 
 .footer-content {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-evenly;
   text-align: center;
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 
 .footer-logo {
@@ -414,7 +416,7 @@
 
 .logo-img {
   height: 3rem;
-  margin-right: 0.75rem;
+  /* margin-right: 0.75rem; */
 }
 
 .footer-text {
@@ -422,10 +424,20 @@
   margin: 0;
 }
 
+.footer-contacts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.linkedin-logo {
+  height: 2rem;
+  margin-right: 0.75rem;
+}
+
 /* Media Queries */
 @media (max-width: 1200px) {
   .hero-container {
-    padding: 2rem 0.5rem;
     gap: 3rem;
   }
 
@@ -437,7 +449,7 @@
 @media (max-width: 992px) {
   .hero-container {
     flex-direction: column;
-    text-align: center;
+    /* text-align: center; */
     gap: 0rem;
   }
 
@@ -468,6 +480,26 @@
 }
 
 @media (max-width: 932px) {
+  .logo {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-content {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+  }
+
+  .footer-text {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-logo {
+    justify-content: center;
+  }
+
   .section-title {
     font-size: 2rem;
   }
